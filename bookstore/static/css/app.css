@@ -1,0 +1,20 @@
+.auth-form{
+    display: inline-block;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left; 
+ 
+  border-radius: 25px;
+  padding: 25px;
+  background-color:#F0F2FB;
+
+}
+.auth-div{
+    display: block;
+    text-align: center; margin: 30px;
+width: auto;
+}
+
+.navbar{
+  background-color: #BACD92;
+}

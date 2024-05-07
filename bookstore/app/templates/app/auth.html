@@ -1,0 +1,14 @@
+{% extends 'app/home.html' %}
+{% block content %}
+
+<div class="auth-div">
+   
+    <h1>Login Page </h1>
+    <form method="post" class="auth-form card-inner">
+        {{form}}
+        <input type="submit" name="Login" class="btn btn-dark"/>
+        <p style="margin: 10px;">Don't have an account? <a href="{% url 'register' %}">Register here</a></p>
+    </form>
+
+</div>
+{% endblock %}
