@@ -1,6 +1,11 @@
 {% extends 'app/home.html' %}
 
 {% block content %}
+{% if user.is_authenticated %}
+{% csrf_token %}
 
 <h1>Welcome to BookStore</h1>
+{% else %}
+<h1> You need to Login First </h1>
+{% endif %}
 {% endblock %}

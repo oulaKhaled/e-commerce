@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import response, HttpResponse
 from django.contrib.auth.forms import UserCreationForm
 from . import forms
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 
 
 # Create your views here.
@@ -43,6 +43,11 @@ def loginUser(request):
                 message = "Please check if password or username are correct"
 
     return render(request, "app/auth.html", context={"form": form, "message": message})
+
+
+def logoutUser(request):
+    logout(request)
+    return redirect("/app/auth")
 
 
 # def cart(request):
