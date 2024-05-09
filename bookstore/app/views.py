@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import response, HttpResponse
 from django.contrib.auth.forms import UserCreationForm
 from . import forms
-from django.contrib.auth import login
+from django.contrib.auth import login, authenticate
 
 
 # Create your views here.
@@ -12,21 +12,37 @@ def store(request):
 
 def registerUser(request):
     form = forms.createUserForm()
+    message = ""
     if request.method == "POST":
         form = forms.createUserForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
             return redirect("/app")
-    else:
-        print("Post Method is not working")
+        else:
+            message = "something went wrong, please enter a valid username or password"
 
-    return render(request, "app/register.html", context={"form": form})
+    return render(
+        request, "app/register.html", context={"form": form, "message": message}
+    )
 
 
 def loginUser(request):
-    form = forms.LoginForm
-    return render(request, "app/auth.html", context={"form": form})
+    form = forms.LoginForm()
+    message = ""
+    if request.method == "POST":
+        form = forms.LoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get("username")
+            password = form.cleaned_data.get("password")
+            user = authenticate(username=username, password=password)
+            if user:
+                login(request, user)
+                return redirect("/app")
+            else:
+                message = "Please check if password or username are correct"
+
+    return render(request, "app/auth.html", context={"form": form, "message": message})
 
 
 # def cart(request):

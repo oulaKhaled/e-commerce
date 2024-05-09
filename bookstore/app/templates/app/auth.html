@@ -2,9 +2,14 @@
 {% block content %}
 
 <div class="auth-div">
-   
+ 
     <h1>Login Page </h1>
+    {% if message %}
+    <div class="alert alert-danger" role="alert" style="width:700px; height: auto; margin-left: auto;
+    margin-right: auto;" >{{message}}</div> 
+    {% endif %}
     <form method="post" class="auth-form card-inner">
+        {% csrf_token %}
         {{form}}
         <input type="submit" name="Login" class="btn btn-dark"/>
         <p style="margin: 10px;">Don't have an account? <a href="{% url 'register' %}">Register here</a></p>
