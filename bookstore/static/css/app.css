@@ -53,6 +53,23 @@ width: auto;
   color: #A3A3A3;
   cursor: not-allowed;
 }
+.cart-row{
+	
+
+}
+
  
- 
- 
+/* .box-element{
+	box-shadow:hsl(0, 0%, 80%) 0 0 16px;
+	background-color: #fff;
+	border-radius: 4px;
+	padding: 10px;
+}
+.col-lg-6, .col-lg-8, .col-lg-12{
+	margin-top: 10px;
+}
+.form-field{
+	width:250px;
+	display: inline-block;
+	padding: 5px;
+} */

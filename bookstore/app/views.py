@@ -3,11 +3,14 @@ from django.http import response, HttpResponse
 from django.contrib.auth.forms import UserCreationForm
 from . import forms
 from django.contrib.auth import login, authenticate, logout
+from . import models
 
 
 # Create your views here.
 def store(request):
-    return render(request, "app/store.html")
+    queryset = models.Book.objects.all()
+
+    return render(request, "app/store.html", context={"books": queryset})
 
 
 def registerUser(request):
@@ -50,9 +53,17 @@ def logoutUser(request):
     return redirect("/app/auth")
 
 
-# def cart(request):
-#     return render(request, "app/cart.html")
+def cart(request):
+    return render(request, "app/cart.html")
 
 
-# def checkout(request):
-#     return render(request, "app/checkout.html")
+def checkout(request):
+    return render(request, "app/checkout.html")
+
+
+def BookView(request):
+    return render(request, "app/book.html")
+
+
+def ProfileView(request):
+    return render(request, "app/Profile.html")
