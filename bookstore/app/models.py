@@ -22,7 +22,7 @@ class Order(models.Model):
     total_amount = models.IntegerField(null=False)
 
     def __str__(self):
-        return self.id
+        return str(self.id)
 
 
 class OrderBook(models.Model):

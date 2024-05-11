@@ -10,22 +10,30 @@
     <link rel="stylesheet" type="text/css" href="\static\css\style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">  
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-<script src="https://kit.fontawesome.com/cfeeb17420.js" crossorigin="anonymous"></script>   
+<script src="https://kit.fontawesome.com/cfeeb17420.js" crossorigin="anonymous"></script> 
+<script src="\static\script.js"></script>  
 <title>Bookstore</title>
 </head>
+
+
 <body>
 
   
   <!-- 
 Header -->
 
+
+
 {% load static %}
 
+<div id="main">
 
-<div class="hero_area">
+ <div class="hero_area">
   <!-- header section strats -->
   <header >
-    <nav class="navbar navbar-expand-lg custom_nav-container ">
+    <nav class="navbar navbar-expand-lg "  >
+      
+            
       <a class="navbar-brand" href="http://localhost:8000/app/">
         <span style="padding: 20px;" >
           Bookstore
@@ -42,6 +50,9 @@ Header -->
               <a class="nav-link" href="{% url 'store' %}">Home <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
+             
+            </li>
+            <li class="nav-item">
               <a class="nav-link" href="http://localhost:8000/app/#contact_us"> Contact Us </a>
             </li>
             <li class="nav-item">
@@ -49,21 +60,17 @@ Header -->
             </li>
            
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+              <a class="nav-link" href="http://localhost:8000/app/#About-us">About Us</a>
             </li>
           </ul>
         </div>
+        <a href="{% url 'cart' %}">
+          <i class="fa-solid fa-cart-shopping  fa-2x" style="color: black;"></i>
+      </a> 
         <div class="quote_btn-container">
           {% if user.is_authenticated %}
-          <a href="{% url 'cart' %}" >
-            <i class="fa-solid fa-cart-shopping fa-2xl" ></i>
-</a>          
+             
 
-
-
-      
-         
-        
        
           <input type="text" name="text" class="input" placeholder="Search for book..." 
           style="background-color: #F4F4F4;
@@ -80,12 +87,9 @@ Header -->
           line-height: 30px;
           outline: none;
           margin: 15px;">
+          
 
-<a href="{% url 'logout' %}" class="btn btn-success" >
-  <span >
-    Logout
-  </span>
-  </a>
+     
 
           {% else %}
           <a href="{% url 'login' %}">
@@ -106,6 +110,8 @@ Header -->
     </nav>
 
 
+      
+  
 
       {% block content %}
       {% endblock %}
@@ -123,5 +129,65 @@ Header -->
       </p>
     </div>
   </footer>
+ 
+
+
+
+<!--  Profile -->
+  <button class="btn btn-success" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" style="position: fixed; right: 0; bottom: 0; margin: 10px; border-radius: 12px;"><i class="fa-solid fa-user fa-3x"></i></button>
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasRightLabel"></h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <section class="w-100 px-7 py-7" >
+      <div class="row d-flex justify-content-center" >
+        <div class="col " >
+          <div class="card" style="border-radius: 15px;">
+            <div class="card-body p-4">
+              <div class="d-flex">
+                <div class="flex-shrink-0">
+                  <img src=" /media/images/userimage.png"  alt="" class="img-fluid" style="width: 80px; border-radius: 10px;">
+                     
+                  </div>
+                <div class="flex-grow-1 ms-3">
+                  <h5 class="mb-1">Profile</h5>
+                  <p>username</p>
+                  <p >user@gmail.com</p>
+                  <br/>
+                  <!-- <p class="mb-2 pb-1">Senior Journalist</p> -->
+                  <div class="d-flex justify-content-start rounded-3 p-2 mb-2 bg-body-tertiary">
+                    <div>
+                      <p class="small text-muted mb-1">Address</p>
+                      <p class="mb-0">Istanbul</p>
+    
+                    </div>
+                 
+                    <br/>
+                </div>
+                <a href="{% url 'logout' %}" class="btn btn-outline-success"  >
+                  <span >
+                    Logout
+                  </span>
+                  </a>
+               
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <div class="d-flex pt-1">
+      <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-danger me-1 " style="position: fixed; bottom: 0; right: 0; margin: 10px;">Delete account</button>
+      
+      
+    </div>
+  
+    </div>
   </body>
-</html>
+  </html>
+
+
+

@@ -63,7 +63,3 @@ def checkout(request):
 
 def BookView(request):
     return render(request, "app/book.html")
-
-
-def ProfileView(request):
-    return render(request, "app/Profile.html")
