@@ -9,8 +9,15 @@ from . import models
 # Create your views here.
 def store(request):
     queryset = models.Book.objects.all()
+    numbers = 4
+    count = queryset.count()
+    print("COUNT : ", count)
 
-    return render(request, "app/store.html", context={"books": queryset})
+    return render(
+        request,
+        "app/store.html",
+        context={"books": queryset, "numbers": range(numbers)},
+    )
 
 
 def registerUser(request):
@@ -63,3 +70,7 @@ def checkout(request):
 
 def BookView(request):
     return render(request, "app/book.html")
+
+
+def testCart(request):
+    return render(request, "app/testcart.html")

@@ -1,12 +1,37 @@
 {% extends 'app/home.html' %}
+{% load static %}
+<link rel="stylesheet" href="/e-commerce/bookstore/static/css/app.css">
 {% block content %}
 
 
-<a  class="btn btn-outline-dark" style="padding: 10px; margin: 10px;" href="{% url 'store' %}">&#x2190; Continue Shopping</a>
+<a  class="btn btn-outline-dark" style="padding: 10px; margin: 10px;" href="{% url 'store' %}"><i class="fa-solid fa-arrow-left"></i></a>
+<style>
+   
+  .cart-row{
+  display: flex;
+          align-items: flex-stretch;
+          padding-bottom: 10px;
+          margin-bottom: 10px;
+          border-bottom: 1px solid #ececec;
+          padding: 10px;
+} 
+.box-element{
+  box-shadow:hsl(0, 0%, 80%) 0 0 16px;
+    background-color: #fff;
+    border-radius: 9px;
+    padding: 10px;
+    
+    margin: 10px;
+  
+  }
 
+
+  </style>
 <div class="row">
-    <div class="col-lg-12" style="padding: 10px;">
+    <div class="col-lg-12">
         <div class="box-element">
+
+            <!-- <a  class="btn btn-outline-dark" href="{% url 'store' %}">&#x2190; Continue Shopping</a> -->
 
             <br>
             <br>
@@ -15,32 +40,44 @@
                     <th><h5>Items: <strong>{{order.get_cart_items}}</strong></h5></th>
                     <th><h5>Total:<strong> ${{order.get_cart_total|floatformat:2}}</strong></h5></th>
                     <th>
-                        <a  style="float:right; margin:5px;" class="btn btn-success" href="{% url 'checkout' %}">Checkout</a>
+                        <a  style="float:right; margin:5px; background-color: #153448;" class="btn btn-dark" href="{% url 'checkout' %}">Checkout</a>
                     </th>
                 </tr>
             </table>
 
         </div>
-        <div class="box-element" >
-            <div class="cart-row" style="display: flex;
-            align-items: flex-stretch;
-            padding-bottom: 10px;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #ececec;
-            padding: 10px;">
-                <div style="flex:2;"></div>
+
+        <br>
+        <div class="box-element">
+            <div class="cart-row">
+                <div style="flex:2"></div>
                 <div style="flex:2"><strong>Item</strong></div>
                 <div style="flex:1"><strong>Price</strong></div>
                 <div style="flex:1"><strong>Quantity</strong></div>
                 <div style="flex:1"><strong>Total</strong></div>
             </div>
-           
+            {% for item in items %}
+            <div class="cart-row">
+                <div style="flex:2"><img class="row-image" src="{{item.product.imageURL}}"></div>
+                <div style="flex:2"><p></p></div>
+                <div style="flex:1"><p></p></div>
+                <div style="flex:1">
+                    <p class="quantity"></p>
+                    <div class="quantity">
+                        <img data-product="{{item.product.id}}" data-action="add" class="chg-quantity update-cart" src="{% static  'images/arrow-up.png' %}">
+                
+                        <img data-product="{{item.product.id}}" data-action="remove" class="chg-quantity update-cart" src="{% static  'images/arrow-down.png' %}">
+                    </div>
+                </div>
+                <div style="flex:1"><p></p></div>
+            </div>
+            {% endfor %}
         </div>
     </div>
-        </div>
+</div>
+<div style="height: 100px; width: auto; background-color: #222831; margin-top: 20px;">
+
+</div>
 
 
-<a href="{% url 'checkout' %}">
-    checkout page
-</a>
 {% endblock %}

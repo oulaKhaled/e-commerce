@@ -1,3 +1,8 @@
+
+body{
+  background-color: #DED0B6;
+}
+
 .auth-form{
     display: inline-block;
   margin-left: auto;
@@ -16,7 +21,7 @@ width: auto;
 }
 
 .navbar{
-  background-color: #BACD92;
+  background-color: #3C5B6F;
 }
 
 .input {
@@ -56,4 +61,7 @@ width: auto;
 .cart-row{
 	
 
+}
+nav{
+ background-color: #3C5B6F;
 }
