@@ -2,6 +2,10 @@
 body{
   background-color: #DED0B6;
 }
+h1,h2,h3,h5{
+  font-family: Playfair Display, serif;
+  font-weight: 700;
+}
 
 .auth-form{
     display: inline-block;
@@ -62,6 +66,56 @@ width: auto;
 	
 
 }
-nav{
- background-color: #3C5B6F;
+.navbar{
+ background-color: #153448;
+}
+
+body{
+ background-color: #F5EFE6;
+ 
+ /* background-color: red; */
+}
+.info_section{
+  margin-bottom: 20px;
+   height: 300px; 
+  background-color:  #153448;
+  height: auto;
+}
+#new{
+  margin: 120px;
+ 
+}
+#Home{
+  background-color: #F5EFE6;
+}
+#box{
+  width:300px; border-radius: 9px; background-color:  #EADBC8;
+}
+   
+#cart-row{
+  display: flex;
+          align-items: flex-stretch;
+          padding-bottom: 10px;
+          margin-bottom: 10px;
+          border-bottom: 1px solid #ececec;
+          padding: 10px;
+} 
+#box-element{
+  box-shadow:hsl(0, 0%, 80%) 0 0 16px;
+    background-color: #fff;
+    border-radius: 9px;
+    padding: 10px;
+    
+    margin: 10px;
+
+  }
+#main{
+  background-color:#F5EFE6 ;
+
+}
+#input-form{
+  margin: 10px;
+}
+.nav-link{
+  color: #EAEAEA;
 }

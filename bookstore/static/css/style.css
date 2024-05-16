@@ -36,6 +36,7 @@ body {
   margin-right: 45px;
   padding-left: 15px;
   padding-right: 15px;
+ 
 }
 
 .heading_container {
@@ -222,7 +223,11 @@ a:focus {
       -ms-flex-align: center;
           align-items: center;
   position: relative;
-  background-color: #f9fafa;
+  /* background-color: #f9fafa;
+   */
+
+    background-color: #F5EFE6; 
+
 }
 
 .slider_section .row {
@@ -656,7 +661,7 @@ a:focus {
 }
 
 .info_section {
-  background-color: #191e1f;
+  background-color: #153448;
   color: #ffffff;
   padding-top: 45px;
   padding-bottom: 45px;

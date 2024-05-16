@@ -4,30 +4,13 @@
 {% if user.is_authenticated %}
 {% csrf_token %}
 {% load static%}
-<link rel="stylesheet" href="{% static 'css/app.css' %}">
-<style>
-      .box-element{
-	box-shadow:hsl(0, 0%, 80%) 0 0 16px;
-	background-color: #fff;
-	border-radius: 4px;
-	padding: 10px;
-}
+<link rel="stylesheet" type="text/css" href="{% static 'css/app.css' %}">
 
-
-
-
-
-
-
-
-
-
-</style>
 <div class="row" style="padding: 5px;">
     <h3 style="margin: 5px;">user information</h3>
 
     <div class="col-lg-6"  >
-        <div class="box-element" id="form-wrapper" >
+        <div class="box-element" id="box-element" >
             <form id="form2"   >
                 <div id="user-info" style="margin: 5px;" >
                     <div class="form-field"  style="width:250px;
@@ -49,27 +32,27 @@
                     <div class="form-field"  style="width:250px;
                     display: inline-block;
                     padding: 5px;">
-                        <input class="form-control" type="text" name="address" placeholder="Address.." style="margin: 10px;">
+                        <input class="form-control" id="input-form" type="text" name="address" placeholder="Address.." >
                     </div>
                     <div class="form-field"  style="width:250px;
                     display: inline-block;
                     padding: 5px;">
-                        <input class="form-control"   type="text" name="city" placeholder="City.." style="margin: 10px;">
+                        <input class="form-control"   id="input-form"   type="text" name="city" placeholder="City.." >
                     </div>
                     <div class="form-field" style="width:250px;
                     display: inline-block;
                     padding: 5px;">
-                        <input class="form-control" type="text" name="state" placeholder="State.." style="margin: 10px;">
+                        <input class="form-control"   id="input-form"  type="text" name="state" placeholder="State.." >
                     </div>
                     <div class="form-field" style="width:250px;
                     display: inline-block;
                     padding: 5px;">
-                        <input class="form-control" type="text" name="zipcode" placeholder="Zip code.." style="margin: 10px;">
+                        <input class="form-control"   id="input-form"  type="text" name="zipcode" placeholder="Zip code.." >
                     </div>
                     <div class="form-field" style="width:250px;
                     display: inline-block;
                     padding: 5px;">
-                        <input class="form-control" type="text" name="country" placeholder="Zip code.." style="margin: 10px;">
+                        <input class="form-control"  id="input-form"  type="text" name="country" placeholder="Zip code..">
                     </div>
                 </div>
 
@@ -84,7 +67,7 @@
 	</div>
     
     <div class="col-lg-6">
-        <div class="box-element">
+        <div class="box-element" id="box-element">
             <a  class="btn btn-outline-dark" href="{% url 'cart' %}">&#x2190; Back to Cart</a>
             <hr>
             <h3>Order Summary</h3>

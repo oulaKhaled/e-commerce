@@ -9,14 +9,11 @@ from . import models
 # Create your views here.
 def store(request):
     queryset = models.Book.objects.all()
-    numbers = 4
-    count = queryset.count()
-    print("COUNT : ", count)
 
     return render(
         request,
         "app/store.html",
-        context={"books": queryset, "numbers": range(numbers)},
+        context={"books": queryset},
     )
 
 
@@ -60,6 +57,12 @@ def logoutUser(request):
     return redirect("/app/auth")
 
 
+# def AddtoCart(request, book_id):
+#     book = models.Book.objects.get(id=book_id)
+#     print("BOOK : ", book.title)
+#     return render(request, "app/cart.html")
+
+
 def cart(request):
     return render(request, "app/cart.html")
 
@@ -70,7 +73,3 @@ def checkout(request):
 
 def BookView(request):
     return render(request, "app/book.html")
-
-
-def testCart(request):
-    return render(request, "app/testcart.html")

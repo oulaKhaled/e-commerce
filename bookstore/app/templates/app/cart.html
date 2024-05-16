@@ -1,35 +1,17 @@
 {% extends 'app/home.html' %}
 {% load static %}
-<link rel="stylesheet" href="/e-commerce/bookstore/static/css/app.css">
-{% block content %}
+<link rel="stylesheet"  type="text/css" href="{% static 'css/app.css' %}">
 
+
+
+{% block content %}
+<div id="main">
 
 <a  class="btn btn-outline-dark" style="padding: 10px; margin: 10px;" href="{% url 'store' %}"><i class="fa-solid fa-arrow-left"></i></a>
-<style>
-   
-  .cart-row{
-  display: flex;
-          align-items: flex-stretch;
-          padding-bottom: 10px;
-          margin-bottom: 10px;
-          border-bottom: 1px solid #ececec;
-          padding: 10px;
-} 
-.box-element{
-  box-shadow:hsl(0, 0%, 80%) 0 0 16px;
-    background-color: #fff;
-    border-radius: 9px;
-    padding: 10px;
-    
-    margin: 10px;
-  
-  }
 
-
-  </style>
-<div class="row">
+<div class="row" >
     <div class="col-lg-12">
-        <div class="box-element">
+        <div class="box-element" id="box-element">
 
             <!-- <a  class="btn btn-outline-dark" href="{% url 'store' %}">&#x2190; Continue Shopping</a> -->
 
@@ -48,15 +30,15 @@
         </div>
 
         <br>
-        <div class="box-element">
-            <div class="cart-row">
+        <div class="box-element" id="box-element">
+            <div class="cart-row" id="cart-row">
                 <div style="flex:2"></div>
                 <div style="flex:2"><strong>Item</strong></div>
                 <div style="flex:1"><strong>Price</strong></div>
                 <div style="flex:1"><strong>Quantity</strong></div>
                 <div style="flex:1"><strong>Total</strong></div>
             </div>
-            {% for item in items %}
+         <!-- for loop -->
             <div class="cart-row">
                 <div style="flex:2"><img class="row-image" src="{{item.product.imageURL}}"></div>
                 <div style="flex:2"><p></p></div>
@@ -71,13 +53,13 @@
                 </div>
                 <div style="flex:1"><p></p></div>
             </div>
-            {% endfor %}
+          
         </div>
     </div>
 </div>
-<div style="height: 100px; width: auto; background-color: #222831; margin-top: 20px;">
+<!-- <div style="height: 100px; width: auto; background-color: #222831; margin-top: 20px;">
 
+</div> -->
 </div>
-
 
 {% endblock %}
