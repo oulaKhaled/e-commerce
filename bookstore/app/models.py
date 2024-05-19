@@ -24,15 +24,32 @@ class Order(models.Model):
     def __str__(self):
         return str(self.id)
 
+    @property
+    def get_cart_total(self):
+        orderbooks = self.orderbook_set.all()
+        total = sum([book.get_total for book in orderbooks])
+        return total
+
+    @property
+    def get_cart_items(self):
+        orderbooks = self.orderbook_set.all()
+        total = sum([book.quantity for book in orderbooks])
+        return total
+
 
 class OrderBook(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    quantity = models.IntegerField(null=False)
+    quantity = models.IntegerField(null=False, default=1)
     added_date = models.DateField(default=date.today, null=False)
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return self.book.title
+    @property
+    def get_total(self):
+        total = self.book.price * self.quantity
+        return total
+
+    def __str__(self) -> str:
+        return str(self.id)
 
 
 class UserProfile(models.Model):
@@ -52,7 +69,7 @@ class Shippininformation(models.Model):
     zipcode = models.CharField(max_length=50, null=False)
 
     def __str__(self):
-        return self.id
+        return str(self.id)
 
 
 class Rating(models.Model):
@@ -67,4 +84,4 @@ class Rating(models.Model):
         index_together = ("user", "book")
 
     def __str__(self):
-        return self.stars
+        return str(self.stars)
