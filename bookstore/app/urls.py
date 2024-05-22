@@ -9,18 +9,23 @@ from .views import (
     OrderView,
     RatingView,
     ShippininformationView,
+    UserRegisterView,
+    UserLoginView,
 )
 
 router = routers.DefaultRouter()
-router.register(r"users", UserView)
-router.register(r"userProfile", UserProfileView)
-router.register(r"book", BookView)
-router.register(r"orderBook", OrderBookView)
-router.register(r"orders", OrderView)
-router.register(r"rating", RatingView)
-router.register(r"shippinginformation", ShippininformationView)
-
+router.register(r"userProfile", UserProfileView, basename="userProfile")
+router.register(r"book", BookView, basename="book")
+router.register(r"orderBook", OrderBookView, basename="orderBook")
+router.register(r"orders", OrderView, basename="orders")
+router.register(r"rating", RatingView, basename="rating")
+router.register(
+    r"shippinginformation", ShippininformationView, basename="shippinginformation"
+)
 
 urlpatterns = [
     path("", include(router.urls)),
+    path("users/", UserView.as_view(), name="users"),
+    path("register/", UserRegisterView.as_view(), name="register"),
+    path("login/", UserLoginView.as_view(), name="login"),
 ]

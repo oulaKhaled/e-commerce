@@ -14,12 +14,65 @@ from .serializers import (
     BookSerializer,
     RatingSerializer,
     ShippininformationSerializer,
+    UserRegisterSerializer,
+    UserLoginSerializer,
 )
+from django.core.exceptions import ValidationError
 
 
-class UserView(viewsets.ModelViewSet):
-    queryset = models.User.objects.all()
-    serializer_class = UserSerializer
+from rest_framework import permissions, status
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.authentication import SessionAuthentication
+
+
+class UserRegisterView(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, requset):
+        serializer = UserRegisterSerializer(data=requset.data)
+        if serializer.is_valid(raise_exception=True):
+            user = serializer.create(serializer.validated_data)
+            if user:
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+def validate_username(data):
+    username = data["username"].strip()
+    if not username:
+        raise ValidationError("choose another username")
+    return True
+
+
+def validate_password(data):
+    password = data["password"].strip()
+    if not password:
+        raise ValidationError("a password is needed")
+    return True
+
+
+class UserLoginView(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request):
+        data = request.data
+        assert validate_username(data)
+        assert validate_password(data)
+        serializer = UserLoginSerializer(data=data)
+        if serializer.is_valid(raise_exception=True):
+            user = serializer.check_user(data)
+            login(request, user)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class UserView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (SessionAuthentication,)
+
+    def get(self, requset):
+        serializer = UserSerializer(requset.user)
+        return Response({"user": serializer.data}, status=status.HTTP_202_ACCEPTED)
 
 
 class BookView(viewsets.ModelViewSet):

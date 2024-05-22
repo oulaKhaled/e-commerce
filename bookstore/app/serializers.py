@@ -1,13 +1,41 @@
 from django.contrib.auth.models import User
 from rest_framework import routers, serializers, viewsets
-
+from django.contrib.auth import get_user_model, authenticate
 from .models import Book, UserProfile, Order, OrderBook, Shippininformation, Rating
+from django.core.exceptions import ValidationError
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = "__all__"
+
+
+class UserRegisterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = "__all__"
+
+    def create(self, validated_data):
+        user_obj = User.objects.create_user(
+            username=validated_data["username"],
+            email=validated_data["email"],
+            password=validated_data["password"],
+        )
+        user_obj.username = validated_data["username"]
+
+        user_obj.save()
+        return user_obj
+
+
+class UserLoginSerializer(serializers.Serializer):
+    def check_user(self, clean_data):
+        user = authenticate(
+            username=clean_data["username"], password=clean_data["password"]
+        )
+        if not user:
+            raise ValidationError("user not found")
+        return user
 
 
 class BookSerializer(serializers.ModelSerializer):
