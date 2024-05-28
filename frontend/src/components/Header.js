@@ -39,7 +39,7 @@ function Header(){
             </Col>
            
             <Col xs="auto">
-         <Button  type="submit " variant="outline-light" onClick={()=>navigate("login/")}>Login</Button>
+         <Button  type="submit " variant="outline-light" onClick={()=>navigate("/auth")}>Login</Button>
          </Col>
          
          

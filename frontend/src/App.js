@@ -2,9 +2,9 @@ import React from "react";
 import { Route,Routes } from "react-router-dom";
 
 import Home from "./components/Home";
-import Login from "./components/LoginPage";
-import Register from "./components/Register";
+import AuthPage from "./components/authPage";
 import Cart from "./components/Cart";
+import Checkout from "./components/checkout";
 function App() {
   
   return (
@@ -12,9 +12,10 @@ function App() {
       
    <Routes>
     <Route path="/" element={<Home/>}/>
-    <Route path="/login" element={<Login/>}/>
-    <Route path="/register" element={<Register/>}/>
+    <Route path="/auth" element={<AuthPage/>}/>
+   
     <Route path="/cart" element={<Cart/>}/>
+    <Route path="/checkout" element={<Checkout/>}/>
    
    </Routes>
  

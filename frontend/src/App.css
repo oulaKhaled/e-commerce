@@ -5,6 +5,52 @@
 body{
   background-color: #EADBC8;
 }
+
+.mycart{
+  height:450px;
+  width:1000px;
+  background-color:#ffff;
+    margin:10px;
+    position:relative;
+     left:250px;
+ top:70px
+}
+
+
+.div-cart{
+  height:auto;
+  width:1330px;
+  background-color:#ffff;
+    margin:40px;
+    position:relative;
+    left: 50px;
+  
+}
+
+
+
+.mycart-title{
+  font-family:"Oswald", sans-serif;
+   color:#607274;
+    margin:15px
+}
+hr{
+  height:5px;
+ 
+  background-color: #000000;
+  height: 5px;
+ 
+  
+  color:#000000;
+  
+  border: none,
+}
+
+.mycart-p{
+  margin-bottom:0 ;
+  font-weight:bolder;
+}
+
 .App {
   text-align: center;
 

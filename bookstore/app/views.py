@@ -34,7 +34,7 @@ class UserRegisterView(APIView):
         if serializer.is_valid(raise_exception=True):
             user = serializer.create(serializer.validated_data)
             if user:
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
+                return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -75,31 +75,52 @@ class UserView(APIView):
         return Response({"user": serializer.data}, status=status.HTTP_202_ACCEPTED)
 
 
+class UserLogout(APIView):
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = (SessionAuthentication,)
+
+    def post(self, request):
+        logout(request)
+        return Response(status=status.HTTP_200_OK)
+
+
 class BookView(viewsets.ModelViewSet):
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (SessionAuthentication,)
     queryset = models.Book.objects.all()
     serializer_class = BookSerializer
 
 
 class RatingView(viewsets.ModelViewSet):
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (SessionAuthentication,)
     queryset = models.Rating.objects.all()
     serializer_class = RatingSerializer
 
 
 class ShippininformationView(viewsets.ModelViewSet):
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (SessionAuthentication,)
     queryset = models.Shippininformation.objects.all()
     serializer_class = ShippininformationSerializer
 
 
 class OrderView(viewsets.ModelViewSet):
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (SessionAuthentication,)
     queryset = models.Order.objects.all()
     serializer_class = OrderSerializer
 
 
 class OrderBookView(viewsets.ModelViewSet):
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (SessionAuthentication,)
     queryset = models.OrderBook.objects.all()
     serializer_class = OrderBookSerializer
 
 
 class UserProfileView(viewsets.ModelViewSet):
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (SessionAuthentication,)
     queryset = models.UserProfile.objects.all()
     serializer_class = UserProfileSerializer
