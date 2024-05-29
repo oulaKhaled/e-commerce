@@ -20,6 +20,7 @@ class Order(models.Model):
     user = models.ForeignKey(User, null=False, on_delete=models.CASCADE)
     order_date = models.DateField(default=date.today, null=False)
     total_amount = models.IntegerField(null=False)
+    complete = models.BooleanField(null=False, default=False, blank=False)
 
     def __str__(self):
         return str(self.id)

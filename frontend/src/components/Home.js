@@ -30,9 +30,6 @@ return (<div>
 
     <br/>
     <h1 style={{paddingBottom:"40px",fontFamily:"Bebas Neue",paddingLeft:"10px"}}> Welcome to Bookstore</h1>
-    <Button variant="light"> Click me to see Books</Button>
- 
-    
     <Carousel data-bs-theme="dark" style={{margin:"10px"}}>
        <Carousel.Item>
       <Row>
@@ -178,12 +175,9 @@ return (<div>
      </Carousel>
  {/* Book Section */}
  
- <div style={{height:"450px", width:"auto", backgroundColor:"#B7B7B7",margin:"50px",left:"250px",
+ <div style={{height:"auto", width:"auto", backgroundColor:"#B7B7B7",margin:"50px",left:"250px",
         top:"70px"}}>
- <h1 style={{fontFamily:"Oswald, sans-serif",margin:"10px"}}>
  
- Books
- </h1>
 <Books/>
 
 

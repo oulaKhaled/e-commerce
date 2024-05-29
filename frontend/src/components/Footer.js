@@ -9,14 +9,22 @@ import { FaPhone } from "react-icons/fa6";
 function Footer(){
     return(
       
-    <footer className="mt-auto py-5 " style={{backgroundColor:"#153448", }}>
-   
+    <footer className="mt-auto py-5 " style={{backgroundColor:"#153448",  position: "relative",
+  width:"100%",
+  height:"auto",
+
+  bottom:"0"
+ 
+
+  
+  }}>
+
      <Row style={{justifyContent:"center",paddingLeft:"150px"}}>
-            <Col style={{margin:"10px",color:"#ffff"}}><FaInstagram size={40} /> </Col>
-            <Col  style={{margin:"10px",color:"#ffff"}}><FaFacebook size={40} /></Col>
-            <Col  style={{margin:"10px",color:"#ffff"}}><FaSquareXTwitter size={40} /></Col>
-            <Col  style={{margin:"10px",color:"#ffff"}}><MdEmail  size={40}/></Col>
-            <Col  style={{margin:"10px",color:"#ffff"}}><FaPhone  size={40}/></Col>
+            <Col style={{color:"#ffff"}}><FaInstagram size={30} /> </Col>
+            <Col  style={{color:"#ffff"}}><FaFacebook size={30} /></Col>
+            <Col  style={{color:"#ffff"}}><FaSquareXTwitter size={30} /></Col>
+            <Col  style={{color:"#ffff"}}><MdEmail  size={30}/></Col>
+            <Col  style={{color:"#ffff"}}><FaPhone  size={30}/></Col>
    </Row>
     <div className="container d-flex justify-content-center">
  
