@@ -49,6 +49,10 @@ class OrderBook(models.Model):
         total = self.book.price * self.quantity
         return total
 
+    @property
+    def get_title(self):
+        return self.book.title
+
     def __str__(self) -> str:
         return str(self.id)
 

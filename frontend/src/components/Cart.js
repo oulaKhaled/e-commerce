@@ -9,21 +9,37 @@ import { useNavigate } from "react-router-dom";
 import Footer from "./Footer";
 import axios from "axios";
 function Cart(){
+
+  axios.defaults.xsrfCookieName = 'csrftoken';
+  axios.defaults.xsrfHeaderName = 'X-CSRFToken';
+  axios.defaults.withCredentials = true;
+
     const navigate=useNavigate();
-const [orderBook,setOrderBook]=useState("");
-const getOrder= async()=>{
-axios.get("http://localhost:8000/app/orderBook/")
-.then(resp=>console.log(resp))
-.catch(error=> console.log(error));
+const [orderBook,setOrderBook]=useState([]);
+const [order,setOrder]=useState([]);
 
 
-    }
 
+const GetOrder = async ()=>{
+  try{
+    let response =await axios.get("http://localhost:8000/app/orders/order_by_user/");
+    setOrderBook(response.data[0])
+    setOrder(response.data[1])
+    console.log("response form cart component : ",response.data);
+
+   
+  }
+  catch(error){
+    console.log(error);
+  }
+  
+};
 
 useEffect(()=>{
 
-console.log("after OrderdBook Function : ",orderBook);
-},[getOrder]);
+// console.log("after OrderdBook Function : ",orderBook);
+GetOrder();
+},[]);
 
 
 
@@ -32,12 +48,12 @@ console.log("after OrderdBook Function : ",orderBook);
         <Header/>
         <div className="div-cart" >
 <h1>This is Cart Page</h1>
-<Button onClick={getOrder}>Get Ordered Books</Button>
+
 <Table striped bordered hover variant="light">
       <thead>
         <tr>
-          <th><h5>Items : </h5></th>
-          <th><h5>Total : </h5></th> 
+          <th><h5>Items : {order && order.get_cart_items}</h5></th>
+          <th><h5>Total :  {order && order.get_cart_total}</h5></th> 
         </tr>
         <Button onClick={()=>{ navigate("/checkout")}}> Check out</Button>
       
@@ -55,10 +71,10 @@ console.log("after OrderdBook Function : ",orderBook);
 
 
   <Row>
-  <Col>{book.book}</Col>
+  <Col>{book.get_title}</Col>
 <Col>{book.quantity}</Col>
 <Col>{book.added_date}</Col>
-
+<Col>{book.get_total}</Col>
 
     </Row>
      

@@ -65,10 +65,17 @@ class RatingSerializer(serializers.ModelSerializer):
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
-        fields = "__all__"
+        fields = [
+            "user",
+            "order_date",
+            "total_amount",
+            "complete",
+            "get_cart_total",
+            "get_cart_items",
+        ]
 
 
 class OrderBookSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderBook
-        fields = "__all__"
+        fields = ["book", "quantity", "added_date", "order", "get_total", "get_title"]

@@ -22,11 +22,13 @@ console.log("Printed Books : ",books);
 
 };
 
+;
 
 
 
 useEffect(()=>{
     GetBook();
+    
 },[]);
 
     return(

@@ -111,6 +111,30 @@ class OrderView(viewsets.ModelViewSet):
     queryset = models.Order.objects.all()
     serializer_class = OrderSerializer
 
+    @action(methods=["GET"], detail=False)
+    def order_by_user(self, request):
+        user = models.User.objects.get(id=request.user.id)
+        order = models.Order.objects.get(user=user)
+        if order.complete == False:
+            order_serializer = OrderSerializer(order)
+            order_book = models.OrderBook.objects.filter(order=order)
+            # print("order_serializer : ", order_serializer.data)
+            print("order_book : ", order_book)
+            if order_book:
+                serializer = OrderBookSerializer(order_book, many=True)
+                return Response(
+                    [serializer.data, order_serializer.data], status=status.HTTP_200_OK
+                )
+            else:
+                return Response(
+                    {"message": "no Ordered Books yet"},
+                    status=status.HTTP_404_NOT_FOUND,
+                )
+        else:
+            return Response(
+                {"message": "no Orders yet"}, status=status.HTTP_404_NOT_FOUND
+            )
+
 
 class OrderBookView(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAuthenticated,)
