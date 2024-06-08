@@ -8,6 +8,10 @@ import Button from "react-bootstrap/esm/Button";
 import { useNavigate } from "react-router-dom";
 import Footer from "./Footer";
 import axios from "axios";
+import { createContext } from "react";
+
+export const OrderContext=createContext("");
+
 function Cart(){
 
   axios.defaults.xsrfCookieName = 'csrftoken';
@@ -42,9 +46,17 @@ GetOrder();
 },[]);
 
 
+useEffect(()=>{
+
+  console.log("ORDER : ",order);
+},[GetOrder])
 
     return(
+      <OrderContext.Provider value={order}>
         <>
+
+
+
         <Header/>
         <div className="div-cart" >
 <h1>This is Cart Page</h1>
@@ -85,7 +97,7 @@ GetOrder();
 
 
         </>
-
+</OrderContext.Provider>
     );
 }
 

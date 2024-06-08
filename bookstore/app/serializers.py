@@ -41,7 +41,17 @@ class UserLoginSerializer(serializers.Serializer):
 class BookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
-        fields = "__all__"
+        fields = [
+            "id",
+            "title",
+            "author",
+            "price",
+            "quantity",
+            "image",
+            "category",
+            "no_of_ratings",
+            "avg_rating",
+        ]
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
@@ -59,7 +69,7 @@ class ShippininformationSerializer(serializers.ModelSerializer):
 class RatingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rating
-        fields = "__all__"
+        fields = ["user", "book", "stars"]
 
 
 class OrderSerializer(serializers.ModelSerializer):

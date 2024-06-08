@@ -85,10 +85,34 @@ class UserLogout(APIView):
 
 
 class BookView(viewsets.ModelViewSet):
-    permission_classes = (permissions.IsAuthenticated,)
+    # permission_classes = (permissions.IsAuthenticated,)
     authentication_classes = (SessionAuthentication,)
     queryset = models.Book.objects.all()
     serializer_class = BookSerializer
+
+    def rate_movie(self, request, pk=None):
+        if "stars" in request.data:
+            movie = models.Book.objects.get(id=pk)
+            stars = request.data["stars"]
+            user = request.user  # token is connected to this user
+            print("User:  ", user)
+            try:
+                rating = models.Rating.objects.get(user=user.id, movie=movie.id)
+                rating.stars = stars
+                rating.save()
+                serializer = RatingSerializer(rating, many=False)
+                response = {"massege": "Rating updated", "result": serializer.data}
+                return Response(response, status=status.HTTP_200_OK)
+            except:
+                rating = models.Rating.objects.create(
+                    user=user, movie=movie, stars=stars
+                )
+                serializer = RatingSerializer(rating, many=False)
+                response = {"massege": "Rating created", "result": serializer.data}
+                return Response(response, status=status.HTTP_200_OK)
+        else:
+            response = {"massege": "you need to provide stars"}
+            return Response(response, status=status.HTTP_400_BAD_REQUEST)
 
 
 class RatingView(viewsets.ModelViewSet):

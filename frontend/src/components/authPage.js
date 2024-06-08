@@ -11,7 +11,7 @@ const navigate =useNavigate()
 const [registrationToggle, setRegistrationToggle] = useState(true);
 const [username,setusername]=useState("");
 const [password,setPassword]=useState("");
-const [currentUser,setCurrentUser]=useState(false)
+
 const[email,setEmail]=useState("");
 
 
@@ -25,21 +25,7 @@ function update_form_btn(e) {
     }
   }
 
-const check_auth=(e)=>{
-    e.preventDefault();
-    axios.get("http://localhost:8000/app/users/")
-    .then(response=>{
-        if(response.status===202){
-            setCurrentUser(true);
-        }
-        else{
-        setCurrentUser(false);
-        }
-    })
-    .catch(error=>{
-        console.log("Something went wrong");
-    })
-}
+
 
 
   const submitLogin = (e) => {

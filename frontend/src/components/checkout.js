@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import './../../src/App.css';
@@ -9,9 +9,13 @@ import Form from 'react-bootstrap/Form';
 import Button from "react-bootstrap/esm/Button";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { OrderContext } from "./Cart";
 function Checkout(){
  const navigate =useNavigate();
- 
+const {order}=useContext(OrderContext);
+
+
     return(
         <>
              <Header/>
@@ -72,8 +76,8 @@ function Checkout(){
                 </Row>
                 {/**after display all rows */}
                 <hr/>
-                <h5>Items:   order.get_cart_items</h5>
-            <h5>Total:   order.get_cart_total|floatformat:2</h5>
+                <h5>Items:  {order.get_cart_items} </h5>
+            <h5>Total:   {order.get_cart_total}</h5>
              </div>
 
                 </Col>

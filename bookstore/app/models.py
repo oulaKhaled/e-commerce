@@ -2,6 +2,7 @@ from django.db import models
 from datetime import date
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db.models import Avg
 
 
 class Book(models.Model):
@@ -11,6 +12,16 @@ class Book(models.Model):
     quantity = models.IntegerField(null=False, blank=False)
     image = models.ImageField(upload_to="images/", blank=True, null=True)
     category = models.CharField(max_length=100, null=False, blank=False)
+
+    def no_of_ratings(self):
+        return Rating.objects.filter(book=self.id).count()
+
+    def avg_rating(self):
+        ratings = Rating.objects.filter(book=self.id)
+        if ratings.exists():
+            average = ratings.aggregate(Avg("stars"))["stars__avg"]
+            return round(average, 2)  # Round to 2 decimal places
+        return 0  # Return 0 if there are no ratings
 
     def __str__(self):
         return self.title

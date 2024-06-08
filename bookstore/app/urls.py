@@ -12,6 +12,9 @@ from .views import (
     UserRegisterView,
     UserLoginView,
 )
+from bookstore import settings
+from django.conf.urls.static import static
+
 
 router = routers.DefaultRouter()
 router.register(r"userProfile", UserProfileView, basename="userProfile")
@@ -29,4 +32,4 @@ urlpatterns = [
     path("register/", UserRegisterView.as_view(), name="register"),
     path("login/", UserLoginView.as_view(), name="login"),
     path("logout/", UserLoginView.as_view(), name="logout"),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
