@@ -5,6 +5,7 @@ import './../../src/App.css';
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from 'axios';
+import Button from "react-bootstrap/esm/Button";
 function AuthPage(){
 axios.defaults.withCredentials = true;
 const navigate =useNavigate()
@@ -96,7 +97,7 @@ setusername(evt.target.value)
 <p className="mycart-p">password</p>
 <input  style={{width:"300px"}} type="password"  onChange={(evt)=>{
 setPassword(evt.target.value)}}/>
-<button style={{margin:"10px"}} onClick={submitLogin}  >Login</button>
+<Button style={{margin:"10px"}} variant="outline-secondary" onClick={submitLogin}  >Login</Button>
 
 <p style={{fontWeight:"bolder"}}>Don't have an acoount ?<a href="/register" id="form_btn" onClick={update_form_btn}>Register here</a> </p>
 </div>
@@ -112,9 +113,9 @@ setPassword(evt.target.value)}}/>
   <input  style={{width:"300px"}} type="email" onChange={(e)=>{setEmail(e.target.value)}}/>
   
   <p className="mycart-p">password</p>
-  <input  style={{width:"300px",fontWeight:"bolder"}} type="password"  onChange={(e)=>{setPassword(e.target.value)}}/>
+  <input  style={{width:"300px",fontWeight:"bolder"}} type="password" variant="outline-secondary"  onChange={(e)=>{setPassword(e.target.value)}}/>
   
-  <button style={{margin:"10px"}} onClick={submitRegisteration} >Register</button>
+  <Button style={{margin:"10px"}} onClick={submitRegisteration}  >Register</Button>
   <p style={{fontWeight:"bolder"}}>already have an acoount?<a href="/login" id="form_btn" onClick={update_form_btn}>Login here</a> </p>
   </div>
   </>

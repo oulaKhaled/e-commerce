@@ -3,6 +3,8 @@ from datetime import date
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db.models import Avg
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class Book(models.Model):
@@ -30,7 +32,7 @@ class Book(models.Model):
 class Order(models.Model):
     user = models.ForeignKey(User, null=False, on_delete=models.CASCADE)
     order_date = models.DateField(default=date.today, null=False)
-    total_amount = models.IntegerField(null=False)
+    total_amount = models.IntegerField(null=False, default=0)
     complete = models.BooleanField(null=False, default=False, blank=False)
 
     def __str__(self):
@@ -69,13 +71,20 @@ class OrderBook(models.Model):
 
 
 class UserProfile(models.Model):
-    user = models.ForeignKey(User, null=False, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, null=False, on_delete=models.CASCADE)
     username = models.CharField(null=False, max_length=100)
     email = models.EmailField(null=False)
     Address = models.CharField(max_length=300, null=False)
 
     def __str__(self):
         return self.username
+
+
+@receiver(post_save, sender=User)
+def create_profile(sender, instance, created, **kwargs):
+    if created:
+        UserProfile.objects.create(user=instance)
+        print("new uer profile is created")
 
 
 class Shippininformation(models.Model):

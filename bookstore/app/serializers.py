@@ -76,6 +76,7 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = [
+            "id",
             "user",
             "order_date",
             "total_amount",
@@ -88,4 +89,12 @@ class OrderSerializer(serializers.ModelSerializer):
 class OrderBookSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderBook
-        fields = ["book", "quantity", "added_date", "order", "get_total", "get_title"]
+        fields = [
+            "id",
+            "book",
+            "quantity",
+            "order",
+            "get_total",
+            "get_title",
+            "added_date",
+        ]

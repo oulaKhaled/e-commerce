@@ -11,6 +11,7 @@ from .views import (
     ShippininformationView,
     UserRegisterView,
     UserLoginView,
+    UserLogout,
 )
 from bookstore import settings
 from django.conf.urls.static import static
@@ -31,5 +32,5 @@ urlpatterns = [
     path("users/", UserView.as_view(), name="users"),
     path("register/", UserRegisterView.as_view(), name="register"),
     path("login/", UserLoginView.as_view(), name="login"),
-    path("logout/", UserLoginView.as_view(), name="logout"),
+    path("logout/", UserLogout.as_view(), name="logout"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

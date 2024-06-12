@@ -77,36 +77,42 @@ class UserView(APIView):
 
 class UserLogout(APIView):
     permission_classes = (permissions.AllowAny,)
-    authentication_classes = (SessionAuthentication,)
+    authentication_classes = ()
 
     def post(self, request):
-        logout(request)
-        return Response(status=status.HTTP_200_OK)
+        try:
+            logout(request)
+            return Response(status=status.HTTP_200_OK)
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class BookView(viewsets.ModelViewSet):
-    # permission_classes = (permissions.IsAuthenticated,)
-    authentication_classes = (SessionAuthentication,)
+    permission_classes = (permissions.AllowAny,)
+
+    # authentication_classes = (SessionAuthentication,)
+
     queryset = models.Book.objects.all()
     serializer_class = BookSerializer
 
-    def rate_movie(self, request, pk=None):
+    @action(detail=True, methods=["POST"])
+    def rate_book(self, request, pk=None):
         if "stars" in request.data:
-            movie = models.Book.objects.get(id=pk)
+            book = models.Book.objects.get(id=pk)
             stars = request.data["stars"]
             user = request.user  # token is connected to this user
+            print("user", request.user.id)
+            user = models.User.objects.get(id=user.id)
             print("User:  ", user)
             try:
-                rating = models.Rating.objects.get(user=user.id, movie=movie.id)
+                rating = models.Rating.objects.get(user=user, book=book.id)
                 rating.stars = stars
                 rating.save()
                 serializer = RatingSerializer(rating, many=False)
                 response = {"massege": "Rating updated", "result": serializer.data}
                 return Response(response, status=status.HTTP_200_OK)
             except:
-                rating = models.Rating.objects.create(
-                    user=user, movie=movie, stars=stars
-                )
+                rating = models.Rating.objects.create(user=user, book=book, stars=stars)
                 serializer = RatingSerializer(rating, many=False)
                 response = {"massege": "Rating created", "result": serializer.data}
                 return Response(response, status=status.HTTP_200_OK)
@@ -130,33 +136,42 @@ class ShippininformationView(viewsets.ModelViewSet):
 
 
 class OrderView(viewsets.ModelViewSet):
-    permission_classes = (permissions.IsAuthenticated,)
+    # permission_classes = (permissions.IsAuthenticated,)
     authentication_classes = (SessionAuthentication,)
     queryset = models.Order.objects.all()
     serializer_class = OrderSerializer
 
-    @action(methods=["GET"], detail=False)
+    @action(methods=["GET", "POST"], detail=False)
     def order_by_user(self, request):
         user = models.User.objects.get(id=request.user.id)
-        order = models.Order.objects.get(user=user)
-        if order.complete == False:
-            order_serializer = OrderSerializer(order)
-            order_book = models.OrderBook.objects.filter(order=order)
-            # print("order_serializer : ", order_serializer.data)
-            print("order_book : ", order_book)
-            if order_book:
-                serializer = OrderBookSerializer(order_book, many=True)
-                return Response(
-                    [serializer.data, order_serializer.data], status=status.HTTP_200_OK
-                )
-            else:
-                return Response(
-                    {"message": "no Ordered Books yet"},
-                    status=status.HTTP_404_NOT_FOUND,
-                )
-        else:
+        print("user from get order by user method ", user)
+        try:
+            order = models.Order.objects.get(complete=False, user=user)
+            print("I got order")
+            if order:
+                order_serializer = OrderSerializer(order)
+                print("I got order serializer")
+
+                order_book = models.OrderBook.objects.filter(order=order)
+                if order_book:
+                    serializer = OrderBookSerializer(order_book, many=True)
+                    return Response(
+                        [order_serializer.data, serializer.data],
+                        status=status.HTTP_200_OK,
+                    )
+                else:
+                    print("there is no order Book ")
+                    return Response(
+                        order_serializer.data,
+                        status=status.HTTP_202_ACCEPTED,
+                    )
+        except models.Order.DoesNotExist:
+            print("there is no order for this user")
+            new_order = models.Order.objects.create(user=user)
+            new_order.save()
             return Response(
-                {"message": "no Orders yet"}, status=status.HTTP_404_NOT_FOUND
+                {"message": "new order have been created"},
+                status=status.HTTP_201_CREATED,
             )
 
 
@@ -166,9 +181,48 @@ class OrderBookView(viewsets.ModelViewSet):
     queryset = models.OrderBook.objects.all()
     serializer_class = OrderBookSerializer
 
+    def create(self, request, *args, **kwargs):
+        mybook = request.data["book"]
+        Book = models.Book.objects.get(id=mybook)
+        if Book:
+            try:
+                getBook = models.OrderBook.objects.get(book=Book)
+                getBook.quantity += 1
+                getBook.save()
+                return Response(
+                    {"message": "just increase quantity"}, status=status.HTTP_200_OK
+                )
+            except models.OrderBook.DoesNotExist:
+                return super().create(request, *args, **kwargs)
+
+    def update(self, request, *args, **kwargs):
+        book = self.get_object()
+        if book.quantity > 1:
+            book.quantity -= 1
+            book.save()
+            return Response(
+                {"message": "just decrease quantity "}, status=status.HTTP_200_OK
+            )
+        else:
+            return super().destroy(self, request, *args, **kwargs)
+
 
 class UserProfileView(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAuthenticated,)
     authentication_classes = (SessionAuthentication,)
     queryset = models.UserProfile.objects.all()
     serializer_class = UserProfileSerializer
+
+    # customize get Method
+    @action(methods=["GET"], detail=False)
+    def get_user_profile(self, request):
+        user = models.User.objects.get(id=request.user.id)
+        profile = models.UserProfile.objects.get(user=user)
+        if profile:
+            serializer = UserProfileSerializer(profile)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(
+                {"message": "there is no profile for this user "},
+                status=status.HTTP_404_NOT_FOUND,
+            )

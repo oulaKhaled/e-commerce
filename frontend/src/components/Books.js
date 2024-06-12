@@ -15,42 +15,69 @@ import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from "react-router-dom";
 
 
-
-function Books(){
+function Books(props){
 const order=useContext(OrderContext);
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.withCredentials = true;
 
+// const [searchData,setSearchData]=useState(props.books);
 
-const [highlighted,setHighlighted]=useState(-1);
-
+const searchData=props.books
 const navigate=useNavigate();
-const handelMouse= high=> evt=>{
-  setHighlighted(high);
-  console.log(highlighted);
-}
+
 
 
 const [books,setBooks]=useState([]);
-
+const[filterdBooks,setFilterdBooks]=useState("");
 
 
 
 const GetBook = async ()=>{
 let response =await axios.get("http://localhost:8000/app/book/");
 console.log("BOOKS : ",response.data);
-setBooks(response.data);
-console.log("Printed Books : ",books);
-};
+const BookData=response.data
+setFilterdBooks(BookData)
+
+  setBooks(BookData)
+  if(searchData){
+    setFilterdBooks(books.filter(book=> book.title.toLowerCase().includes(searchData)))
+
+  }
+
+
+}
+
+
+// console.log("Printed Books : ",books);
+
 useEffect(()=>{
+ 
     GetBook();
-    
-},[]);
+  
+  
+},[searchData]);
+
+
+useEffect(()=>{
+  console.log(" 3 Books ",filterdBooks);
+},[GetBook])
+// useEffect(()=>{
+//   setFilterdBooks(books.filter(book=> book.title.toLowerCase().includes(searchData)))
+
+//   console.log("filtered Books ",filterdBooks);
+
+// },[])
 
 
 
+// useEffect(()=>{
 
+
+//  setBooks(books.filter(book=> book.title.toLowerCase().includes(searchData)))
+
+// console.log("Book after Search : ",Books);
+// },[searchData]);
 // const test=(e)=>{
   
 
@@ -74,13 +101,15 @@ console.log("CURRENT DATE ",currentDate);
 
     return(
         <div>
-    
+
+   
     <h1 style={{margin:"15px"}}><a>Thrillers</a></h1>
 
-  <Button>Click me to Add a book </Button>
+
 
   <Row style={{justifyContent:"center",alignItems:"center"}}>
-{books && books.map((book,index)=>(
+{
+  filterdBooks && filterdBooks.map((book,index)=>(
 
     book.category==="Thrillers"? (
         
@@ -110,7 +139,7 @@ console.log("CURRENT DATE ",currentDate);
 
         <h1 style={{margin:"15px"}}>Kids</h1>
         <Row style={{justifyContent:"center",alignItems:"center"}}>
-{books && books.map((book,index)=>(
+{filterdBooks && filterdBooks.map((book,index)=>(
 
     book.category==="Kids"? (
         
@@ -137,7 +166,7 @@ console.log("CURRENT DATE ",currentDate);
         </Row>
 <h1 style={{margin:"15px"}}>Trending Books</h1>
         <Row style={{justifyContent:"center",alignItems:"center"}}>
-{books && books.map((book,index)=>(
+{filterdBooks && filterdBooks.map((book,index)=>(
 
     book.category==="Trending Books" ?  (
         <Col style={{margin:"10px",height:"auto",width:"100%"}} >
@@ -186,7 +215,8 @@ export default Books;
 //          {book.catedory}
 //        </Col> 
       
-   
+//    {/* searchData? books.filter(books.filter(book=> book.title.toLowerCase().includes(searchData))): 
+//  */}
 //            ))
 
 // {

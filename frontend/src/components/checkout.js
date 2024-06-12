@@ -10,16 +10,20 @@ import Button from "react-bootstrap/esm/Button";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
-import { OrderContext } from "./Cart";
+import OrderContext from "../context/orderContext";
+import { useLocation } from "react-router-dom";
 function Checkout(){
  const navigate =useNavigate();
 const {order}=useContext(OrderContext);
-
+const location=useLocation();
+const {orderID}=location.state.orderID;
 
     return(
         <>
-             <Header/>
-          
+             <Header/>s
+          <Button onClick={()=>{
+            console.log("I got this from cart page : ",orderID)
+          }}>check OrderID </Button>
              <Button variant="outline-dark" style={{margin:"10px"}}  onClick={()=>{navigate("/cart")}}>  <IoIosArrowRoundBack /> Back To Cart</Button>
              <Row>
 {/* first Card */}
@@ -76,8 +80,8 @@ const {order}=useContext(OrderContext);
                 </Row>
                 {/**after display all rows */}
                 <hr/>
-                <h5>Items:  {order.get_cart_items} </h5>
-            <h5>Total:   {order.get_cart_total}</h5>
+                <h5>Items:  { orderID && orderID.get_cart_items }</h5>
+            <h5>Total:   {orderID && orderID.get_cart_total}</h5>
              </div>
 
                 </Col>
