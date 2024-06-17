@@ -9,7 +9,7 @@ export default OrderContext;
 
   
 export const OrderProvider=({children})=>{
-  const [orderBook,setOrderBook]=useState([]);
+  const [orderBooks,setOrderBook]=useState([]);
 const [order,setOrder]=useState(""); 
   
 function getCookie(name) {
@@ -29,40 +29,83 @@ function getCookie(name) {
     }
 const csrftoken = getCookie('csrftoken');
 
-const GetOrder = async ()=>{
-        try{
-          let response =await axios.get("http://localhost:8000/app/orders/order_by_user/");
-          // setOrderBook(response.data[0])
-          // setOrder(response.data[1])
-          if(response.status===200 || response.status===202){
-            setOrder(response.data);
-            console.log("response form ordercontext component : ",response.data);
-        
-           
-          }
-          else{
-            console.log("Something went wrong ");
-          }
-       
-        }
-        catch(error){
-          console.log(error);
-        }
-        
-      };
+
+
+const getOrder=async()=>{
+  try{  
+  let response =await axios.get("http://localhost:8000/app/orders/",);
+  if (response.status===200){
+    const data=response.data;
+   if(Array.isArray(data)){
+    setOrderBook(data[1]);
+    setOrder(data[0]);
+
+   }
+   else{
+    setOrder(data);
+   }
+
+   
+          console.log("ORDERS FROM GETORDER METHHOODDD :" ,response.data);
+          
+  }
+  }
+  catch(error){
+    console.log(error);
+  }
+
+}
+
+const createOrder=async()=>{
+  try{
+    let response =await axios.post("http://localhost:8000/app/orders/",{},{
+headers:{
+  "X-CSRFToken":csrftoken
+
+}
+    });
+    if (response.status===201){
+      console.log("New Order is created ");
+
+    }
+  }
+  catch (error) {
+    // Log any errors that occur during the request
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      console.log("Error response data:", error.response.data);
+      console.log("Error response status:", error.response.status);
+      console.log("Error response headers:", error.response.headers);
+    } else if (error.request) {
+      // The request was made but no response was received
+      console.log("Error request:", error.request);
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.log("Error message:", error.message);
+    }
+  }
+}
 
 useEffect(()=>{
-GetOrder();
-console.log("Order from Order Context");
-},[])
+  getOrder();
+  // setOrder(order);
+  // setOrderBook(orderBooks);
+},[]);
 useEffect(()=>{
+console.log("Order form Order Context : ",order);
+console.log("Ordered Book from Order Context",orderBooks);
+  
+},[getOrder])
 
-  console.log("Order form OrderContext : ",order);
-},[GetOrder])
 
 const context={
   order:order,
-  csrftoken:csrftoken
+  orderBooks:orderBooks,
+  csrftoken:csrftoken,
+  getOrder:getOrder,
+  createOrder:createOrder
+
 };
 
     return(

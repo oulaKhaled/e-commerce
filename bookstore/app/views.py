@@ -2,7 +2,7 @@ import json
 from django.shortcuts import render, redirect
 from django.http import response, HttpResponse, JsonResponse
 from django.contrib.auth.forms import UserCreationForm
-from . import forms
+
 from django.contrib.auth import login, authenticate, logout
 from . import models
 from rest_framework import viewsets
@@ -136,42 +136,62 @@ class ShippininformationView(viewsets.ModelViewSet):
 
 
 class OrderView(viewsets.ModelViewSet):
-    # permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.IsAuthenticated,)
     authentication_classes = (SessionAuthentication,)
     queryset = models.Order.objects.all()
     serializer_class = OrderSerializer
 
-    @action(methods=["GET", "POST"], detail=False)
-    def order_by_user(self, request):
-        user = models.User.objects.get(id=request.user.id)
-        print("user from get order by user method ", user)
+    def list(self, request, *args, **kwargs):
+        data = request.user.id
+        user = models.User.objects.get(id=data)
         try:
-            order = models.Order.objects.get(complete=False, user=user)
-            print("I got order")
-            if order:
-                order_serializer = OrderSerializer(order)
-                print("I got order serializer")
+            order = models.Order.objects.get(user=user, complete=False)
+            print("list method 333 : order", order)
 
-                order_book = models.OrderBook.objects.filter(order=order)
-                if order_book:
-                    serializer = OrderBookSerializer(order_book, many=True)
+            if order:
+                serializer = OrderSerializer(order)
+                print("list method 333 : serializer Order ", serializer.data)
+
+                ordered_book = models.OrderBook.objects.filter(order=order)
+                try:
+                    if ordered_book:
+                        orderedBook_serilizer = OrderBookSerializer(
+                            ordered_book, many=True
+                        )
+                        return Response(
+                            [serializer.data, orderedBook_serilizer.data],
+                            status=status.HTTP_200_OK,
+                        )
+                except models.OrderBook.DoesNotExist:
                     return Response(
-                        [order_serializer.data, serializer.data],
-                        status=status.HTTP_200_OK,
+                        {"message": "There is no Ordered Book Found t o this Order"},
+                        status=status.HTTP_404_NOT_FOUND,
                     )
-                else:
-                    print("there is no order Book ")
-                    return Response(
-                        order_serializer.data,
-                        status=status.HTTP_202_ACCEPTED,
-                    )
+                return Response(serializer.data, status=status.HTTP_200_OK)
         except models.Order.DoesNotExist:
-            print("there is no order for this user")
-            new_order = models.Order.objects.create(user=user)
-            new_order.save()
+            return Response({"order not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    def create(self, request, *args, **kwargs):
+        data = self.request.user.id
+        try:
+            user = models.User.objects.get(id=data)
+            print("we got the user :", user)
+            try:
+                order = models.Order.objects.get(user=user)
+                print("we got the order :", order)
+                if order:
+                    return Response(
+                        {"message": "There is already uncompleted Order for this user"},
+                        status=status.HTTP_405_METHOD_NOT_ALLOWED,
+                    )
+            except models.Order.DoesNotExist:
+                print("there is no order")
+                new_order = models.Order.objects.create(user=user, complete=False)
+                serializer = OrderSerializer(new_order)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+        except models.User.DoesNotExist:
             return Response(
-                {"message": "new order have been created"},
-                status=status.HTTP_201_CREATED,
+                {"message": "There is no User "}, status=status.HTTP_404_NOT_FOUND
             )
 
 
@@ -182,17 +202,19 @@ class OrderBookView(viewsets.ModelViewSet):
     serializer_class = OrderBookSerializer
 
     def create(self, request, *args, **kwargs):
+        order = request.data["order"]
         mybook = request.data["book"]
         Book = models.Book.objects.get(id=mybook)
         if Book:
             try:
-                getBook = models.OrderBook.objects.get(book=Book)
+                getBook = models.OrderBook.objects.get(book=Book, order=order)
                 getBook.quantity += 1
                 getBook.save()
                 return Response(
                     {"message": "just increase quantity"}, status=status.HTTP_200_OK
                 )
             except models.OrderBook.DoesNotExist:
+                print("new Order Book is created ")
                 return super().create(request, *args, **kwargs)
 
     def update(self, request, *args, **kwargs):

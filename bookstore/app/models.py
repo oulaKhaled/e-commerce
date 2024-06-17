@@ -14,6 +14,9 @@ class Book(models.Model):
     quantity = models.IntegerField(null=False, blank=False)
     image = models.ImageField(upload_to="images/", blank=True, null=True)
     category = models.CharField(max_length=100, null=False, blank=False)
+    content = models.CharField(
+        max_length=300, null=False, blank=False, default="no content yet"
+    )
 
     def no_of_ratings(self):
         return Rating.objects.filter(book=self.id).count()
@@ -66,15 +69,21 @@ class OrderBook(models.Model):
     def get_title(self):
         return self.book.title
 
+    @property
+    def get_image(self):
+        return str(self.book.image)
+
     def __str__(self) -> str:
         return str(self.id)
 
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, null=False, on_delete=models.CASCADE)
-    username = models.CharField(null=False, max_length=100)
-    email = models.EmailField(null=False)
-    Address = models.CharField(max_length=300, null=False)
+    username = models.CharField(
+        null=False, max_length=100, default="usename", blank=False
+    )
+    email = models.EmailField(null=False, default="example@example.com", blank=False)
+    Address = models.CharField(max_length=300, null=False, default="", blank=False)
 
     def __str__(self):
         return self.username
@@ -106,7 +115,9 @@ class Rating(models.Model):
 
     class Meta:
         unique_together = ("user", "book")
-        index_together = ("user", "book")
+        indexes = [
+            models.Index(fields=["user", "book"]),
+        ]
 
     def __str__(self):
         return str(self.stars)

@@ -21,10 +21,12 @@ const [bookID,setBookId]=useState(location.state.book_id)
 const [bookDetails,setBookDetails]=useState("");
 
 let currentDate = format(new Date(), 'yyyy-MM-dd');
-const {order,csrftoken}=useContext(OrderContext);
+const {order,csrftoken,createOrder,getOrder}=useContext(OrderContext);
 
 const ORDERID=order[0];
-const [orderID,setOrderID]=useState(ORDERID?ORDERID: order)
+// const [orderID,setOrderID]=useState(order);
+
+const orderID=order;
 
 const GetBookDetails= async()=>{
     try{
@@ -35,8 +37,19 @@ const GetBookDetails= async()=>{
                 "X-CSRFToken":csrftoken  
             }
         });
-    
+    if(response.status===200){
+        // if(ORDERID){
+        //     setOrderID(ORDERID);
+        // }
+        // else{
+        //     setOrderID(order);
+        // }
+        console.log("200");
+    }
+
+
         console.log("response.data to get Book Details  : ",response.data);
+      
         setBookDetails(response.data);
 
         
@@ -45,37 +58,88 @@ const GetBookDetails= async()=>{
         console.log(error);
     }
 };
+useEffect(()=>{
+
+
+        getOrder();
+        // setOrderID(order);
+    
+ 
+},[]);
+
+
+const addNewBook= async()=>{
+  try{
+
+
+        let response=  await axios.post("http://localhost:8000/app/orderBook/",{
+            "order":orderID["id"],
+            "book":bookDetails.id,
+            "added_date":currentDate,
+          },{
+            headers:{
+              "X-CSRFToken":csrftoken
+            }
+          }).then(response=>{
+        
+            console.log("You have successfully added new Order Book");
+        //   navigate("/cart");
+      
+            console.log(response.data)
+      
+      
+        }) ;
+    }
+        catch(error){
+
+     
+            if(error.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                console.log("Error response data:", error.response.data);
+                console.log("Error response status:", error.response.status);
+                console.log("Error response headers:", error.response.headers);
+              } else if (error.request) {
+                // The request was made but no response was received
+                console.log("Error request:", error.request);
+              } else {
+                // Something happened in setting up the request that triggered an Error
+                console.log("Error message:", error.message);
+              }
+        
+        
+        
+        
+        
+        }
+        
+        
+
+}
 
 
 const handelClick=async (e)=>{
-   
-   let response=  await axios.post("http://localhost:8000/app/orderBook/",{
-    "order":orderID["id"],
-    "book":bookDetails.id,
-    "added_date":currentDate,
-  },{
-    headers:{
-      "X-CSRFToken":csrftoken
+    e.preventDefault();
+  if(!order){
+     await createOrder();
+     console.log("ORDER AFTER CALLİNG CREATE ORDER METHOD : ",order);
+     await addNewBook();
     }
-  }).then(response=>{
-    
-      console.log("You have successfully added new Order Book");
-    
-      navigate("/cart");
-      console.log(response.data)
+    else{
+        await addNewBook();
+    }
+  
+  
+  
  
-  }) 
-  .catch(error=>console.log(error.response.data))
+
   
   };
 useEffect(()=>{
     console.log("BOOK ID : ",bookID);
     GetBookDetails();
   
-//     console.log("useEffect is running . ");
-//  console.log("GET ORDER ID : ",ORDERID);
-//  console.log("GET ORDER : ",order);
-//  console.log("useState Order : ",orderID);
+
 },[])
 
 
@@ -118,29 +182,34 @@ const HandelRate = (i) => async (evt) => {
 
 const checkOrder=()=>{
     console.log("got order form Order Context :",order);
-    console.log("order[1] :",order[1]);
-const element=order[1];
-console.log("jush checl element",element["id"]);
+    console.log("orrrrderrrr idddd : ",orderID);
+//     console.log("order[1] :",order[1]);
+// const element=order[1];
+// console.log("jush checl element",element["id"]);
     
 }
 
+
 useEffect(()=>{
-console.log("THİS İS ORDER ID ",orderID);
-},{GetBookDetails})
+
+
+
+console.log("THİS İS ORDER ID FROM USEEFFECT  ",orderID);
+getOrder();
+// setOrderID(order);
+},GetBookDetails)
 
     return(<>
 <Header/>
 <Button variant="outline-dark" style={{margin:"10px"}}  onClick={()=>{navigate("/")}}>  <IoIosArrowRoundBack /></Button>
-<Button onClick={checkOrder}>Get order </Button>
+{/* <Button onClick={checkOrder}>Get order </Button> */}
 <Row>
 {/*//////////////  FİRST DİV//////////////// */}
 
 
-<p>Hi</p>
 
 
-
-<div style={{margin:"20px",backgroundColor:"#ffff",width:"400px",height:"500px"}}>
+<div style={{backgroundColor:"#ffff",width:"400px",height:"500px",borderRadius:"20px",position:"relative",left:"50px",paddingLeft:"20px",margin:"10px",bottom:"10px"}}>
 
 <Row>
 <img src={bookDetails.image} style={{width:"auto",margin:"20px",height:"300px",marginLeft:"60px"}}/>
@@ -151,30 +220,36 @@ console.log("THİS İS ORDER ID ",orderID);
    <Col> <h4>${bookDetails.price}</h4> </Col>
     <Col><Button style={{position:"abseloute",top:"90px",width:"180px"}} variant="outline-dark" onClick={handelClick}>Add to cart</Button></Col>
 </Row>
-<Row>
+<Row style={{marginTop:"20px"}}>
 <Col style={{width:"auto",justifyContent:"spaxe-between"}}>
-<FaStar  size={20} className={bookDetails.avg_rating >0 ?"orange":""}/>
-<FaStar  size={20} className={bookDetails.avg_rating >1 ?"orange":""}/>
-<FaStar size={20} className={bookDetails.avg_rating >2 ?"orange":""} />
-<FaStar size={20} className={bookDetails.avg_rating >3 ?"orange":""}/>
-<FaStar size={20}className={bookDetails.avg_rating >4 ?"orange":""} />
+<FaStar  size={25} className={bookDetails.avg_rating >0 ?"orange":""}/>
+<FaStar  size={25} className={bookDetails.avg_rating >1 ?"orange":""}/>
+<FaStar size={25} className={bookDetails.avg_rating >2 ?"orange":""} />
+<FaStar size={25} className={bookDetails.avg_rating >3 ?"orange":""}/>
+<FaStar size={25}className={bookDetails.avg_rating >4 ?"orange":""} />
+
 </Col>
-<p>{bookDetails.avg_rating}</p>
-numbers of Rating : {bookDetails.no_of_ratings}
+<Col style={{position:"relative",right:"40px"}}>
+<h2>{bookDetails.avg_rating}</h2>
+</Col>
+
+
 </Row>
+<p style={{fontWeight:"bolder"}}>
+{bookDetails.no_of_ratings} Ratings </p>
 </div>
 
 {/*//////////////  SECONED DİV//////////////// */}
 
 
-    <div style={{margin:"20px",backgroundColor:"#ffff",width:"68%",height:"500px"}}>
+    <div style={{margin:"10px",backgroundColor:"#ffff",width:"50%",height:"500px",borderRadius:"20px",position:"relative",left:"150px",padding:"30px",bottom:"10px"}}>
 <h2>{bookDetails.title}</h2>
-<h5 style={{color:"#A9A9A9"}}> by {bookDetails.author}</h5>
+<h5 style={{color:"#454545"}}> by {bookDetails.author}</h5>
 
-<p style={{margin:"10px",fontWeight:"bold"}}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+<p style={{margin:"10px",fontWeight:"bold"}}>{bookDetails.content}</p>
    
 <Row>
-<p>Rate it </p>
+<h4 style={{fontFamily:"Bebas Neue"}}>Rate it </h4>
 <Col style={{width:"auto",justifyContent:"spaxe-between"}}>
 
 
@@ -194,33 +269,15 @@ numbers of Rating : {bookDetails.no_of_ratings}
 
 
 </Col>
-<Col>
-    category : {bookDetails.category}
-</Col>
+
+<h4  style={{marginTop:"30px",fontFamily:"Bebas Neue",}}>
+  category : <p style={{color:"red"}}>{bookDetails.category}</p>
+</h4>
+    
+
 
 </Row>
-{/* 
- MORE BOOK FROMTHE SAME CATEGORY */}
-<div style={{position:"relative",top:"100px"}}>
-<a style={{position:"relative",bottom:"0"}}>Some pepole read too:  </a>
 
-<Row>
-    <Col>
-    <p>Book 1</p>
-   
-    </Col>
-    <Col>
-    <p>Book 2</p>
-   
-    </Col>
-    <Col>
-    <p>Book 3</p>
-   
-    </Col>
-</Row>
-
-
-</div>
 
 
     </div>

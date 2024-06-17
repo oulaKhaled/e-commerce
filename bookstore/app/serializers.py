@@ -43,6 +43,7 @@ class BookSerializer(serializers.ModelSerializer):
         model = Book
         fields = [
             "id",
+            "content",
             "title",
             "author",
             "price",
@@ -97,4 +98,5 @@ class OrderBookSerializer(serializers.ModelSerializer):
             "get_total",
             "get_title",
             "added_date",
+            "get_image",
         ]

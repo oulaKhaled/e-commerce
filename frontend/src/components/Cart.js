@@ -24,9 +24,9 @@ import Modal from 'react-bootstrap/Modal';
 import Alert from 'react-bootstrap/Alert';
 import { IoMdClose } from "react-icons/io";
 import { useLocation } from "react-router-dom";
-
+import Image from "react-bootstrap/esm/Image";
 // export const OrderContext=createContext("");
-export const BASE_URL="hhtp:";
+
 function Cart(){
   const [smShow, setSmShow] = useState(false);
 const location=useLocation();
@@ -35,20 +35,40 @@ const location=useLocation();
   axios.defaults.xsrfHeaderName = 'X-CSRFToken';
   axios.defaults.withCredentials = true;
   const [show, setShow] = useState(false);
-  const {order,csrftoken}=useContext(OrderContext);
+  const {order,csrftoken,getOrder,orderBooks}=useContext(OrderContext);
 const order2=[order];
-  const ORDERID=order[0];
-
-const [orderID,setOrderID]=useState(()=>{return ORDERID? ORDERID:order});
  
+
+// const [orderID,setOrderID]=useState(()=>{return ORDERID? ORDERID:order});
+ 
+// const [orderID,setOrderID]=useState(order);
+
+
+
+let orderID=order;
   let data ="";
  const [id,GetID]=useState("");
   const navigate=useNavigate();
 
-let [orderBook,SetOrderBook]=useState(()=>{
-  return order[1]? order[1]:null
-});
+// let [orderBook,SetOrderBook]=useState(()=>{
+//   return order[1]? order[1]:null
+// });
+// let [orderBook,SetOrderBook]=useState(()=>{
+//   return orderBooks? orderBooks:null
+// });
+
+
+let orderBook=orderBooks? orderBooks:null
 let currentDate = format(new Date(), 'yyyy-MM-dd');
+const check=true;
+
+
+useEffect(()=>{
+  orderBook=orderBooks? orderBooks:null;
+  orderID=order;
+},[])
+
+
 
 const increaseQuantity= async()=>{
  
@@ -63,6 +83,9 @@ const increaseQuantity= async()=>{
     }).then(response=>{
       if(response.status===200){
         console.log("You have successfully added new Order Book");
+    //  getOrder();
+//         SetOrderBook(orderBooks);
+// setOrderID(order);
         window.location.reload();
   // navigate("/cart")
         console.log(response.data)
@@ -83,6 +106,9 @@ try{
  
     console.log("Ordered Book ID  :",id);
     console.log("response.data from decrease function :" ,response.data);
+    // getOrder();
+//     SetOrderBook(orderBooks);
+// setOrderID(order);
      window.location.reload();
    
   
@@ -104,6 +130,9 @@ const deleteBook= async()=>{
     });
     
     console.log("Successfully deleted ");
+    //  getOrder();
+//     SetOrderBook(orderBooks);
+// setOrderID(order);
     window.location.reload();
     
   }
@@ -125,70 +154,79 @@ const forOrder=()=>{
 }
 
 
-useEffect(()=>{
-  
-  if(order[1]){
-     data=order[1];
-     SetOrderBook(data);
-   } 
-   else{
-    SetOrderBook(null);
-   }
-   
-},[order])
+
 
 
 
     return(
 
         <>
+    
         <Header/>
+        <Button onClick={()=>{navigate("/checkout")}} style={{ position:"absolute",
+     top:"90px",
+     right:"20px",
+    width:"130px",
+    height:"40px"
+    }} variant="outline-dark"> Check out</Button>
         <Button variant="outline-dark" style={{margin:"10px"}}  onClick={()=>{navigate("/")}}>  <IoIosArrowRoundBack /> Back To Home</Button>
         <Button onClick={forOrder}>Get Order</Button>
         
-        <div className="div-cart" >
-<h1>This is Cart Page</h1>
+        <div className="div-cart shadow-23" >
 
 <Table striped bordered hover variant="light">
-      <thead>
-        <tr>
-          <th><h5>Items : {orderID && orderID.get_cart_items}</h5></th>
-          <th><h5>Total :  {orderID && orderID.get_cart_total}</h5></th> 
+      <thead  >
+        <tr >
+          <th style={{borderRadius: "20px",}}><h2>Books : {order && orderID.get_cart_items}</h2></th>
+          <th style={{borderRadius: "20px",}}><h2>Total :  {orderID && orderID.get_cart_total}</h2></th> 
         </tr>
-        <Button onClick={()=>{ navigate("/checkout",{state:{orderID:orderID}})}}> Check out</Button>
+       
       
       </thead>
     </Table>
 <Row>
-<Col><h5>Item</h5></Col>
-<Col><h5>Quantity</h5></Col>
-<Col><h5>date</h5></Col>
+<Col><h5>Book</h5></Col>
+
+{/* <Col><h5>date</h5></Col> */}
 
 <Col> <h5>Total</h5></Col>
-
+<Col><h5>Quantity</h5></Col>
 <Col></Col>
 </Row>
 
 
 {orderBook && orderBook.map((book)=>(
 
+<>
+<hr/>
 
 <Row>
-<Col>{book.get_title}</Col>
+<Col>
+<Row>
+  <Col>
+  <Image style={{width:"190px",height:"250px",padding:"100x"}} src={`http://localhost:8000/images/${book.get_image}`}/> </Col>
+<Col><h5 style={{margin:"15px",color:"#183661"}}>{book.get_title} </h5>
+</Col>
+ 
+</Row>
 
+
+</Col>
+
+
+{/* <Col><h5 style={{margin:"15px",color:"#183661"}}>{book.added_date}</h5></Col> */}
+<Col><h5 style={{margin:"15px",color:"#183661"}}>{book.get_total}</h5></Col>
 <Col>
 
-<ListGroup horizontal >
-    <ListGroup.Item style={{width:"55px",marginBottom:"12px",height:"47px"}} action variant="secondary"><TiMinus size={15} style={{marginRight:"15px"}} onClick={decreaseQuantity}  onMouseEnter={()=>GetID(book.id)} /></ListGroup.Item>
-    <ListGroup.Item style={{marginBottom:"12px",width:"15px",height:"47px"}} action variant="secondary"><p style={{fontWeight:"bold"}}>{book.quantity}</p></ListGroup.Item>
-    <ListGroup.Item style={{marginBottom:"12px",width:"15px",height:"47px"}} action variant="secondary"> <TiPlus size={15} style={{marginRight:"150px"}} onClick={increaseQuantity}  onMouseEnter={()=>{GetID(book.book);
+<ListGroup horizontal style={{color:"#183661"}}>
+    <ListGroup.Item style={{width:"40px",marginBottom:"12px",height:"40px"}} ><TiMinus size={15}  onClick={decreaseQuantity}  onMouseEnter={()=>GetID(book.id)} /></ListGroup.Item>
+    <ListGroup.Item style={{marginBottom:"12px",height:"40px",width:"40px"}} ><p style={{fontWeight:"bold"}}>{book.quantity}</p></ListGroup.Item>
+    <ListGroup.Item style={{marginBottom:"12px",height:"40px",width:"40px"}} > <TiPlus size={15}  onClick={increaseQuantity}  onMouseEnter={()=>{GetID(book.book);
     console.log("Ordered Book BookId : ",id);}}/></ListGroup.Item>
     
   </ListGroup>
 
 </Col>
-<Col>{book.added_date}</Col>
-<Col>{book.get_total}</Col>
 <Col><MdDelete size={40} 
 onClick={deleteBook}
 onMouseEnter={()=>GetID(book.id)}
@@ -217,26 +255,16 @@ onMouseEnter={()=>GetID(book.id)}
 
 
 
-<button onClick={()=>{console.log(book.quantity)}}> just check book quantity </button>
+
 </Col>
-  </Row>))
+  </Row>
+  </>))
    }
-
-
-
-
-
-
-
-
-
-
-
-             
+       
 </div>
 
 
-        </>
+</>
 
     );
 }
@@ -244,7 +272,7 @@ onMouseEnter={()=>GetID(book.id)}
 export default Cart;
 
 
-// onClick={ ()=>{
+//onClick={ ()=>{
 //   setSmShow(true)
 //  }}
  

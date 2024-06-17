@@ -31,7 +31,7 @@ function Header({sendDataToHome}){
   const[email,setemail]=useState("");
   const[Address,setAddress]=useState("");
   const[confirmPassword,setConfirmPassword]=useState("");
-  
+  const [profileID,getProfileID]=useState("");
 
   const [currentUser,setCurrentUser]=useState(false)
 const [profile,setProfile]=useState([]);
@@ -56,7 +56,8 @@ const Logout= (e)=>{
   console.log("response to logout function", response.data);
 
     setCurrentUser(false);
-    navigate("/login");
+    navigate("/auth");
+   
    
  
 
@@ -80,17 +81,17 @@ const handelClick=()=>{
 const UpdateProfile= async(e)=>{
   e.preventDefault();
   try{
-    let response= await axios.put(`http://localhost:8000/app/userProfile/${userID.id}/`,{
+    let response= await axios.put(`http://localhost:8000/app/userProfile/${profileID}/`,{
      "username":username,
       "email":email,
       "Address":Address,
       "user":userID.id,
-    
-    },{
-      withCredentials:true,
-     headers:{   "X-CSRFToken":csrftoken  },
-   
-    });
+    }
+    ,{
+    withCredentials:true,
+    headers:{ "X-CSRFToken":csrftoken},
+      
+       });
  
       window.location.reload();
       console.log(response.data);
@@ -130,10 +131,13 @@ catch(error){
   try{
     console.log("response from Header to get Profile YUPPPP: ",profiles.data);
     const getDATA=profiles.data
-    console.log("get username frım getDATA ",getDATA.username );
+    console.log("get username from getDATA ",getDATA.username);
+   
+    
     setusername(getDATA.username);
     setAddress(getDATA.Address);
     setemail(getDATA.email);
+    getProfileID(getDATA.id);
   
   setProfile(profiles.data);
 
@@ -152,6 +156,8 @@ catch(error){
 //   // setAddress(profile.Address);
 //   // setemail(profile.email);
 //   console.log("userId data : ",userID);
+// 
+// 
 // },[getProfile])
 
 useEffect(()=>{
@@ -168,7 +174,7 @@ useEffect(()=>{
       
         <Row>
         <Col>
-        <h1  style={{"color":"#ffff",fontFamily:"Oswald, sans-serif"} } onClick={()=>window.location.reload()} >Bookstore</h1> 
+        <h1  style={{"color":"#ffff"} } className='bebas-neue-regular' onClick={()=>navigate("/")} >Bookstore</h1> 
         </Col>
      
         </Row>
@@ -231,7 +237,8 @@ useEffect(()=>{
       console.log(username);
       console.log(email);
       console.log(Address);
-      console.log(userID);
+      console.log("USERID : ",userID.id);
+      console.log("Profile ID : ",profileID);
       
       
      }}>

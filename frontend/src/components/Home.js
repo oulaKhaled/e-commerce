@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { GiBookshelf } from "react-icons/gi";
 import Button from 'react-bootstrap/Button';
 import Header from "./Header";
@@ -12,15 +12,21 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
 import './../../src/App.css';
+import { useContext } from "react";
+import OrderContext from "../context/orderContext";
 function Home(){
 const  BASE_URL="http://127.0.0.1:8000/app";
 
 const [datafromHeader,setDatafromHeader]=useState("")
 
-
+const {getOrder}=useContext(OrderContext);
 const handelData=(data)=>{
   setDatafromHeader(data)
 }
+
+
+
+
 
 return (<div style={{width:"auto"}}>
     <Header sendDataToHome={handelData}/>
@@ -28,58 +34,25 @@ return (<div style={{width:"auto"}}>
 
 
     <br/>
-    <h1 style={{paddingBottom:"40px",fontFamily:"Bebas Neue",paddingLeft:"10px"}}> Welcome to Bookstore</h1>
-    <div style={{backgroundColor:"#153448",  position: "relative",
+
+    
+    {/* <div style={{backgroundColor:"#C9CCD5",  position: "relative",
   width:"100%",
-  height:"auto",
+  height:"400px",
 
   bottom:"0"
  
 
   
   }}>
-<h1 style={{color:"#ffff"}}>   About Us</h1>
-<Row>
+  <Row>
 <Col>
-<Image src={Myimage} roundedCircle  style={{margin:"10px"}}/></Col>
-<Col>
-<p style={{color:"#ffff"}}>Lorem ipsum dolor sit amet,
- consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-  labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-   exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
-   Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-Lorem ipsum dolor sit amet,
-</p>
-  <p style={{color:"#ffff"}}>Lorem ipsum dolor sit amet,
- consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-  labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-   exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
-   Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-Lorem ipsum dolor sit amet,
-</p>
+  <Image src={Myimage} roundedCircle style={{height:"300px",margin:"20px"}}/>
 </Col>
-<br/>
 <Col>
-<p style={{color:"#ffff"}}>Lorem ipsum dolor sit amet,
- consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-  labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-   exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
-   Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-Lorem ipsum dolor sit amet,
-</p>
-  <p style={{color:"#ffff"}}>Lorem ipsum dolor sit amet,
- consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-  labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-   exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
-   Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-Lorem ipsum dolor sit amet,
-</p>
+<h1 >   About Us</h1>
 </Col>
-   </Row> </div>
+   </Row> </div> */}
  {/* Book Section */}
  
  <div className="book-div">
