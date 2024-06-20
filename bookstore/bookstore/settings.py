@@ -153,17 +153,18 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost",
     "http://127.0.0.1",
     "http://0.0.0.0",
-    "https://e-commerce-8io3.onrender.com",
+    "https://e-commerce-1-2ptc.onrender.com",
 ]
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000,https://e-commerce-8io3.onrender.com",
+    "http://localhost:3000,https://e-commerce-8io3.onrender.com,https://e-commerce-1-2ptc.onrender.com",
 ]
 
 
 CORS_ORIGIN_WHITELIST = [
     "127.0.0.1:3000",
     "127.0.0.1::8000",
-    "https://e-commerce-8io3.onrender.com",  # Add the origin of your React app
+    "https://e-commerce-8io3.onrender.com",
+    "https://e-commerce-1-2ptc.onrender.com",  # Add the origin of your React app
 ]
 CORS_ORIGIN_ALLOW_ALL = True
 

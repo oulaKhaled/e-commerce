@@ -10,6 +10,8 @@ import { useContext } from "react";
 import OrderContext from "../context/orderContext";
 import { BASE_URL } from "./Home";
 function AuthPage(){
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.withCredentials = true;
 const navigate =useNavigate()
 const [registrationToggle, setRegistrationToggle] = useState(true);
