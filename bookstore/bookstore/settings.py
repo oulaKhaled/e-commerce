@@ -150,18 +150,15 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
     "https://e-commerce-1-2ptc.onrender.com",
 ]
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000",
     "https://e-commerce-8io3.onrender.com",
     "https://e-commerce-1-2ptc.onrender.com",
 ]
 
 
 CORS_ORIGIN_WHITELIST = [
-    "127.0.0.1:3000",
     "127.0.0.1::8000",
     "https://e-commerce-8io3.onrender.com",
     "https://e-commerce-1-2ptc.onrender.com",  # Add the origin of your React app
