@@ -172,7 +172,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = True
-SESSION_COOKIE_DOMAIN = ["https://e-commerce-1-2ptc.onrender.com"]
+SESSION_COOKIE_DOMAIN = "https://e-commerce-1-2ptc.onrender.com"
 # SESSION_COOKIE_HTTPONLY = False
 # SESSION_COOKIE_SAMESITE = None
 # SESSION_COOKIE_SECURE = True
@@ -181,6 +181,13 @@ CSRF_COOKIE_DOMAIN = "e-commerce-1-2ptc.onrender.com"
 CSRF_COOKIE_HTTPONLY = False
 CSRF_COOKIE_SAMESITE = None
 CSRF_COOKIE_SECURE = True
+
+
+CSRF_USE_SESSIONS = False
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
+
+SESSION_COOKIE_SAMESITE = None
 #   "http://127.0.0.1:8000",
 #   "http://0.0.0.0:8000",
 # "http://127.0.0.1::8000",
