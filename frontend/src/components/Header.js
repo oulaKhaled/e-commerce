@@ -20,7 +20,7 @@ import OrderContext from '../context/orderContext';
 import { useContext } from 'react';
 import { MdModeEdit } from "react-icons/md";
 import Modal from 'react-bootstrap/Modal';
-
+import { BASE_URL } from './Home';
 function Header({sendDataToHome}){
 
   axios.defaults.xsrfCookieName = 'csrftoken';
@@ -48,7 +48,7 @@ const [userID,getUserID]=useState("");
 
 const Logout= (e)=>{
   e.preventDefault();
- axios.post("http://localhost:8000/app/logout/",{},{
+ axios.post(`${BASE_URL}/app/logout/`,{},{
   withCredentials:true,
 
  })
@@ -81,7 +81,7 @@ const handelClick=()=>{
 const UpdateProfile= async(e)=>{
   e.preventDefault();
   try{
-    let response= await axios.put(`http://localhost:8000/app/userProfile/${profileID}/`,{
+    let response= await axios.put(`${BASE_URL}/app/userProfile/${profileID}/`,{
      "username":username,
       "email":email,
       "Address":Address,
@@ -117,7 +117,7 @@ catch(error){
 
   const check_auth= async ()=>{
   try{
-    let users= await axios.get("http://localhost:8000/app/users/",{
+    let users= await axios.get(`${BASE_URL}/app/users/`,{
       headers:{ "X-CSRFToken":csrftoken},
     });
      
@@ -141,7 +141,7 @@ catch(error){
 
   const getProfile= async()=>{
   
-    const profiles= await axios.get("http://localhost:8000/app/userProfile/get_user_profile/",{
+    const profiles= await axios.get(`${BASE_URL}/app/userProfile/get_user_profile/`,{
       headers:{ "X-CSRFToken":csrftoken},
     });
   try{

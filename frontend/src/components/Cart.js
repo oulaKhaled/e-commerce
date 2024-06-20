@@ -25,6 +25,7 @@ import Alert from 'react-bootstrap/Alert';
 import { IoMdClose } from "react-icons/io";
 import { useLocation } from "react-router-dom";
 import Image from "react-bootstrap/esm/Image";
+import { BASE_URL } from "./Home";
 // export const OrderContext=createContext("");
 
 function Cart(){
@@ -76,7 +77,7 @@ useEffect(()=>{
 
 const increaseQuantity= async()=>{
  
-    let response=  await axios.post("http://localhost:8000/app/orderBook/",{
+    let response=  await axios.post(`${BASE_URL}/app/orderBook/`,{
       "order":orderID["id"],
       "book": id,
       "added_date":currentDate,
@@ -102,7 +103,7 @@ const decreaseQuantity= async(e)=>{
 
 try{
   
-  let response =await axios.put(`http://localhost:8000/app/orderBook/${id}/`,{},{
+  let response =await axios.put(`${BASE_URL}/app/orderBook/${id}/`,{},{
     headers:{
       "X-CSRFToken":csrftoken
     }
@@ -127,7 +128,7 @@ catch(error){
 
 const deleteBook= async()=>{
   try{
-    let response = await axios.delete(`http://localhost:8000/app/orderBook/${id}/`,{
+    let response = await axios.delete(`${BASE_URL}/app/orderBook/${id}/`,{
       headers:{
         "X-CSRFToken":csrftoken
       }

@@ -8,6 +8,7 @@ import axios from 'axios';
 import Button from "react-bootstrap/esm/Button";
 import { useContext } from "react";
 import OrderContext from "../context/orderContext";
+import { BASE_URL } from "./Home";
 function AuthPage(){
 axios.defaults.withCredentials = true;
 const navigate =useNavigate()
@@ -33,7 +34,7 @@ function update_form_btn(e) {
 
   const submitLogin = (e) => {
     e.preventDefault();
-    axios.post('http://localhost:8000/app/login/', { username, password })
+    axios.post(`${BASE_URL}/app/login/`, { username, password })
         .then(response => {
             console.log(response.data);
             // createOrder();
@@ -48,7 +49,7 @@ function update_form_btn(e) {
 };
 const submitRegisteration=(e)=>{
     e.preventDefault();
-    axios.post("http://localhost:8000/app/register/",{username,password,email})
+    axios.post(`${BASE_URL}/app/register/`,{username,password,email})
     .then(response=>{
       console.log(response.data);
       if(response.status===200){
@@ -57,7 +58,7 @@ const submitRegisteration=(e)=>{
         
         console.log("password : ",password);
         
-        axios.post('http://localhost:8000/app/login/', { username, password })
+        axios.post(`${BASE_URL}/app/login/`, { username, password })
         .then(response => {
             console.log(response.data);
             //createOrder();

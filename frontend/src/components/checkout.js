@@ -19,6 +19,7 @@ import Modal from 'react-bootstrap/Modal';
 import axios from "axios";
 import { format, longFormatters } from 'date-fns';
 import { FcApproval } from "react-icons/fc";
+import { BASE_URL } from "./Home";
 function Checkout(){
  const navigate =useNavigate();
  const location=useLocation();
@@ -54,7 +55,7 @@ const saveShippingInformation = async ()=>{
    try{
 
    
-    let response= await axios.post(`http://localhost:8000/app/shippinginformation/`,{
+    let response= await axios.post(`${BASE_URL}/app/shippinginformation/`,{
         "user":user["id"],
         "order":data,
         "address":shippingInformation.address,
@@ -95,7 +96,7 @@ const UpdateOrder= async()=>{
   console.log(currentDate);
 
 try{
-    let response=await axios.put(`http://localhost:8000/app/orders/${data}/`,{
+    let response=await axios.put(`${BASE_URL}/app/orders/${data}/`,{
         "user":user["id"],
         "order_date":currentDate,
     "complete":true,}

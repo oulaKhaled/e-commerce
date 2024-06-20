@@ -13,6 +13,7 @@ import axios from "axios";
 import { format, longFormatters } from 'date-fns';
 import { useContext } from "react";
 import OrderContext from "../context/orderContext";
+import { BASE_URL } from "./Home";
 function BookDetails(){
 const navigate=useNavigate();
 const location = useLocation();
@@ -32,7 +33,7 @@ const orderID=order;
 const GetBookDetails= async()=>{
     try{
 
-        let response= await axios.get(`http://localhost:8000/app/book/${bookID}/`,{
+        let response= await axios.get(`${BASE_URL}/app/book/${bookID}/`,{
             
             headers:{
                 "X-CSRFToken":csrftoken  
@@ -75,7 +76,7 @@ const addNewBook= async()=>{
   try{
 
 
-        let response=  await axios.post("http://localhost:8000/app/orderBook/",{
+        let response=  await axios.post(`${BASE_URL}/app/orderBook/`,{
             "order":orderID["id"],
             "book":bookDetails.id,
             "added_date":currentDate,
@@ -149,7 +150,7 @@ const handelMouse= high=> evt=>{
 const HandelRate = (i) => async (evt) => {
   
     try{
-        let response=await axios.post(`http://localhost:8000/app/book/${bookDetails.id}/rate_book/`,{
+        let response=await axios.post(`${BASE_URL}/app/book/${bookDetails.id}/rate_book/`,{
             "stars":i,
         },{
             headers:{

@@ -10,7 +10,7 @@ import { format } from 'date-fns';
 import Carousel from 'react-bootstrap/Carousel';
 
 import { FaStar } from "react-icons/fa";
-
+import { BASE_URL } from "./Home";
 import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from "react-router-dom";
 
@@ -34,7 +34,7 @@ const[filterdBooks,setFilterdBooks]=useState("");
 
 
 const GetBook = async ()=>{
-let response =await axios.get("http://localhost:8000/app/book/");
+let response =await axios.get(`${BASE_URL}/app/book/`);
 console.log("BOOKS : ",response.data);
 const BookData=response.data
 setFilterdBooks(BookData)

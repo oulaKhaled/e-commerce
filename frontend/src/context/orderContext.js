@@ -2,8 +2,7 @@ import React, { useEffect } from "react";
 import { useState} from "react";
 import { createContext } from "react";
 import axios from "axios";
-import { BASE_URL } from "../components/Cart";
-
+import { BASE_URL } from "../components/Home";
 const OrderContext=createContext("");
 export default OrderContext;
 
@@ -33,7 +32,7 @@ const csrftoken = getCookie('csrftoken');
 
 const getOrder=async()=>{
   try{  
-  let response =await axios.get("http://localhost:8000/app/orders/",);
+  let response =await axios.get(`${BASE_URL}/app/orders/`,);
   if (response.status===200){
     const data=response.data;
    if(Array.isArray(data)){
@@ -58,7 +57,7 @@ const getOrder=async()=>{
 
 const createOrder=async()=>{
   try{
-    let response =await axios.post("http://localhost:8000/app/orders/",{},{
+    let response =await axios.post(`${BASE_URL}/app/orders/`,{},{
 headers:{
   "X-CSRFToken":csrftoken
 

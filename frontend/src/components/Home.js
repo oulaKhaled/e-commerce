@@ -18,8 +18,9 @@ import Image from 'react-bootstrap/Image';
 import './../../src/App.css';
 import { useContext } from "react";
 import OrderContext from "../context/orderContext";
+export const  BASE_URL="https://e-commerce-8io3.onrender.com";
 function Home(){
-const  BASE_URL="http://127.0.0.1:8000/app";
+
 
 const [datafromHeader,setDatafromHeader]=useState("")
 
