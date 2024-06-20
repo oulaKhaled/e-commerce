@@ -18,7 +18,7 @@ const [password,setPassword]=useState("");
 
 const[email,setEmail]=useState("");
 
-const {order,createOrder}=useContext(OrderContext);
+const {order,createOrder,csrftoken}=useContext(OrderContext);
 
 function update_form_btn(e) {
     e.preventDefault();
@@ -34,7 +34,12 @@ function update_form_btn(e) {
 
   const submitLogin = (e) => {
     e.preventDefault();
-    axios.post(`${BASE_URL}/app/login/`, { username, password })
+    axios.post(`${BASE_URL}/app/login/`, { username, password },{
+      withCredentials:true,
+      headers:{
+        "X-CSRFToken":csrftoken
+      }
+    })
         .then(response => {
             console.log(response.data);
             // createOrder();
@@ -49,7 +54,13 @@ function update_form_btn(e) {
 };
 const submitRegisteration=(e)=>{
     e.preventDefault();
-    axios.post(`${BASE_URL}/app/register/`,{username,password,email})
+    axios.post(`${BASE_URL}/app/register/`,{username,password,email},{
+      withCredentials:true,
+   headers:{
+    "X-CSRFToken":csrftoken,
+   
+   }
+      })
     .then(response=>{
       console.log(response.data);
       if(response.status===200){
