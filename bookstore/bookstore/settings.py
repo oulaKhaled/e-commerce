@@ -30,6 +30,8 @@ DEBUG = False
 
 ALLOWED_HOSTS = ["*,https://e-commerce-backend-m4l2.onrender.com"]
 
+ALLOWED_HOSTS_DEPLOY = ["*,https://e-commerce-backend-m4l2.onrender.com"]
+
 
 # Application definition
 
