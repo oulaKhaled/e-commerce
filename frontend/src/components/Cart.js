@@ -35,27 +35,21 @@ const location=useLocation();
   axios.defaults.xsrfHeaderName = 'X-CSRFToken';
   axios.defaults.withCredentials = true;
   const [show, setShow] = useState(false);
-  const {order,csrftoken,getOrder,orderBooks}=useContext(OrderContext);
+  const {order,csrftoken,getOrder,orderBooks,createOrder}=useContext(OrderContext);
 const order2=[order];
- 
 
+ const [user,setUser]=useState(location.state.user);
 // const [orderID,setOrderID]=useState(()=>{return ORDERID? ORDERID:order});
  
 // const [orderID,setOrderID]=useState(order);
 
-
-
+// const [orderBook,setOrderBook]=useState(orderBooks? orderBooks:null)
 let orderID=order;
+
   let data ="";
  const [id,GetID]=useState("");
   const navigate=useNavigate();
 
-// let [orderBook,SetOrderBook]=useState(()=>{
-//   return order[1]? order[1]:null
-// });
-// let [orderBook,SetOrderBook]=useState(()=>{
-//   return orderBooks? orderBooks:null
-// });
 
 
 let orderBook=orderBooks? orderBooks:null
@@ -64,8 +58,18 @@ const check=true;
 
 
 useEffect(()=>{
-  orderBook=orderBooks? orderBooks:null;
-  orderID=order;
+  if(order){
+    getOrder();
+    orderBook=orderBooks? orderBooks:null;
+    orderID=order;
+    
+    // setOrderBook(orderBooks? orderBooks:null);
+    // setOrderID(order);
+  }
+ else{
+  createOrder();
+ }
+  
 },[])
 
 
@@ -151,6 +155,7 @@ const forOrder=()=>{
     console.log("orderBook: ",orderBook)
           console.log("ORDERID: ",orderID)
           console.log("ORDER2 ",order[1]);
+          console.log("USER FROM HEADER: ",user);
 }
 
 
@@ -163,14 +168,14 @@ const forOrder=()=>{
         <>
     
         <Header/>
-        <Button onClick={()=>{navigate("/checkout")}} style={{ position:"absolute",
+        <Button onClick={()=>{navigate("/checkout",{state:{user:user}})}} style={{ position:"absolute",
      top:"90px",
      right:"20px",
     width:"130px",
     height:"40px"
     }} variant="outline-dark"> Check out</Button>
         <Button variant="outline-dark" style={{margin:"10px"}}  onClick={()=>{navigate("/")}}>  <IoIosArrowRoundBack /> Back To Home</Button>
-        <Button onClick={forOrder}>Get Order</Button>
+        {/* <Button onClick={forOrder}>Get Order</Button> */}
         
         <div className="div-cart shadow-23" >
 
@@ -204,8 +209,9 @@ const forOrder=()=>{
 <Col>
 <Row>
   <Col>
-  <Image style={{width:"190px",height:"250px",padding:"100x"}} src={`http://localhost:8000/images/${book.get_image}`}/> </Col>
-<Col><h5 style={{margin:"15px",color:"#183661"}}>{book.get_title} </h5>
+  <Image style={{width:"100px",height:"120px",marginLeft:"10px"}} src={`http://localhost:8000/images/${book.get_image}`}/> 
+  </Col>
+<Col><p style={{margin:"15px",color:"#183661",fontWeight:"bolder"}}>{book.get_title} </p>
 </Col>
  
 </Row>
@@ -215,7 +221,7 @@ const forOrder=()=>{
 
 
 {/* <Col><h5 style={{margin:"15px",color:"#183661"}}>{book.added_date}</h5></Col> */}
-<Col><h5 style={{margin:"15px",color:"#183661"}}>{book.get_total}</h5></Col>
+<Col><h5 style={{margin:"15px",color:"#183661"}}>${book.get_total}</h5></Col>
 <Col>
 
 <ListGroup horizontal style={{color:"#183661"}}>

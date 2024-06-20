@@ -35,7 +35,6 @@ class Book(models.Model):
 class Order(models.Model):
     user = models.ForeignKey(User, null=False, on_delete=models.CASCADE)
     order_date = models.DateField(default=date.today, null=False)
-    total_amount = models.IntegerField(null=False, default=0)
     complete = models.BooleanField(null=False, default=False, blank=False)
 
     def __str__(self):
@@ -83,10 +82,15 @@ class UserProfile(models.Model):
         null=False, max_length=100, default="usename", blank=False
     )
     email = models.EmailField(null=False, default="example@example.com", blank=False)
-    Address = models.CharField(max_length=300, null=False, default="", blank=False)
+    Address = models.CharField(
+        max_length=300, null=False, default="no address yet", blank=False
+    )
 
     def __str__(self):
         return self.username
+
+    def get_email(self):
+        return self.user.email
 
 
 @receiver(post_save, sender=User)

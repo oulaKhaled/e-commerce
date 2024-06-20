@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
+import dj_database_url
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-pi@oy&@v)656hz5#0on#^!yqrcy+1$dnjck4_6oc)&5r%uho-z"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -77,16 +79,19 @@ WSGI_APPLICATION = "bookstore.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "bookstore",
-        "USER": "postgres",
-        "PASSWORD": "root",
-        "HOST": "localhost",
-        "PORT": "5432",
-    }
-}
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql_psycopg2",
+#         "NAME": "bookstore",
+#         "USER": "postgres",
+#         "PASSWORD": "root",
+#         "HOST": "localhost",
+#         "PORT": "5432",
+#     }
+# }
+DATABASE_URL = "postgres://bookstore_db2_user:RmjY6xsldUuJ7auyDnSdogbyUjAVX7Zl@dpg-cppvantds78s73efim3g-a.oregon-postgres.render.com/bookstore_db2"
+DATABASES = {"default": dj_database_url.config(default=DATABASE_URL)}
+
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSIONS_CLASSES": {
         "rest_framework.permissions.IsAuthenticated",

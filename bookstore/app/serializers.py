@@ -58,7 +58,7 @@ class BookSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
-        fields = "__all__"
+        fields = ["id", "user", "username", "email", "Address", "get_email"]
 
 
 class ShippininformationSerializer(serializers.ModelSerializer):
@@ -80,7 +80,6 @@ class OrderSerializer(serializers.ModelSerializer):
             "id",
             "user",
             "order_date",
-            "total_amount",
             "complete",
             "get_cart_total",
             "get_cart_items",

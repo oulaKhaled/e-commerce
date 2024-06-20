@@ -14,28 +14,140 @@ import OrderContext from "../context/orderContext";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { GiConfirmed } from "react-icons/gi";
-import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import GooglePayButton from "@google-pay/button-react"
+import Modal from 'react-bootstrap/Modal';
+import axios from "axios";
+import { format, longFormatters } from 'date-fns';
+import { FcApproval } from "react-icons/fc";
 function Checkout(){
  const navigate =useNavigate();
-const {order,getOrder,orderBooks}=useContext(OrderContext);
-const ORDERID=order[0];
-
-
-const [shouldShow,setShouldShow]=useState(false);
+ const location=useLocation();
+const {order,getOrder,orderBooks,csrftoken}=useContext(OrderContext);
+const ORDERID=order;
+const [payment,PaymentState]=useState(false)
+const [show, setShow] = useState(payment? true:false);
+const data=ORDERID["id"];
+// const{user}=location.state.user;
+let currentDate = format(new Date(), 'yyyy-MM-dd');
+const [user,setUser]=useState(location.state.user?location.state.user:null);
+const [shippingInformation,setShippingInformation]=useState({
+    "user":user["id"],
+    "order":data,
+    "address":"",
+    "zipcode":"",
+   
+});
+const handleShow = () => setShow(true);
+const [shouldShow,setShouldShow]=useState("");
 const handelButton=()=>{
     console.log("Currrent show state : ",shouldShow);
+   
+    console.log("Shippping Information : ",shippingInformation);
+ if(shippingInformation.address==="" && shippingInformation.zipcode===""){
+    setShouldShow(false);
+ }
+ else{
     setShouldShow(true);
+ }
+}
+const saveShippingInformation = async ()=>{
+   try{
+
+   
+    let response= await axios.post(`http://localhost:8000/app/shippinginformation/`,{
+        "user":user["id"],
+        "order":data,
+        "address":shippingInformation.address,
+        "zipcode":shippingInformation.zipcode,
+    },{
+        headers:{
+            "X-CSRFToken":csrftoken  
+        }
+    });
+    console.log("respone from ShippingInformation Order : ",response.data);
+   }
+   catch(error){
+    console.log(error);
+   }
+
+
+
 
 }
 
 
 
-const [shippingInformation,setShippingInformation]=useState({
-    "user":"",
-    "order":"",
-    "address":"",
-    "zipcode":"",
-})
+
+
+
+
+
+
+
+
+
+
+
+const UpdateOrder= async()=>{
+    console.log(ORDERID["id"]);
+    
+    console.log(user);
+  console.log(currentDate);
+
+try{
+    let response=await axios.put(`http://localhost:8000/app/orders/${data}/`,{
+        "user":user["id"],
+        "order_date":currentDate,
+    "complete":true,}
+
+,{
+    headers:{
+        "X-CSRFToken":csrftoken  
+    }});
+    console.log("order",order);
+
+
+}  catch (error) {
+    // Log any errors that occur during the request
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      console.log("Error response data:", error.response.data);
+      console.log("Error response status:", error.response.status);
+      console.log("Error response headers:", error.response.headers);
+    } else if (error.request) {
+      // The request was made but no response was received
+      console.log("Error request:", error.request);
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.log("Error message:", error.message);
+    }
+  }
+}
+const handleClose =  () => {
+   UpdateOrder();
+    navigate("/");
+    setShow(false);
+
+
+ window.location.reload();
+
+  
+    
+};
+
+
+const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setShippingInformation((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+useEffect(()=>{
+console.log("HOT USER FROM CART PAGE : ",user);
+},[])
+
 
 const orderID=order;
 
@@ -51,7 +163,7 @@ const orderBook=orderBooks;
           }}>check OrderID </Button> */}
 {/* 
 it can be above Order Summery Cart */}
-             <Button variant="outline-dark" style={{margin:"10px"}}  onClick={()=>{navigate("/cart")}}>  <IoIosArrowRoundBack /> Back To Cart</Button>
+             <Button variant="outline-dark" style={{margin:"10px"}}  onClick={()=>{navigate("/cart",{state:{user:user}})}}>  <IoIosArrowRoundBack /> Back To Cart</Button>
              {/* <div style={{backgroundColor:"#ffff",height:"150px",width:"700px",position:"relative",left:"300px"}} className="shadow-23">
              <GiConfirmed size={70} style={{position:"relative",left:"45%"}} />
 
@@ -74,7 +186,7 @@ it can be above Order Summery Cart */}
       </Col>
       <Col >
       <h6>Email</h6>
-       <input style={{width:"90%",height:"35px", borderRadius: "9px",}}/>
+       <input style={{width:"90%",height:"35px", borderRadius: "9px"}}/>
       </Col>
              </Row>
              <hr />
@@ -82,21 +194,92 @@ it can be above Order Summery Cart */}
 <Row style={{margin:"20px"}}>
 <Col >
              <h6>address</h6>
-       <input style={{width:"90%",height:"35px", borderRadius: "9px",}}/>
+       <input   name="address" value={shippingInformation.address} style={{width:"90%",height:"35px", borderRadius: "9px",}} onChange={handleInputChange}/>
       </Col>
       <Col >
       <h6>Zip code</h6>
-       <input style={{width:"80%",height:"35px", borderRadius: "9px",}}/>
+       <input name="zipcode" value={shippingInformation.zipcode} style={{width:"80%",height:"35px", borderRadius: "9px",}} onChange={handleInputChange}/>
       </Col>
 </Row>
  <hr />
 <Button style={{margin:"10px",}} variant="outline-dark" onClick={handelButton}>Continue</Button>
-{/* PAPAL PAYAMENT  */}
+{/*  PAYAMENT  */}
 {
-    shouldShow?
-    <p>Just check setShow useState</p>:null
+    shouldShow===true?
+    <div id="embed-target">
+    <GooglePayButton
+    style={{margin:"15px"}}
+    buttonSizeMode="static"
+    buttonType="long"
+  environment="TEST"
+  paymentRequest={{
+    apiVersion: 2,
+    apiVersionMinor: 0,
+    allowedPaymentMethods: [
+      {
+        type: 'CARD',
+        parameters: {
+          allowedAuthMethods: ['PAN_ONLY', 'CRYPTOGRAM_3DS'],
+          allowedCardNetworks: ['MASTERCARD', 'VISA'],
+        },
+        tokenizationSpecification: {
+          type: 'PAYMENT_GATEWAY',
+          parameters: {
+            gateway: 'example',
+            gatewayMerchantId: 'exampleGatewayMerchantId',
+          },
+        },
+      },
+    ],
+    merchantInfo: {
+      merchantId: '12345678901234567890',
+      merchantName: 'Demo Merchant',
+    },
+    transactionInfo: {
+    totalPriceStatus: 'FINAL',
+      totalPriceLabel: 'Total',
+      totalPrice: "0",
+      currencyCode: 'USD',
+      countryCode: 'US',
+     
+    },
+  }}
+  onLoadPaymentData={paymentRequest => {
+    console.log('load payment data', paymentRequest);
+    saveShippingInformation();
+    setShow(true);
+    PaymentState(true); 
+  }}
+/>
+
+    </div>
+   :(<p style={{color:"red"}}> Please Enter your Shipping Information</p>)
 }
              </div>
+{payment?
+             (
+                
+                <>
+         
+
+      <Modal show={show} onHide={handleClose}>
+      <FcApproval size={90} style={{position:"relative",left:"35%",margin:"10px"}} />
+        <Modal.Body >
+        
+        <h2 style={{position:"relative",left:"20%",margin:"10px"}} >Payment successful.</h2>
+        <h6 style={{ margin:"10px",fontWeight:"bolder"}}> Your order will be shipped to your address shortly. Thank you for shopping with us!</h6>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="outline-danger" onClick={handleClose}>
+            Close
+          </Button>
+          
+        </Modal.Footer>
+      </Modal>
+                </>
+              ):(null)
+
+             }
 
 
 </Col>

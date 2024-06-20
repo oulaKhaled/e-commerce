@@ -70,7 +70,6 @@ headers:{
     }
   }
   catch (error) {
-    // Log any errors that occur during the request
     if (error.response) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx
@@ -87,11 +86,18 @@ headers:{
   }
 }
 
+
+useEffect(()=>{
+
+  // createOrder();
+  //console.log("from orderContextPage, created OrderFunction is called");
+},[])
 useEffect(()=>{
   getOrder();
   // setOrder(order);
   // setOrderBook(orderBooks);
 },[]);
+
 useEffect(()=>{
 console.log("Order form Order Context : ",order);
 console.log("Ordered Book from Order Context",orderBooks);

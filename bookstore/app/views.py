@@ -177,7 +177,7 @@ class OrderView(viewsets.ModelViewSet):
             user = models.User.objects.get(id=data)
             print("we got the user :", user)
             try:
-                order = models.Order.objects.get(user=user)
+                order = models.Order.objects.get(user=user, complete=False)
                 print("we got the order :", order)
                 if order:
                     return Response(
@@ -223,7 +223,7 @@ class OrderBookView(viewsets.ModelViewSet):
             book.quantity -= 1
             book.save()
             return Response(
-                {"message": "just decrease quantity "}, status=status.HTTP_200_OK
+                {"message": "just decrease quantity"}, status=status.HTTP_200_OK
             )
         else:
             return super().destroy(self, request, *args, **kwargs)

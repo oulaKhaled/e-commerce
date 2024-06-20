@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from 'axios';
 import Button from "react-bootstrap/esm/Button";
+import { useContext } from "react";
+import OrderContext from "../context/orderContext";
 function AuthPage(){
 axios.defaults.withCredentials = true;
 const navigate =useNavigate()
@@ -15,7 +17,7 @@ const [password,setPassword]=useState("");
 
 const[email,setEmail]=useState("");
 
-
+const {order,createOrder}=useContext(OrderContext);
 
 function update_form_btn(e) {
     e.preventDefault();
@@ -34,12 +36,15 @@ function update_form_btn(e) {
     axios.post('http://localhost:8000/app/login/', { username, password })
         .then(response => {
             console.log(response.data);
-            navigate("/");
+            // createOrder();
+           
            
         })
         .catch(error => {
             console.error('There was an error logging in!', error);
         });
+        window.location.reload();
+        navigate("/");
 };
 const submitRegisteration=(e)=>{
     e.preventDefault();
@@ -55,6 +60,7 @@ const submitRegisteration=(e)=>{
         axios.post('http://localhost:8000/app/login/', { username, password })
         .then(response => {
             console.log(response.data);
+            //createOrder();
             navigate("/");
            
         })
@@ -115,7 +121,7 @@ setPassword(evt.target.value)}}/>
   <p className="mycart-p">password</p>
   <input  style={{width:"300px",fontWeight:"bolder"}} type="password" variant="outline-secondary"  onChange={(e)=>{setPassword(e.target.value)}}/>
   
-  <Button style={{margin:"10px"}} onClick={submitRegisteration}  >Register</Button>
+  <Button style={{margin:"10px"}} onClick={submitRegisteration}  variant="outline-secondary" >Register</Button>
   <p style={{fontWeight:"bolder"}}>already have an acoount?<a href="/login" id="form_btn" onClick={update_form_btn}>Login here</a> </p>
   </div>
   </>

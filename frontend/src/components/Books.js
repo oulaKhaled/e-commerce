@@ -62,28 +62,7 @@ useEffect(()=>{
 useEffect(()=>{
   console.log(" 3 Books ",filterdBooks);
 },[GetBook])
-// useEffect(()=>{
-//   setFilterdBooks(books.filter(book=> book.title.toLowerCase().includes(searchData)))
 
-//   console.log("filtered Books ",filterdBooks);
-
-// },[])
-
-
-
-// useEffect(()=>{
-
-
-//  setBooks(books.filter(book=> book.title.toLowerCase().includes(searchData)))
-
-// console.log("Book after Search : ",Books);
-// },[searchData]);
-// const test=(e)=>{
-  
-
-
-//   console.log("ORDER FROM CART COMPONENT. : ",order);
-// }
 
 //////////************** TO SEND DATA TO ORDERBOOK ENDPOINT **********///////////////
 
@@ -100,23 +79,22 @@ console.log("CURRENT DATE ",currentDate);
 //////////************** RETURN FUNCTİON **********///////////////
 
     return(
-        <div>
+        <div style={{width:"100%"}}>
 
    
     <h1 style={{margin:"10px",textDecoration:"underline",color:"#0F1035"}}><a>Thrillers</a></h1>
 
 
 
-  <Row style={{justifyContent:"center",alignItems:"center"}}>
+  <Row style={{justifyContent:"center",alignItems:"center",width:"auto",borderRadius:"10px",backgroundColor:"#ffff"}}>
 {
   filterdBooks && filterdBooks.map((book,index)=>(
 
     book.category==="Thrillers" ?  (
         
-        <Col style={{margin:"10px",height:"auto",width:"100%",backgroundColor:"#ffff",borderRadius:"10px"}} >
+        <Col style={{margin:"10px",height:"auto",width:"auto",borderRadius:"10px"}} >
         <div style={{borderRadius:"10px",padding:"10px"}}>
-        <h1>{index}</h1>
-       
+ 
         
 <Row>
       <img style={{width:"auto",height:"250px",padding:"10x"}} src={book.image}/>
@@ -132,22 +110,22 @@ console.log("CURRENT DATE ",currentDate);
 
 </div>
 </Col>
-    ):(null
-    )
+    ):(
+    null)
        )) }
  
         </Row>
 
         
         <h1 style={{margin:"15px",textDecoration:"underline"}}>Kids</h1>
-        <Row style={{justifyContent:"center",alignItems:"center"}}>
+        <Row style={{justifyContent:"center",alignItems:"center",backgroundColor:"#ffff"}}>
 {filterdBooks && filterdBooks.map((book,index)=>(
 
     book.category==="Kids"? (
         
-        <Col style={{margin:"20px",height:"auto",width:"100%",backgroundColor:"#ffff",borderRadius:"10px",alignItems:"center"}} >
+        <Col style={{margin:"20px",height:"auto",width:"100%",borderRadius:"10px",alignItems:"center"}} >
         <div style={{borderRadius:"10px",padding:"10px"}}>
-        <h1>{index}</h1>
+       
         
 <Row>
       <img style={{width:"auto",height:"250px"}} src={book.image}/>
@@ -168,12 +146,12 @@ console.log("CURRENT DATE ",currentDate);
         </Row>
       
 <h1 style={{margin:"10px",textDecoration:"underline"}}>Trending Books</h1>
-        <Row style={{justifyContent:"center",alignItems:"center"}}>
+        <Row style={{justifyContent:"center",alignItems:"center",backgroundColor:"#ffff"}}>
 {filterdBooks && filterdBooks.map((book,index)=>(
 
     book.category==="Trending Books" ?  (
-        <Col style={{margin:"25px",height:"auto",width:"100%",backgroundColor:"#ffff",borderRadius:"10px"}} >
-        <h1>{index}</h1>
+        <Col style={{margin:"25px",height:"auto",width:"100%",borderRadius:"10px"}} >
+       
  
  
         <div style={{borderRadius:"10px",padding:"10px"}}>
@@ -204,38 +182,3 @@ console.log("CURRENT DATE ",currentDate);
 }
 
 export default Books;
-// books.map((book)=>(
-
-
-//     <Col style={{margin:"10px",height:"auto",width:"100%"}} >
-     
-//          {book.title}
-         
-//          {book.author}
-         
-//          {book.price}
-         
-//          {book.quantity}
-         
-//          {book.catedory}
-//        </Col> 
-      
-//    {/* searchData? books.filter(books.filter(book=> book.title.toLowerCase().includes(searchData))): 
-//  */}
-//            ))
-
-// {
-//   "order":"2",  
-//   "book":"2",
-//   "quantity":"3",
-//   "added_date":"05/31/2024"
- 
-
-// }, 
-// {
-//   withCredentials: true,
-//   headers:{
-//     'X-CSRF-TOKEN':csrftoken
-//   }
-
-// }

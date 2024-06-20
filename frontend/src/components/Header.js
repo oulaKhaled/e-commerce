@@ -88,7 +88,7 @@ const UpdateProfile= async(e)=>{
       "user":userID.id,
     }
     ,{
-    withCredentials:true,
+withCredentials:true,
     headers:{ "X-CSRFToken":csrftoken},
       
        });
@@ -99,13 +99,27 @@ const UpdateProfile= async(e)=>{
    
   }
 catch(error){
-  console.log(error);
+  if (error.response) {
+    // The request was made and the server responded with a status code
+    // that falls out of the range of 2xx
+    console.log("Error response data:", error.response.data);
+    console.log("Error response status:", error.response.status);
+    console.log("Error response headers:", error.response.headers);
+  } else if (error.request) {
+    // The request was made but no response was received
+    console.log("Error request:", error.request);
+  } else {
+    // Something happened in setting up the request that triggered an Error
+    console.log("Error message:", error.message);
+  }
 }
 }
 
   const check_auth= async ()=>{
   try{
-    let users= await axios.get("http://localhost:8000/app/users/");
+    let users= await axios.get("http://localhost:8000/app/users/",{
+      headers:{ "X-CSRFToken":csrftoken},
+    });
      
     if(users.status===202){
       console.log("get user :  ",users.data);// axios automatically parses JSON responses
@@ -113,7 +127,7 @@ catch(error){
       getProfile();
        
         setCurrentUser(true);
-       
+      
     }
     else{
     setCurrentUser(false);
@@ -127,19 +141,22 @@ catch(error){
 
   const getProfile= async()=>{
   
-    const profiles= await axios.get("http://localhost:8000/app/userProfile/get_user_profile/");
+    const profiles= await axios.get("http://localhost:8000/app/userProfile/get_user_profile/",{
+      headers:{ "X-CSRFToken":csrftoken},
+    });
   try{
     console.log("response from Header to get Profile YUPPPP: ",profiles.data);
     const getDATA=profiles.data
     console.log("get username from getDATA ",getDATA.username);
-   
+    console.log("get ID from getDATA ",getDATA.id);
     
-    setusername(getDATA.username);
-    setAddress(getDATA.Address);
-    setemail(getDATA.email);
-    getProfileID(getDATA.id);
-  
+    // setusername(getDATA.username);
+    // setAddress(getDATA.Address);
+    // setemail(getDATA.email);
+    // getProfileID(getDATA.id);
+ 
   setProfile(profiles.data);
+  getProfileID(getDATA.id);
 
   
   } 
@@ -150,24 +167,21 @@ catch(error){
     
 }
 
-// useEffect(()=>{
-
-//   //setusername(profile.username);
-//   // setAddress(profile.Address);
-//   // setemail(profile.email);
-//   console.log("userId data : ",userID);
-// 
-// 
-// },[getProfile])
-
+useEffect(()=>{
+  setusername(profile.username);
+    setAddress(profile.Address);
+    setemail(profile.get_email);
+    
+},[profile])
 useEffect(()=>{
 
   check_auth()
 },[])
 
-
+// 153448 
+//0F1035
     return (
-        <Navbar className=" justify-content-between" style={{"backgroundColor":"#153448",width:"100%"}}>
+        <Navbar className=" justify-content-between" style={{"backgroundColor":"#152A38",width:"100%"}}>
      
    
         <Form inline >
@@ -187,7 +201,7 @@ useEffect(()=>{
             <FaShoppingCart size={40} style={{color:"#ffff"}} onClick={()=>{
               if(currentUser){
 
-                navigate("/cart");
+                navigate("/cart",{state:{user:userID}})
               
               }
               else{
@@ -212,7 +226,7 @@ useEffect(()=>{
      <Col  xs={1} md={1} >
         
         </Col>
-     <p style={{margin:"5px",fontWeight:"bold"}}>{profile.email}</p>
+     <p style={{margin:"5px",fontWeight:"bold"}}>{profile.get_email}</p>
      <p style={{margin:"5px"}}>{profile.Address}</p>
      
      <Button variant="outline-danger" style={{bottom:"10px",position:"absolute",left:"15px"}} onClick={Logout}>Logout</Button>
@@ -226,14 +240,14 @@ useEffect(()=>{
         <Modal.Body>
        <Row>
       <label>username</label> <input style={{margin:"5px",width:"300px"}} placeholder={profile.username} onChange={(evt)=>{setusername(evt.target.value)}}/>        
-       <label>email</label> <input  style={{margin:"5px",width:"300px"}}  placeholder={profile.email} onChange={(evt)=>{setemail(evt.target.value)}}/>        
+       <label>email</label> <input  style={{margin:"5px",width:"300px"}}  placeholder={profile.get_email} onChange={(evt)=>{setemail(evt.target.value)}}/>        
          <label>Address</label><input  style={{margin:"5px",width:"300px"}}  placeholder={profile.Address} onChange={(evt)=>{setAddress(evt.target.value)}}/>  
        <br/>
 
-       <hr/>
+       {/* <hr/> */}
       
        </Row>      
-     <button onClick={()=>{
+       {/* <button onClick={()=>{
       console.log(username);
       console.log(email);
       console.log(Address);
@@ -243,14 +257,14 @@ useEffect(()=>{
       
      }}>
       just check 
-     </button>
+     </button> */}
         
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="outline-danger" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={UpdateProfile}>
+          <Button variant="outline-secondary" onClick={UpdateProfile}>
             Save Changes
           </Button>
         </Modal.Footer>

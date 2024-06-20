@@ -21,7 +21,8 @@ const [bookID,setBookId]=useState(location.state.book_id)
 const [bookDetails,setBookDetails]=useState("");
 
 let currentDate = format(new Date(), 'yyyy-MM-dd');
-const {order,csrftoken,createOrder,getOrder}=useContext(OrderContext);
+
+const {order,csrftoken,createOrder,getOrder,orderBooks}=useContext(OrderContext);
 
 const ORDERID=order[0];
 // const [orderID,setOrderID]=useState(order);
@@ -60,9 +61,11 @@ const GetBookDetails= async()=>{
 };
 useEffect(()=>{
 
+if(!order){
 
-        getOrder();
-        // setOrderID(order);
+    createOrder();
+   
+} // setOrderID(order);
     
  
 },[]);
@@ -84,7 +87,7 @@ const addNewBook= async()=>{
         
             console.log("You have successfully added new Order Book");
         //   navigate("/cart");
-      
+        getOrder();
             console.log(response.data)
       
       
@@ -120,17 +123,10 @@ const addNewBook= async()=>{
 
 const handelClick=async (e)=>{
     e.preventDefault();
-  if(!order){
-     await createOrder();
-     console.log("ORDER AFTER CALLİNG CREATE ORDER METHOD : ",order);
-     await addNewBook();
-    }
-    else{
-        await addNewBook();
-    }
+
+
   
-  
-  
+addNewBook();
  
 
   
@@ -183,9 +179,9 @@ const HandelRate = (i) => async (evt) => {
 const checkOrder=()=>{
     console.log("got order form Order Context :",order);
     console.log("orrrrderrrr idddd : ",orderID);
-//     console.log("order[1] :",order[1]);
-// const element=order[1];
-// console.log("jush checl element",element["id"]);
+
+console.log("This is Ordered Books",orderBooks);
+
     
 }
 
@@ -197,12 +193,12 @@ useEffect(()=>{
 console.log("THİS İS ORDER ID FROM USEEFFECT  ",orderID);
 getOrder();
 // setOrderID(order);
-},GetBookDetails)
+},[])
 
     return(<>
 <Header/>
 <Button variant="outline-dark" style={{margin:"10px"}}  onClick={()=>{navigate("/")}}>  <IoIosArrowRoundBack /></Button>
-{/* <Button onClick={checkOrder}>Get order </Button> */}
+<Button onClick={checkOrder}>Get order </Button>
 <Row>
 {/*//////////////  FİRST DİV//////////////// */}
 
