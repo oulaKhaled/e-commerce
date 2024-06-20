@@ -49,7 +49,8 @@ function update_form_btn(e) {
         .catch(error => {
             console.error('There was an error logging in!', error);
         });
-        window.location.reload();
+        // window.location.reload();
+
         navigate("/");
 };
 const submitRegisteration=(e)=>{
