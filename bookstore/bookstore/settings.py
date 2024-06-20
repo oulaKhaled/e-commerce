@@ -150,21 +150,34 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost,http://127.0.0.1,http://0.0.0.0,https://e-commerce-1-2ptc.onrender.com",
+    "http://localhost",
+    "http://127.0.0.1",
+    "http://0.0.0.0",
+    "https://e-commerce-1-2ptc.onrender.com",
 ]
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000,https://e-commerce-8io3.onrender.com,https://e-commerce-1-2ptc.onrender.com",
+    "http://localhost:3000",
+    "https://e-commerce-8io3.onrender.com",
+    "https://e-commerce-1-2ptc.onrender.com",
 ]
 
 
 CORS_ORIGIN_WHITELIST = [
-    "127.0.0.1:3000,127.0.0.1::8000,https://e-commerce-8io3.onrender.com,https://e-commerce-1-2ptc.onrender.com",  # Add the origin of your React app
+    "127.0.0.1:3000",
+    "127.0.0.1::8000",
+    "https://e-commerce-8io3.onrender.com",
+    "https://e-commerce-1-2ptc.onrender.com",  # Add the origin of your React app
 ]
 CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = True
+SESSION_COOKIE_HTTPONLY = False
+SESSION_COOKIE_SAMESITE = None
 
+# Ensure the CSRF cookie is accessible and properly configured
+CSRF_COOKIE_HTTPONLY = False
+CSRF_COOKIE_SAMESITE = None
 #   "http://127.0.0.1:8000",
 #   "http://0.0.0.0:8000",
 # "http://127.0.0.1::8000",
