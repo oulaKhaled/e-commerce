@@ -160,8 +160,8 @@ CSRF_TRUSTED_ORIGINS = [
 
 CORS_ORIGIN_WHITELIST = [
     "127.0.0.1::8000",
-    "https://e-commerce-8io3.onrender.com",
-    "https://e-commerce-1-2ptc.onrender.com",  # Add the origin of your React app
+    "e-commerce-8io3.onrender.com",
+    "e-commerce-1-2ptc.onrender.com",  # Add the origin of your React app
 ]
 CORS_ORIGIN_ALLOW_ALL = True
 
