@@ -28,7 +28,7 @@ SECRET_KEY = "django-insecure-pi@oy&@v)656hz5#0on#^!yqrcy+1$dnjck4_6oc)&5r%uho-z
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*,e-commerce-8io3.onrender.com/"]
+ALLOWED_HOSTS = ["*,e-commerce-8io3.onrender.com"]
 
 ALLOWED_HOSTS_DEPLOY = ["*,e-commerce-8io3.onrender.com"]
 
@@ -150,15 +150,15 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost,http://127.0.0.1,http://0.0.0.0,https://e-commerce-backend-m4l2.onrender.com"
+    "http://localhost,http://127.0.0.1,http://0.0.0.0,https://e-commerce-8io3.onrender.com"
 ]
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000,https://e-commerce-backend-m4l2.onrender.com",
+    "http://localhost:3000,https://e-commerce-8io3.onrender.com",
 ]
 
 
 CORS_ORIGIN_WHITELIST = [
-    "http://localhost:8000,http://localhost:3000,https://e-commerce-backend-m4l2.onrender.com",  # Add the origin of your React app
+    "http://localhost:8000,http://localhost:3000,https://e-commerce-8io3.onrender.com",  # Add the origin of your React app
 ]
 CORS_ORIGIN_ALLOW_ALL = True
 
