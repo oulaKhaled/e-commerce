@@ -151,18 +151,21 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost",
     "http://127.0.0.1",
     "http://0.0.0.0",
-    "https://e-commerce-backend-twar.onrender.com",
+    "https://e-commerce-backend-m4l2.onrender.com",
 ]
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
-    "https://e-commerce-backend-twar.onrender.com",
+    "https://e-commerce-backend-m4l2.onrender.com",
 ]
 
 
 CORS_ORIGIN_WHITELIST = [
-    "127.0.0.1:3000",
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1::8000",
+    "http://localhost:8000",
+    "http://localhost:3000",
     "127.0.0.1::8000",
-    "https://e-commerce-backend-twar.onrender.com",  # Add the origin of your React app
+    "https://e-commerce-backend-m4l2.onrender.com",  # Add the origin of your React app
 ]
 CORS_ORIGIN_ALLOW_ALL = True
 
