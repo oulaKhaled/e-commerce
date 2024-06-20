@@ -169,6 +169,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = True
+ SESSION_COOKIE_DOMAIN=["e-commerce-8io3.onrender.com"]
 #   "http://127.0.0.1:8000",
 #   "http://0.0.0.0:8000",
 # "http://127.0.0.1::8000",
