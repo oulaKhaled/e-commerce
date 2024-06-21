@@ -180,7 +180,8 @@ CSRF_COOKIE_HTTPONLY = False
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+# STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
 # CORS_ALLOWED_ORIGINS = [
 #     "http://localhost",
 #     "http://127.0.0.1",
