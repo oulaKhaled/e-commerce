@@ -115,9 +115,10 @@ catch(error){
 }
 }
 
+// ${BASE_URL}/app/users/
   const check_auth= async ()=>{
   try{
-    let users= await axios.get(`${BASE_URL}/app/users/`,{
+    let users= await axios.get(`https://e-commerce-8io3.onrender.com/app/users/`,{
       withCredentials:true,
       headers:{ 
         'Content-Type': 'application/json',

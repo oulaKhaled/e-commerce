@@ -151,9 +151,22 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-CORS_ALLOWED_ORIGINS = ["http://localhost:8000", "http://localhost:3000"]
-CSRF_TRUSTED_ORIGINS = ["http://localhost:8000", "http://localhost:3000"]
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost",
+    "http://127.0.0.1",
+    "http://0.0.0.0",
+]
+CSRF_TRUSTED_ORIGINS = ["http://localhost:3000"]
+
+
+CORS_ORIGIN_WHITELIST = [
+    "127.0.0.1:3000",
+    "127.0.0.1::8000",  # Add the origin of your React app
+]
+CORS_ORIGIN_ALLOW_ALL = True
+
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_ALL_ORIGINS = True
 
 
 # CORS_ALLOWED_ORIGINS = [
