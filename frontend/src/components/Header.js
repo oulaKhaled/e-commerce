@@ -224,7 +224,7 @@ useEffect(()=>{
     
 },[profile])
 useEffect(()=>{
-check_auth();
+
  
  
 },[])
