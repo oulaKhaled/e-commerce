@@ -37,7 +37,7 @@ function Header({sendDataToHome}){
 const [profile,setProfile]=useState([]);
 const [query,setQuery]=useState([]);
   const navigate = useNavigate();
-const {csrftoken}=useContext(OrderContext);
+// const {csrftoken}=useContext(OrderContext);
 const [show, setShow] = useState(false);
 
 const handleClose = () => setShow(false);
@@ -77,6 +77,19 @@ const handelClick=()=>{
 }
 
 
+const getToken= async()=>{
+  try{
+    let response = await axios.get(`${BASE_URL}/app/csrf/`);
+    console.log(response.data);
+
+  } 
+  catch(error){
+    console.log(error);
+  }
+  
+}
+
+
 
 const UpdateProfile= async(e)=>{
   e.preventDefault();
@@ -89,7 +102,7 @@ const UpdateProfile= async(e)=>{
     }
     ,{
 withCredentials:true,
-    headers:{ "X-CSRFToken":csrftoken},
+    // headers:{ "X-CSRFToken":csrftoken},
       
        });
  
@@ -118,11 +131,11 @@ catch(error){
 // ${BASE_URL}/app/users/
   const check_auth= async ()=>{
   try{
-    let users= await axios.get(`https://e-commerce-8io3.onrender.com/app/users/`,{
+    let users= await axios.get(`${BASE_URL}/app/users/`,{
       withCredentials:true,
       headers:{ 
         'Content-Type': 'application/json',
-        "X-CSRFToken":csrftoken
+        // "X-CSRFToken":csrftoken
       },
     });
      
@@ -159,7 +172,7 @@ catch(error){
   const getProfile= async()=>{
   
     const profiles= await axios.get(`${BASE_URL}/app/userProfile/get_user_profile/`,{
-      headers:{ "X-CSRFToken":csrftoken},
+      // headers:{ "X-CSRFToken":csrftoken},
     });
   try{
     console.log("response from Header to get Profile YUPPPP: ",profiles.data);
@@ -193,14 +206,14 @@ useEffect(()=>{
 useEffect(()=>{
 
   check_auth()
-  console.log(csrftoken);
+ 
 },[])
 
 // 153448 
 //0F1035
     return (
         <Navbar className=" justify-content-between" style={{"backgroundColor":"#152A38",width:"100%"}}>
-     
+<button onClick={getToken}>Get token</button>
    
         <Form inline >
       

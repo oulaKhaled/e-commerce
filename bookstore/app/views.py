@@ -18,7 +18,7 @@ from .serializers import (
     UserLoginSerializer,
 )
 from django.core.exceptions import ValidationError
-
+from django.views.decorators.csrf import get_token
 from rest_framework.decorators import action
 from rest_framework import permissions, status
 from rest_framework.views import APIView
@@ -50,6 +50,11 @@ def validate_password(data):
     if not password:
         raise ValidationError("a password is needed")
     return True
+
+
+def csrf_token(request):
+    token = get_token(request)
+    return JsonResponse({"csrftoken": token})
 
 
 class UserLoginView(APIView):

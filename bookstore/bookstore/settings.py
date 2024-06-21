@@ -28,7 +28,7 @@ SECRET_KEY = "django-insecure-pi@oy&@v)656hz5#0on#^!yqrcy+1$dnjck4_6oc)&5r%uho-z
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["e-commerce-8io3.onrender.com", "localhost"]
+ALLOWED_HOSTS = ["e-commerce-8io3.onrender.com", "localhost", "127.0.0.1"]
 
 ALLOWED_HOSTS_DEPLOY = ["e-commerce-8io3.onrender.com"]
 
@@ -102,6 +102,7 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.IsAuthenticated",
     },
     "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework.authentication.BasicAuthentication",
         "rest_framework.authentication.SessionAuthentication",
     ),
 }
