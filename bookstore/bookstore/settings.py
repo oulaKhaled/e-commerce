@@ -96,6 +96,7 @@ WSGI_APPLICATION = "bookstore.wsgi.application"
 DATABASE_URL = "postgres://bookstore_db2_user:RmjY6xsldUuJ7auyDnSdogbyUjAVX7Zl@dpg-cppvantds78s73efim3g-a.oregon-postgres.render.com/bookstore_db2"
 DATABASES = {"default": dj_database_url.config(default=DATABASE_URL)}
 
+
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSIONS_CLASSES": {
         "rest_framework.permissions.IsAuthenticated",
@@ -159,7 +160,7 @@ CSRF_TRUSTED_ORIGINS = [
 
 
 CORS_ORIGIN_WHITELIST = [
-    "127.0.0.1::8000",
+    "127.0.0.1:8000",
     "e-commerce-8io3.onrender.com",
     "e-commerce-1-2ptc.onrender.com",  # Add the origin of your React app
 ]
@@ -167,6 +168,11 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = True
+
+SESSION_COOKIE_AGE = 1209600
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+SESSION_COOKIE_SECURE = True  # Set to True in production with HTTPS
+SESSION_COOKIE_SAMESITE = "Lax"
 
 
 # SESSION_COOKIE_DOMAIN = "https://e-commerce-1-2ptc.onrender.com"

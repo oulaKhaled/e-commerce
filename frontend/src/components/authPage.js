@@ -34,30 +34,31 @@ function update_form_btn(e) {
 
 
 
-  const submitLogin = (e) => {
+  const submitLogin =async (e) => {
     e.preventDefault();
-    axios.post(`${BASE_URL}/app/login/`, { username, password },{
-      withCredentials:true,
-      headers:{
-        "X-CSRFToken":csrftoken
-      }
-    })
-        .then(response => {
-            console.log(response.data);
-            // createOrder();
-           
-           
-        })
-        .catch(error => {
-            console.error('There was an error logging in!', error);
-        });
+    try{
+
+      let response= await axios.post(`${BASE_URL}/app/login/`, { username, password },{
+        withCredentials:true,
+        headers:{
+          "X-CSRFToken":csrftoken
+        }
+      });
+      console.log(response.data);
+      navigate("/");
+
+      
+    }
+    catch(error){
+      console.log(error);
+    }
         // window.location.reload();
 
-        navigate("/");
-};
-const submitRegisteration=(e)=>{
+
+      };
+const submitRegisteration= async (e)=>{
     e.preventDefault();
-    axios.post(`${BASE_URL}/app/register/`,{username,password,email},{
+   await axios.post(`${BASE_URL}/app/register/`,{username,password,email},{
       withCredentials:true,
    headers:{
     "X-CSRFToken":csrftoken,

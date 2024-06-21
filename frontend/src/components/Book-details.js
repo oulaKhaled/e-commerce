@@ -199,7 +199,7 @@ getOrder();
     return(<>
 <Header/>
 <Button variant="outline-dark" style={{margin:"10px"}}  onClick={()=>{navigate("/")}}>  <IoIosArrowRoundBack /></Button>
-<Button onClick={checkOrder}>Get order </Button>
+{/* <Button onClick={checkOrder}>Get order </Button> */}
 <Row>
 {/*//////////////  FİRST DİV//////////////// */}
 
