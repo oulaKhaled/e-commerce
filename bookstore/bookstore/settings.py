@@ -173,25 +173,4 @@ SESSION_COOKIE_AGE = 1209600
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 SESSION_COOKIE_SECURE = True  # Set to True in production with HTTPS
 SESSION_COOKIE_SAMESITE = "Lax"
-
-
-# SESSION_COOKIE_DOMAIN = "https://e-commerce-1-2ptc.onrender.com"
-# SESSION_SAVE_EVERY_REQUEST = True
-# # SESSION_COOKIE_HTTPONLY = False
-# # SESSION_COOKIE_SAMESITE = None
-# # SESSION_COOKIE_SECURE = True
-
-# CSRF_COOKIE_DOMAIN = "e-commerce-1-2ptc.onrender.com"
-# CSRF_COOKIE_HTTPONLY = True
-# CSRF_COOKIE_SAMESITE = None
-# CSRF_COOKIE_SECURE = True
-# SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
-
-# CSRF_USE_SESSIONS = False
-# SESSION_COOKIE_SECURE = False
-# CSRF_COOKIE_SECURE = False
-
-# SESSION_COOKIE_SAMESITE = None
-#   "http://127.0.0.1:8000",
-#   "http://0.0.0.0:8000",
-# "http://127.0.0.1::8000",
+SESSION_COOKIE_HTTPONLY = False
