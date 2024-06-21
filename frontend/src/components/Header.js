@@ -118,7 +118,11 @@ catch(error){
   const check_auth= async ()=>{
   try{
     let users= await axios.get(`${BASE_URL}/app/users/`,{
-      headers:{ "X-CSRFToken":csrftoken},
+      withCredentials:true,
+      headers:{ 
+        'Content-Type': 'application/json',
+        "X-CSRFToken":csrftoken
+      },
     });
      
     if(users.status===202){
@@ -133,8 +137,20 @@ catch(error){
     setCurrentUser(false);
     }
   }
-  catch(error){
-    console.log(error);
+  catch (error) {
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      console.log("Error response data:", error.response.data);
+      console.log("Error response status:", error.response.status);
+      console.log("Error response headers:", error.response.headers);
+    } else if (error.request) {
+      // The request was made but no response was received
+      console.log("Error request:", error.request);
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.log("Error message:", error.message);
+    }
   }
     
   }
@@ -176,6 +192,7 @@ useEffect(()=>{
 useEffect(()=>{
 
   check_auth()
+  console.log(csrftoken);
 },[])
 
 // 153448 

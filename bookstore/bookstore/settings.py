@@ -28,7 +28,7 @@ SECRET_KEY = "django-insecure-pi@oy&@v)656hz5#0on#^!yqrcy+1$dnjck4_6oc)&5r%uho-z
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["e-commerce-8io3.onrender.com"]
+ALLOWED_HOSTS = ["e-commerce-8io3.onrender.com", "localhost"]
 
 ALLOWED_HOSTS_DEPLOY = ["e-commerce-8io3.onrender.com"]
 
@@ -150,27 +150,20 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-CORS_ALLOWED_ORIGINS = [
-    "https://e-commerce-1-2ptc.onrender.com",
-]
-CSRF_TRUSTED_ORIGINS = [
-    "https://e-commerce-8io3.onrender.com",
-    "https://e-commerce-1-2ptc.onrender.com",
-]
 
-
-CORS_ORIGIN_WHITELIST = [
-    "127.0.0.1:8000",
-    "e-commerce-8io3.onrender.com",
-    "e-commerce-1-2ptc.onrender.com",  # Add the origin of your React app
-]
-CORS_ORIGIN_ALLOW_ALL = True
-
+CORS_ALLOWED_ORIGINS = ["http://localhost:8000", "http://localhost:3000"]
+CSRF_TRUSTED_ORIGINS = ["http://localhost:8000", "http://localhost:3000"]
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_ALL_ORIGINS = True
 
-SESSION_COOKIE_AGE = 1209600
-SESSION_EXPIRE_AT_BROWSER_CLOSE = False
-SESSION_COOKIE_SECURE = False  # Set to True in production with HTTPS
-SESSION_COOKIE_SAMESITE = "Lax"
-SESSION_COOKIE_HTTPONLY = False
+
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost",
+#     "http://127.0.0.1",
+#     "http://0.0.0.0",
+# ]
+
+# CORS_ALLOW_CREDENTIALS = True
+# CORS_ORIGIN_WHITELIST = [
+#     "127.0.0.1:8000",
+#     "localhost:3000",
+# ]
