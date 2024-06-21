@@ -175,6 +175,9 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = True
 
 SESSION_COOKIE_HTTPONLY = False
+SESSION_COOKIE_DOMAIN = ".onrender.com"
+SESSION_COOKIE_SECURE = False
+
 # CORS_ALLOWED_ORIGINS = [
 #     "http://localhost",
 #     "http://127.0.0.1",
