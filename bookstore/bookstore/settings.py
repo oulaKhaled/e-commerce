@@ -143,7 +143,7 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 MEDIA_URL = "/images/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "images")
+MEDIA_ROOT = os.path.join(BASE_DIR, "images/")
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
@@ -179,6 +179,7 @@ CSRF_COOKIE_HTTPONLY = False
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 # CORS_ALLOWED_ORIGINS = [
 #     "http://localhost",
 #     "http://127.0.0.1",
