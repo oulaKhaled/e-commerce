@@ -147,11 +147,11 @@ catch(error){
 // ${BASE_URL}/app/users/
   const check_auth= async ()=>{
   try{
-    let users= await axios.get(`${BASE_URL}/app/users/`,{
+    let users= await axios.get(`http://127.0.0.1:8000/app/users/`,{
       withCredentials:true,
       headers:{ 
-        'Content-Type': 'application/json',
-        "X-CSRFToken":token
+      
+        "X-CSRFToken":JSON.stringify("q66oJuEBuyhwmXbhbm6atlOo84cIq5Yr")
       },
     });
      
