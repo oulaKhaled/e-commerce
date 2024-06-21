@@ -73,10 +73,11 @@ class UserLoginView(APIView):
 
 class UserView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
-    authentication_classes = (SessionAuthentication,)
+    # authentication_classes = (SessionAuthentication,)
 
     def get(self, requset):
         serializer = UserSerializer(requset.user)
+        print("request.user", requset.user)
         return Response({"user": serializer.data}, status=status.HTTP_202_ACCEPTED)
 
 

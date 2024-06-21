@@ -104,6 +104,8 @@ const getToken= async()=>{
   // }
   console.log("IGOT THİS TOKEN : ",csrftoken);
   console.log("COOKİE : ",document.cookie);
+ const mytoken= localStorage.setItem("sessionid","lkdflsfd");
+ console.log("Maybe this could Work ",mytoken);
 }
 
 
@@ -147,12 +149,13 @@ catch(error){
 // ${BASE_URL}/app/users/
   const check_auth= async ()=>{
   try{
-    let users= await axios.get(`http://127.0.0.1:8000/app/users/`,{
+    let users= await axios.get(`${BASE_URL}/app/users/`,{
       withCredentials:true,
-      headers:{ 
-      
-        "X-CSRFToken":JSON.stringify("q66oJuEBuyhwmXbhbm6atlOo84cIq5Yr")
-      },
+      headers:{
+        'Content-Type': 'application/json',
+        "X-CSRFToken":csrftoken
+    
+      }
     });
      
     if(users.status===202){
