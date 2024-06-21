@@ -131,9 +131,9 @@ const handleClose =  () => {
     setShow(false);
 
 
- window.location.reload();
+//  window.location.reload();
 
-  
+console.log("refresh must be done here");  
     
 };
 

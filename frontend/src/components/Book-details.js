@@ -90,7 +90,7 @@ const addNewBook= async()=>{
         //   navigate("/cart");
         getOrder();
             console.log(response.data)
-      
+      navigate("/cart");
       
         }) ;
     }
@@ -160,7 +160,9 @@ const HandelRate = (i) => async (evt) => {
         if (response.status===200){
             console.log(response.data);
             console.log("Ratin is successfully done");
-            window.location.reload();
+            console.log("page must be refreshed");
+            
+            //window.location.reload();
 
         }
         else{

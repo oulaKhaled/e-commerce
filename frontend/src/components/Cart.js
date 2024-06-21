@@ -91,7 +91,11 @@ const increaseQuantity= async()=>{
     //  getOrder();
 //         SetOrderBook(orderBooks);
 // setOrderID(order);
-        window.location.reload();
+        //window.location.reload();
+        console.log(" a refresh must be done here");
+   
+  
+ 
   // navigate("/cart")
         console.log(response.data)
       }
@@ -114,7 +118,8 @@ try{
     // getOrder();
 //     SetOrderBook(orderBooks);
 // setOrderID(order);
-     window.location.reload();
+     //window.location.reload();
+     console.log(" a refresh must be done here");
    
   
  
@@ -138,8 +143,11 @@ const deleteBook= async()=>{
     //  getOrder();
 //     SetOrderBook(orderBooks);
 // setOrderID(order);
-    window.location.reload();
-    
+    //window.location.reload();
+    console.log(" a refresh must be done here");
+   
+  
+ 
   }
   catch(error){
     console.log("Get Id for deletion : ",id);

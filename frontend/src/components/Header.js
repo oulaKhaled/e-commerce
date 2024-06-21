@@ -124,9 +124,10 @@ withCredentials:true,
       
        });
  
-      window.location.reload();
+      // window.location.reload();
       console.log(response.data);
-  
+        console.log("refresh must Done here");
+        navigate("/card");
    
   }
 catch(error){
@@ -223,7 +224,7 @@ useEffect(()=>{
     
 },[profile])
 useEffect(()=>{
-
+check_auth();
  
  
 },[])
