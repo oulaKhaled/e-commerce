@@ -171,10 +171,12 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1",
     "http://0.0.0.0",
     "https://e-commerce-five-dun.vercel.app",
+    "https://e-commerce-1-2ptc.onrender.com",
 ]
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
     "https://e-commerce-five-dun.vercel.app",
+    "https://e-commerce-1-2ptc.onrender.com",
 ]
 
 
@@ -182,6 +184,7 @@ CORS_ORIGIN_WHITELIST = [
     "127.0.0.1:3000",
     "127.0.0.1::8000",  # Add the origin of your React app
     "https://e-commerce-five-dun.vercel.app",
+    "https://e-commerce-1-2ptc.onrender.com",
 ]
 CORS_ORIGIN_ALLOW_ALL = True
 
@@ -190,7 +193,10 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 SESSION_COOKIE_HTTPONLY = True
 CSRF_COOKIE_HTTPONLY = False
-
+SESSION_COOKIE_DOMAIN = [
+    "e-commerce-1-2ptc.onrender.com",
+    "e-commerce-five-dun.vercel.app",
+]
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 # STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
