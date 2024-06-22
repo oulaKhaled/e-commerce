@@ -67,7 +67,9 @@ useEffect(()=>{
   
 },[])
 
-
+useEffect(()=>{
+getOrder();
+},[])
 
 const increaseQuantity= async()=>{
  
