@@ -86,7 +86,6 @@ class UserLogout(APIView):
 
 class BookView(viewsets.ModelViewSet):
     permission_classes = (permissions.AllowAny,)
-
     queryset = models.Book.objects.all()
     serializer_class = BookSerializer
 

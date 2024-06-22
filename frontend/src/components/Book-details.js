@@ -149,9 +149,7 @@ const HandelRate = (i) => async (evt) => {
         let response=await axios.post(`${BASE_URL}/app/book/${bookDetails.id}/rate_book/`,{
             "stars":i,
         },{
-            headers:{
-                "X-CSRFToken":csrftoken,
-            }
+            headers:{ "Authorization":` Token ${Token}`}
         });
         if (response.status===200){
             console.log(response.data);

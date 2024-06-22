@@ -23,7 +23,7 @@ const submitLogin =async (username,password) => {
 
     let response= await axios.post(`${BASE_URL}/app/login/`, { username, password },{
       withCredentials:true,
-     
+      headers:{ "Authorization":` Token ${Token}`}
     });
     console.log(response.data);
     setCurrentUser(true);
@@ -47,7 +47,7 @@ const submitSignup= async (username,password,email)=>{
   
  await axios.post(`${BASE_URL}/app/register/`,{username,password,email},{
     withCredentials:true,
-
+    headers:{ "Authorization":` Token ${Token}`}
     })
   .then(response=>{
     console.log(response.data);
@@ -87,7 +87,9 @@ const submitlogout= async()=>{
 
 const getOrder=async()=>{
   try{  
-  let response =await axios.get(`${BASE_URL}/app/orders/`,);
+  let response =await axios.get(`${BASE_URL}/app/orders/`,{
+    headers:{ "Authorization":` Token ${Token}`}
+  });
   if (response.status===200){
     const data=response.data;
    if(Array.isArray(data)){
@@ -112,7 +114,9 @@ const getOrder=async()=>{
 
 const createOrder=async()=>{
   try{
-    let response =await axios.post(`${BASE_URL}/app/orders/`,{});
+    let response =await axios.post(`${BASE_URL}/app/orders/`,{},{
+      headers:{ "Authorization":` Token ${Token}`}
+    });
     if (response.status===201){
       console.log("New Order is created ");
 

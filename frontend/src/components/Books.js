@@ -32,9 +32,7 @@ const {Token}=useContext(Context);
 
 
 const GetBook = async ()=>{
-let response =await axios.get(`${BASE_URL}/app/book/`,{
-  headers:{ "Authorization":` Token ${Token}`}
-});
+let response =await axios.get(`${BASE_URL}/app/book/`,);
 console.log("BOOKS : ",response.data);
 const BookData=response.data
 setFilterdBooks(BookData)
