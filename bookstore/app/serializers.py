@@ -58,7 +58,13 @@ class BookSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
-        fields = ["id", "user", "username", "email", "Address", "get_email"]
+        fields = [
+            "id",
+            "user",
+            "username",
+            "email",
+            "Address",
+        ]
 
 
 class ShippininformationSerializer(serializers.ModelSerializer):

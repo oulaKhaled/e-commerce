@@ -5,7 +5,7 @@ import Row from "react-bootstrap/esm/Row";
 import Button from "react-bootstrap/esm/Button";
 import './../../src/App.css';
 import { useContext } from "react";
-import OrderContext from "./Cart";
+
 import { format } from 'date-fns';
 import Carousel from 'react-bootstrap/Carousel';
 
@@ -13,15 +13,13 @@ import { FaStar } from "react-icons/fa";
 import { BASE_URL } from "./Home";
 import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from "react-router-dom";
-
+import Context from "../context/context";
 
 function Books(props){
-const order=useContext(OrderContext);
+
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.withCredentials = true;
-
-// const [searchData,setSearchData]=useState(props.books);
 
 const searchData=props.books
 const navigate=useNavigate();
@@ -30,11 +28,13 @@ const navigate=useNavigate();
 
 const [books,setBooks]=useState([]);
 const[filterdBooks,setFilterdBooks]=useState("");
-
+const {Token}=useContext(Context);
 
 
 const GetBook = async ()=>{
-let response =await axios.get(`${BASE_URL}/app/book/`);
+let response =await axios.get(`${BASE_URL}/app/book/`,{
+  headers:{ "Authorization":` Token ${Token}`}
+});
 console.log("BOOKS : ",response.data);
 const BookData=response.data
 setFilterdBooks(BookData)
@@ -49,7 +49,6 @@ setFilterdBooks(BookData)
 }
 
 
-// console.log("Printed Books : ",books);
 
 useEffect(()=>{
  

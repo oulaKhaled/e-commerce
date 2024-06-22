@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "rest_framework.authtoken",
     "corsheaders",
     "whitenoise",
 ]
@@ -107,6 +108,7 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework.authentication.BasicAuthentication",
         "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.TokenAuthentication",
     ),
 }
 
@@ -193,10 +195,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 SESSION_COOKIE_HTTPONLY = True
 CSRF_COOKIE_HTTPONLY = False
-SESSION_COOKIE_DOMAIN = [
-    "e-commerce-1-2ptc.onrender.com",
-    "e-commerce-five-dun.vercel.app",
-]
+
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 # STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"

@@ -12,7 +12,7 @@ from .views import (
     UserRegisterView,
     UserLoginView,
     UserLogout,
-    csrf_token,
+    test_token,
 )
 from bookstore import settings
 from django.conf.urls.static import static
@@ -27,12 +27,13 @@ router.register(r"rating", RatingView, basename="rating")
 router.register(
     r"shippinginformation", ShippininformationView, basename="shippinginformation"
 )
+router.register(r"users", UserView, basename="users")
+
 
 urlpatterns = [
     path("", include(router.urls)),
-    path("users/", UserView.as_view(), name="users"),
     path("register/", UserRegisterView.as_view(), name="register"),
     path("login/", UserLoginView.as_view(), name="login"),
     path("logout/", UserLogout.as_view(), name="logout"),
-    path("csrf/", csrf_token, name="csrf"),
+    path("test_token/", test_token, name="test_token"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

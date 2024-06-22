@@ -7,7 +7,7 @@ import { useState } from "react";
 import axios from 'axios';
 import Button from "react-bootstrap/esm/Button";
 import { useContext } from "react";
-import OrderContext from "../context/orderContext";
+import Context from "../context/context";
 import { BASE_URL } from "./Home";
 function AuthPage(){
 axios.defaults.xsrfCookieName = 'csrftoken';
@@ -19,8 +19,7 @@ const [username,setusername]=useState("");
 const [password,setPassword]=useState("");
 
 const[email,setEmail]=useState("");
-
-const {order,createOrder,csrftoken}=useContext(OrderContext);
+const {order,createOrder,csrftoken,submitLogin,submitSignup}=useContext(Context);
 
 function update_form_btn(e) {
     e.preventDefault();
@@ -32,67 +31,19 @@ function update_form_btn(e) {
   }
 
 
+const HandelLogin= async()=>{
+const data= await submitLogin(username,password)
+
+  navigate("/");
 
 
-  const submitLogin =async (e) => {
-    e.preventDefault();
-    try{
-
-      let response= await axios.post(`${BASE_URL}/app/login/`, { username, password },{
-        withCredentials:true,
-        headers:{
-          "X-CSRFToken":csrftoken
-        }
-      });
-      console.log(response.data);
-      navigate("/");
-
-      
-    }
-    catch(error){
-      console.log(error);
-    }
-        // window.location.reload();
-
-
-      };
-const submitRegisteration= async (e)=>{
-    e.preventDefault();
-   await axios.post(`${BASE_URL}/app/register/`,{username,password,email},{
-      withCredentials:true,
-   headers:{
-    "X-CSRFToken":csrftoken,
-   
-   }
-      })
-    .then(response=>{
-      console.log(response.data);
-      if(response.status===200){
-        console.log("newusername : ",username);
-        console.log("email : ",email);
-        
-        console.log("password : ",password);
-        
-        axios.post(`${BASE_URL}/app/login/`, { username, password })
-        .then(response => {
-            console.log(response.data);
-            //createOrder();
-            navigate("/");
-           
-        })
-        .catch(error => {
-            console.error('There was an error logging in!', error);
-        });
-      }
-      else{
-        alert("Please Enter a vaild username and password")
-      }
-    })
-    .catch(error=>{
-      console.error("Something Went Wrong")
-    })
-    
-  }
+}
+const HandelSignup=async()=>{
+  const data=  await submitSignup(username,password,email)
+    navigate("/");
+  
+}
+  
 
 return(
     <div>
@@ -119,7 +70,7 @@ setusername(evt.target.value)
 <p className="mycart-p">password</p>
 <input  style={{width:"300px"}} type="password"  onChange={(evt)=>{
 setPassword(evt.target.value)}}/>
-<Button style={{margin:"10px"}} variant="outline-secondary" onClick={submitLogin}  >Login</Button>
+<Button style={{margin:"10px"}} variant="outline-secondary" onClick={HandelLogin}  >Login</Button>
 
 <p style={{fontWeight:"bolder"}}>Don't have an acoount ?<a href="/register" id="form_btn" onClick={update_form_btn}>Register here</a> </p>
 </div>
@@ -137,7 +88,7 @@ setPassword(evt.target.value)}}/>
   <p className="mycart-p">password</p>
   <input  style={{width:"300px",fontWeight:"bolder"}} type="password" variant="outline-secondary"  onChange={(e)=>{setPassword(e.target.value)}}/>
   
-  <Button style={{margin:"10px"}} onClick={submitRegisteration}  variant="outline-secondary" >Register</Button>
+  <Button style={{margin:"10px"}} onClick={HandelSignup}  variant="outline-secondary" >Register</Button>
   <p style={{fontWeight:"bolder"}}>already have an acoount?<a href="/login" id="form_btn" onClick={update_form_btn}>Login here</a> </p>
   </div>
   </>

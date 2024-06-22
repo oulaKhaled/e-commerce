@@ -2,7 +2,7 @@ import json
 from django.shortcuts import render, redirect
 from django.http import response, HttpResponse, JsonResponse
 from django.contrib.auth.forms import UserCreationForm
-
+from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from . import models
 from rest_framework import viewsets
@@ -23,80 +23,69 @@ from rest_framework.decorators import action
 from rest_framework import permissions, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.authentication import SessionAuthentication
+from rest_framework.authentication import TokenAuthentication, SessionAuthentication
+from rest_framework.decorators import (
+    api_view,
+    authentication_classes,
+    permission_classes,
+)
+from django.shortcuts import get_object_or_404
+from rest_framework.authtoken.models import Token
 
 
 class UserRegisterView(APIView):
     permission_classes = (permissions.AllowAny,)
 
-    def post(self, requset):
-        serializer = UserRegisterSerializer(data=requset.data)
-        if serializer.is_valid(raise_exception=True):
-            user = serializer.create(serializer.validated_data)
-            if user:
-                return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
-
-
-def validate_username(data):
-    username = data["username"].strip()
-    if not username:
-        raise ValidationError("choose another username")
-    return True
-
-
-def validate_password(data):
-    password = data["password"].strip()
-    if not password:
-        raise ValidationError("a password is needed")
-    return True
-
-
-def csrf_token(request):
-    token = get_token(request)
-    return JsonResponse({"csrftoken": token})
+    def post(self, request):
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            user = User.objects.get(username=request.data["username"])
+            user.set_password(request.data["password"])
+            user.save()
+            token = Token.objects.create(user=user)
+            return Response({"token": token.key, "user": serializer.data})
+        return Response(serializer.errors, status=status.HTTP_200_OK)
 
 
 class UserLoginView(APIView):
     permission_classes = (permissions.AllowAny,)
 
     def post(self, request):
-        data = request.data
-        assert validate_username(data)
-        assert validate_password(data)
-        serializer = UserLoginSerializer(data=data)
-        if serializer.is_valid(raise_exception=True):
-            user = serializer.check_user(data)
-            login(request, user)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+        user = get_object_or_404(User, username=request.data["username"])
+        if not user.check_password(request.data["password"]):
+            return Response("missing user", status=status.HTTP_404_NOT_FOUND)
+        token, created = Token.objects.get_or_create(user=user)
+        serializer = UserSerializer(user)
+        return Response({"token": token.key, "user": serializer.data})
 
 
-class UserView(APIView):
+class UserView(viewsets.ModelViewSet):
+    authentication_classes = (TokenAuthentication,)
     permission_classes = (permissions.IsAuthenticated,)
-    # authentication_classes = (SessionAuthentication,)
+    queryset = models.User.objects.all()
+    serializer_class = UserSerializer
 
-    def get(self, requset):
-        serializer = UserSerializer(requset.user)
-        print("request.user", requset.user)
-        return Response({"user": serializer.data}, status=status.HTTP_202_ACCEPTED)
+    # def list(self, request, pk, *args, **kwargs):
+    #     user = models.User.objects.get(id=pk)
+    #     print("user", user)
+    #     return super().list(request, *args, **kwargs)
+
+
+@api_view(["GET"])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([permissions.IsAuthenticated])
+def test_token(self):
+    return Response({"passed!!"})
 
 
 class UserLogout(APIView):
     permission_classes = (permissions.AllowAny,)
     authentication_classes = ()
 
-    def post(self, request):
-        try:
-            logout(request)
-            return Response(status=status.HTTP_200_OK)
-        except:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-
 
 class BookView(viewsets.ModelViewSet):
     permission_classes = (permissions.AllowAny,)
-
-    # authentication_classes = (SessionAuthentication,)
 
     queryset = models.Book.objects.all()
     serializer_class = BookSerializer
@@ -128,22 +117,22 @@ class BookView(viewsets.ModelViewSet):
 
 
 class RatingView(viewsets.ModelViewSet):
+    authentication_classes = (TokenAuthentication,)
     permission_classes = (permissions.IsAuthenticated,)
-    authentication_classes = (SessionAuthentication,)
     queryset = models.Rating.objects.all()
     serializer_class = RatingSerializer
 
 
 class ShippininformationView(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAuthenticated,)
-    authentication_classes = (SessionAuthentication,)
+    authentication_classes = (TokenAuthentication,)
     queryset = models.Shippininformation.objects.all()
     serializer_class = ShippininformationSerializer
 
 
 class OrderView(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAuthenticated,)
-    authentication_classes = (SessionAuthentication,)
+    authentication_classes = (TokenAuthentication,)
     queryset = models.Order.objects.all()
     serializer_class = OrderSerializer
 
@@ -202,8 +191,8 @@ class OrderView(viewsets.ModelViewSet):
 
 
 class OrderBookView(viewsets.ModelViewSet):
+    authentication_classes = (TokenAuthentication,)
     permission_classes = (permissions.IsAuthenticated,)
-    authentication_classes = (SessionAuthentication,)
     queryset = models.OrderBook.objects.all()
     serializer_class = OrderBookSerializer
 
@@ -236,21 +225,41 @@ class OrderBookView(viewsets.ModelViewSet):
 
 
 class UserProfileView(viewsets.ModelViewSet):
+    authentication_classes = (TokenAuthentication,)
     permission_classes = (permissions.IsAuthenticated,)
-    authentication_classes = (SessionAuthentication,)
     queryset = models.UserProfile.objects.all()
     serializer_class = UserProfileSerializer
 
-    # customize get Method
-    @action(methods=["GET"], detail=False)
-    def get_user_profile(self, request):
-        user = models.User.objects.get(id=request.user.id)
-        profile = models.UserProfile.objects.get(user=user)
-        if profile:
-            serializer = UserProfileSerializer(profile)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        else:
+    def retrieve(self, request, *args, **kwargs):
+        pk = kwargs.get("pk")
+        try:
+            user = models.User.objects.get(id=pk)
+            if user:
+                profile = models.UserProfile.objects.get(user=user)
+                if profile:
+                    serializer = UserProfileSerializer(profile)
+                    return Response(serializer.data, status=status.HTTP_200_OK)
+                else:
+                    return Response(
+                        {"message": "there is no profile for this user"},
+                        status=status.HTTP_404_NOT_FOUND,
+                    )
+        except User.DoesNotExist:
             return Response(
-                {"message": "there is no profile for this user "},
+                {"message": "user NOT found"},
                 status=status.HTTP_404_NOT_FOUND,
             )
+
+    # customize get Method
+    # @action(methods=["GET"], detail=False)
+    # def get_user_profile(self, request):
+    #     user = models.User.objects.get(id=request.user.id)
+    #     profile = models.UserProfile.objects.get(user=user)
+    #     if profile:
+    #         serializer = UserProfileSerializer(profile)
+    #         return Response(serializer.data, status=status.HTTP_200_OK)
+    #     else:
+    #         return Response(
+    #             {"message": "there is no profile for this user "},
+    #             status=status.HTTP_404_NOT_FOUND,
+    #         )

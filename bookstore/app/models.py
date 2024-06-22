@@ -87,16 +87,15 @@ class UserProfile(models.Model):
     )
 
     def __str__(self):
-        return self.username
-
-    def get_email(self):
-        return self.user.email
+        return self.user.username
 
 
 @receiver(post_save, sender=User)
 def create_profile(sender, instance, created, **kwargs):
     if created:
-        UserProfile.objects.create(user=instance)
+        UserProfile.objects.create(
+            user=instance, username=instance.username, email=instance.email
+        )
         print("new uer profile is created")
 
 

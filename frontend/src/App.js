@@ -6,7 +6,7 @@ import AuthPage from "./components/authPage";
 import Cart from "./components/Cart";
 import Checkout from "./components/checkout";
 import BookDetails from "./components/Book-details";
-import { OrderProvider } from "./context/orderContext";
+import { ContextProvider } from "./context/context";
 function App() {
   
   return (

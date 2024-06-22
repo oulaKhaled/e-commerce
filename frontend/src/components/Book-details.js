@@ -12,7 +12,7 @@ import {useLocation} from 'react-router-dom';
 import axios from "axios";
 import { format, longFormatters } from 'date-fns';
 import { useContext } from "react";
-import OrderContext from "../context/orderContext";
+import Context from "../context/context";
 import { BASE_URL } from "./Home";
 function BookDetails(){
 const navigate=useNavigate();
@@ -23,7 +23,7 @@ const [bookDetails,setBookDetails]=useState("");
 
 let currentDate = format(new Date(), 'yyyy-MM-dd');
 
-const {order,csrftoken,createOrder,getOrder,orderBooks}=useContext(OrderContext);
+const {order,csrftoken,createOrder,getOrder,orderBooks,Token}=useContext(Context);
 
 const ORDERID=order[0];
 // const [orderID,setOrderID]=useState(order);
@@ -35,9 +35,7 @@ const GetBookDetails= async()=>{
 
         let response= await axios.get(`${BASE_URL}/app/book/${bookID}/`,{
             
-            headers:{
-                "X-CSRFToken":csrftoken  
-            }
+          headers:{ "Authorization":` Token ${Token}`}
         });
     if(response.status===200){
         // if(ORDERID){
@@ -81,9 +79,7 @@ const addNewBook= async()=>{
             "book":bookDetails.id,
             "added_date":currentDate,
           },{
-            headers:{
-              "X-CSRFToken":csrftoken
-            }
+         headers:{ "Authorization":` Token ${Token}`}
           }).then(response=>{
         
             console.log("You have successfully added new Order Book");

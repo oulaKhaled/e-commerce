@@ -10,7 +10,7 @@ import Button from "react-bootstrap/esm/Button";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
-import OrderContext from "../context/orderContext";
+import Context from "../context/context";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { GiConfirmed } from "react-icons/gi";
@@ -23,16 +23,17 @@ import { BASE_URL } from "./Home";
 function Checkout(){
  const navigate =useNavigate();
  const location=useLocation();
-const {order,getOrder,orderBooks,csrftoken}=useContext(OrderContext);
+const {order,getOrder,orderBooks,csrftoken,userID,Token}=useContext(Context);
 const ORDERID=order;
 const [payment,PaymentState]=useState(false)
 const [show, setShow] = useState(payment? true:false);
 const data=ORDERID["id"];
 // const{user}=location.state.user;
 let currentDate = format(new Date(), 'yyyy-MM-dd');
-const [user,setUser]=useState(location.state.user?location.state.user:null);
+// const [user,setUser]=useState(location.state.user?location.state.user:null);
+
 const [shippingInformation,setShippingInformation]=useState({
-    "user":user["id"],
+    "user":userID["id"],
     "order":data,
     "address":"",
     "zipcode":"",
@@ -56,14 +57,12 @@ const saveShippingInformation = async ()=>{
 
    
     let response= await axios.post(`${BASE_URL}/app/shippinginformation/`,{
-        "user":user["id"],
+        "user":userID,
         "order":data,
         "address":shippingInformation.address,
         "zipcode":shippingInformation.zipcode,
     },{
-        headers:{
-            "X-CSRFToken":csrftoken  
-        }
+       headers:{ "Authorization":` Token ${Token}`}
     });
     console.log("respone from ShippingInformation Order : ",response.data);
    }
@@ -92,14 +91,16 @@ const saveShippingInformation = async ()=>{
 const UpdateOrder= async()=>{
     console.log(ORDERID["id"]);
     
-    console.log(user);
+    console.log(userID);
   console.log(currentDate);
 
 try{
     let response=await axios.put(`${BASE_URL}/app/orders/${data}/`,{
-        "user":user["id"],
+        "user":userID,
         "order_date":currentDate,
-    "complete":true,}
+    "complete":true,},{
+      headers:{ "Authorization":` Token ${Token}`}
+    }
 
 ,{
     headers:{
@@ -146,7 +147,7 @@ const handleInputChange = (e) => {
     }));
   };
 useEffect(()=>{
-console.log("HOT USER FROM CART PAGE : ",user);
+console.log("HOT USER FROM CART PAGE : ",userID);
 },[])
 
 
@@ -158,19 +159,9 @@ const orderBook=orderBooks;
         <>
              <Header/>
            
-             
-          {/* <Button onClick={()=>{
-            console.log("I got this from cart page : ",order)
-          }}>check OrderID </Button> */}
-{/* 
-it can be above Order Summery Cart */}
-             <Button variant="outline-dark" style={{margin:"10px"}}  onClick={()=>{navigate("/cart",{state:{user:user}})}}>  <IoIosArrowRoundBack /> Back To Cart</Button>
-             {/* <div style={{backgroundColor:"#ffff",height:"150px",width:"700px",position:"relative",left:"300px"}} className="shadow-23">
-             <GiConfirmed size={70} style={{position:"relative",left:"45%"}} />
-
-                            <h1  style={{position:"relative",left:"30%"}}> You order is Confirmed </h1>
-                            <p  style={{position:"relative",left:"25%",fontWeight:"bolder"}}>Please complete you order By Entering your information </p>
-                            </div> */}
+        
+             <Button variant="outline-dark" style={{margin:"10px"}}  onClick={()=>{navigate("/cart")}}>  <IoIosArrowRoundBack /> Back To Cart</Button>
+           
              <Row  >
 {/* first Card */}
           

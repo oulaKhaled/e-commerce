@@ -17,7 +17,7 @@ import { TiMinus } from "react-icons/ti";
 import { useContext } from "react";
 import { format, longFormatters } from 'date-fns';
 import ListGroup from 'react-bootstrap/ListGroup';
-import OrderContext from "../context/orderContext";
+import Context from "../context/context";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { MdDelete } from "react-icons/md";
 import Modal from 'react-bootstrap/Modal';
@@ -36,15 +36,9 @@ const location=useLocation();
   axios.defaults.xsrfHeaderName = 'X-CSRFToken';
   axios.defaults.withCredentials = true;
   const [show, setShow] = useState(false);
-  const {order,csrftoken,getOrder,orderBooks,createOrder}=useContext(OrderContext);
+  const {order,getOrder,orderBooks,createOrder,Token}=useContext(Context);
 const order2=[order];
 
- const [user,setUser]=useState(location.state.user);
-// const [orderID,setOrderID]=useState(()=>{return ORDERID? ORDERID:order});
- 
-// const [orderID,setOrderID]=useState(order);
-
-// const [orderBook,setOrderBook]=useState(orderBooks? orderBooks:null)
 let orderID=order;
 
   let data ="";
@@ -82,21 +76,15 @@ const increaseQuantity= async()=>{
       "book": id,
       "added_date":currentDate,
     },{
-      headers:{
-        "X-CSRFToken":csrftoken
-      }
+      headers:{ "Authorization":`Token ${Token}`}
     }).then(response=>{
       if(response.status===200){
         console.log("You have successfully added new Order Book");
-    //  getOrder();
-//         SetOrderBook(orderBooks);
-// setOrderID(order);
-        //window.location.reload();
+   
         console.log(" a refresh must be done here");
    
   
  
-  // navigate("/cart")
         console.log(response.data)
       }
     }) 
@@ -108,17 +96,12 @@ const decreaseQuantity= async(e)=>{
 try{
   
   let response =await axios.put(`${BASE_URL}/app/orderBook/${id}/`,{},{
-    headers:{
-      "X-CSRFToken":csrftoken
-    }
+    headers:{"Authorization":`Token ${Token}`}
   });
  
     console.log("Ordered Book ID  :",id);
     console.log("response.data from decrease function :" ,response.data);
-    // getOrder();
-//     SetOrderBook(orderBooks);
-// setOrderID(order);
-     //window.location.reload();
+    
      console.log(" a refresh must be done here");
    
   
@@ -134,9 +117,7 @@ catch(error){
 const deleteBook= async()=>{
   try{
     let response = await axios.delete(`${BASE_URL}/app/orderBook/${id}/`,{
-      headers:{
-        "X-CSRFToken":csrftoken
-      }
+     headers:{ "Authorization":` Token ${Token}`}
     });
     
     console.log("Successfully deleted ");
@@ -164,7 +145,7 @@ const forOrder=()=>{
     console.log("orderBook: ",orderBook)
           console.log("ORDERID: ",orderID)
           console.log("ORDER2 ",order[1]);
-          console.log("USER FROM HEADER: ",user);
+          // console.log("USER FROM HEADER: ",user);
 }
 
 
@@ -177,7 +158,7 @@ const forOrder=()=>{
         <>
     
         <Header/>
-        <Button onClick={()=>{navigate("/checkout",{state:{user:user}})}} style={{ position:"absolute",
+        <Button onClick={()=>{navigate("/checkout")}} style={{ position:"absolute",
      top:"90px",
      right:"20px",
     width:"130px",

@@ -17,14 +17,14 @@ import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
 import './../../src/App.css';
 import { useContext } from "react";
-import OrderContext from "../context/orderContext";
+import OrderContext from "../context/context";
 export const  BASE_URL="https://e-commerce-8io3.onrender.com";
 function Home(){
 
 
 const [datafromHeader,setDatafromHeader]=useState("")
 
-const {getOrder,createOrder}=useContext(OrderContext);
+const {getOrder,createOrder,Token}=useContext(OrderContext);
 const handelData=(data)=>{
   setDatafromHeader(data)
 }
@@ -36,8 +36,7 @@ return (<div style={{width:"100%"}}>
     <Header sendDataToHome={handelData}/>
     <Row><Col><Image roundedCircle style={{width:"310px",marginTop:"20px",marginLeft:"60px"}} src={Myimage}/></Col><Col><h1 style={{position:"relative",right:"28%",marginTop:"5%",fontSize:"80px",top:"20%",fontWeight:"bold"}}>Welcome to BookStore</h1></Col></Row>
 
-
-
+<button onClick={()=>{console.log(Token)}}> TOKEN </button>
 
     {/* <hr style={{position:"relative",top:"40px"}}/> */}
     <div style={{  backgroundColor:"#152A38",

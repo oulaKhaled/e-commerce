@@ -1,0 +1,13 @@
+GET http://127.0.0.1:8000/app/test_token
+Content-Type: application/json
+Authorization: Token f29fe2339c9593b8ba81f476ff59ea8fe9e6510c
+####
+
+GET   http://127.0.0.1:8000/app/register
+Content-Type: application/json
+{"username":"test2", "password":"testpassword2","email":"test@gmail.com"}
+
+####
+
+
+
