@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 
-# import os
+import os
 
 import dj_database_url
 from decouple import config
@@ -155,6 +155,7 @@ MEDIA_URL = "/images/"
 
 STATICFILES_DIRS = [
     BASE_DIR / "static_global",
+    os.path.join(BASE_DIR, "frontend/public/index.html"),
 ]
 
 STATICFILES_FINDERS = [
