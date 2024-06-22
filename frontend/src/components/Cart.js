@@ -80,8 +80,8 @@ const increaseQuantity= async()=>{
     }).then(response=>{
       if(response.status===200){
         console.log("You have successfully added new Order Book");
-   
-        console.log(" a refresh must be done here");
+        window.location.reload();
+
    
   
  
@@ -101,7 +101,7 @@ try{
  
     console.log("Ordered Book ID  :",id);
     console.log("response.data from decrease function :" ,response.data);
-    
+    window.location.reload();
      console.log(" a refresh must be done here");
    
   
@@ -124,7 +124,7 @@ const deleteBook= async()=>{
     //  getOrder();
 //     SetOrderBook(orderBooks);
 // setOrderID(order);
-    //window.location.reload();
+    window.location.reload();
     console.log(" a refresh must be done here");
    
   

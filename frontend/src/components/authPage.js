@@ -33,14 +33,15 @@ function update_form_btn(e) {
 
 const HandelLogin= async()=>{
 const data= await submitLogin(username,password)
-
+window.location.reload();
   navigate("/");
 
 
 }
 const HandelSignup=async()=>{
   const data=  await submitSignup(username,password,email)
-    navigate("/");
+  window.location.reload();  
+  navigate("/");
   
 }
   

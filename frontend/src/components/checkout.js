@@ -102,10 +102,7 @@ try{
       headers:{ "Authorization":` Token ${Token}`}
     }
 
-,{
-    headers:{
-        "X-CSRFToken":csrftoken  
-    }});
+,);
     console.log("order",order);
 
 

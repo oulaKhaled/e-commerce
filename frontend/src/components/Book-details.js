@@ -156,7 +156,7 @@ const HandelRate = (i) => async (evt) => {
             console.log("Ratin is successfully done");
             console.log("page must be refreshed");
             
-            //window.location.reload();
+            window.location.reload();
 
         }
         else{

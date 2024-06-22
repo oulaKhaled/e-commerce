@@ -117,7 +117,7 @@ catch(error){
     setemail(profiles.data.email);
 
   getProfileID(profiles.data.id);
-
+window.location.reload();
   
   } 
   catch(error){
