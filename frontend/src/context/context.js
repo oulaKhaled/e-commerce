@@ -23,7 +23,7 @@ const submitLogin =async (username,password) => {
 
     let response= await axios.post(`${BASE_URL}/app/login/`, { username, password },{
       withCredentials:true,
-      headers:{ "Authorization":` Token ${Token}`}
+  
     });
     console.log(response.data);
     setCurrentUser(true);
@@ -47,7 +47,7 @@ const submitSignup= async (username,password,email)=>{
   
  await axios.post(`${BASE_URL}/app/register/`,{username,password,email},{
     withCredentials:true,
-    headers:{ "Authorization":` Token ${Token}`}
+
     })
   .then(response=>{
     console.log(response.data);
