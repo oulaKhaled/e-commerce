@@ -11,7 +11,9 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-import os
+
+# import os
+
 import dj_database_url
 from decouple import config
 
@@ -26,9 +28,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-pi@oy&@v)656hz5#0on#^!yqrcy+1$dnjck4_6oc)&5r%uho-z"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ["e-commerce-8io3.onrender.com", "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["e-commerce-8io3.onrender.com", "localhost", "127.0.0.1", "*"]
 
 ALLOWED_HOSTS_DEPLOY = ["e-commerce-8io3.onrender.com"]
 
@@ -142,11 +144,22 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = "/static/"
-MEDIA_URL = "/images/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "images")
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+STATIC_ROOT = BASE_DIR / "assets"
+STATIC_URL = "/static/"
+
+MEDIA_ROOT = BASE_DIR / "images"
+MEDIA_URL = "/images/"
+
+STATICFILES_DIRS = [
+    BASE_DIR / "static_global",
+]
+
+STATICFILES_FINDERS = [
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+]
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
