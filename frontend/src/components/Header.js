@@ -178,7 +178,7 @@ if(currentUser){
       <Dropdown.Menu style={{width:"300px",height:"auto"}}>
    <Row>
    <Col><Image src={Myimage} roundedCircle  style={{width:"80px",margin:"10px"}}/></Col>
-   <Col> <h3 style={{marginLeft:"10px",marginTop:"10px"}}>{username}</h3></Col>
+   <Col> <h3 style={{marginLeft:"10px",marginTop:"10px",padding:"5px"}}>{username}</h3></Col>
    </Row>
      <br/>
      <Col  xs={1} md={1} >
