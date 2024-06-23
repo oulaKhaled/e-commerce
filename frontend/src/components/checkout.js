@@ -227,7 +227,7 @@ const orderBook=orderBooks;
     transactionInfo: {
     totalPriceStatus: 'FINAL',
       totalPriceLabel: 'Total',
-      totalPrice: orderID.get_cart_total,
+      totalPrice: `${orderID.get_cart_total}`,
       currencyCode: 'USD',
       countryCode: 'US',
      

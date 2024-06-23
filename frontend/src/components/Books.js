@@ -100,7 +100,19 @@ console.log("CURRENT DATE ",currentDate);
        
         <Row>
   
-        <h5 onClick={()=>{navigate("/book-details",{state:{book_id:book.id}})}} style={{marginTop:"15px",textDecoration:"underline",color:"#0F1035"}} >{book.title}</h5>
+        <h5 onClick={()=>{
+          if(currentUser){
+            navigate("/book-details",{state:{book_id:book.id}})
+            
+            }
+            else{
+            navigate("/auth")
+          }
+          
+          }
+        
+          
+          } style={{marginTop:"15px",textDecoration:"underline",color:"#0F1035"}} >{book.title}</h5>
   
 </Row>
 
