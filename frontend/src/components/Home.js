@@ -35,8 +35,8 @@ const handelData=(data)=>{
 return (<div style={{width:"100%"}}>
     <Header sendDataToHome={handelData}/>
     <Row><Col><Image roundedCircle style={{width:"310px",marginTop:"20px",marginLeft:"60px"}} src={Myimage}/></Col><Col><h1 style={{position:"relative",right:"28%",marginTop:"5%",fontSize:"80px",top:"20%",fontWeight:"bold"}}>Welcome to BookStore</h1></Col></Row>
-
-<button onClick={()=>{console.log(Token)}}> TOKEN </button>
+{/* 
+<button onClick={()=>{console.log(Token)}}> TOKEN </button> */}
 
     {/* <hr style={{position:"relative",top:"40px"}}/> */}
     <div style={{  backgroundColor:"#152A38",

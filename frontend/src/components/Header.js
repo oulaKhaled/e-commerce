@@ -139,7 +139,7 @@ if(currentUser){
 //0F1035
     return (
         <Navbar className=" justify-content-between" style={{"backgroundColor":"#152A38",width:"100%"}}>
-<button onClick={getToken}>Get token</button>
+{/* <button onClick={getToken}>Get token</button> */}
 {/* <button onClick={check_auth}>check auth</button> */}
    
         <Form inline >
@@ -205,7 +205,7 @@ if(currentUser){
        {/* <hr/> */}
       
        </Row>      
-       <button onClick={()=>{
+       {/* <button onClick={()=>{
       console.log(username);
       console.log(email);
       console.log(Address);
@@ -215,7 +215,7 @@ if(currentUser){
       
      }}>
       just check 
-     </button>
+     </button> */}
         
         </Modal.Body>
         <Modal.Footer>
