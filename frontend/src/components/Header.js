@@ -175,7 +175,7 @@ if(currentUser){
    <Dropdown.Toggle variant="outline-light">
    <FaUser />
            </Dropdown.Toggle>
-      <Dropdown.Menu style={{width:"260px",height:"250px"}}>
+      <Dropdown.Menu style={{width:"300px",height:"auto"}}>
    <Row>
    <Col><Image src={Myimage} roundedCircle  style={{width:"80px",margin:"10px"}}/></Col>
    <Col> <h3 style={{marginLeft:"10px",marginTop:"10px"}}>{username}</h3></Col>
@@ -187,8 +187,12 @@ if(currentUser){
      <p style={{margin:"5px",fontWeight:"bold"}}>{email}</p>
      <p style={{margin:"5px"}}>{Address}</p>
      
-     <Button variant="outline-danger" style={{bottom:"10px",position:"absolute",left:"15px"}} onClick={submitlogout}>Logout</Button>
-     <Button variant="outline-success" style={{bottom:"10px",position:"absolute",right:"5px"}}  onClick={handleShow}><MdModeEdit /></Button>
+     
+     {/* style={{bottom:"10px",position:"absolute",left:"15px"}} 
+     style={{bottom:"10px",position:"absolute",right:"5px"}}
+      */}
+     <Button variant="outline-danger"  style={{bottom:"10px",margin:"10px"}}  onClick={submitlogout}>Logout</Button>
+     <Button variant="outline-success"     style={{bottom:"10px",position:"absolute",right:"5px"}} onClick={handleShow}><MdModeEdit /></Button>
     
 
       <Modal show={show} onHide={handleClose}>
