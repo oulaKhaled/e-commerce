@@ -89,8 +89,8 @@ console.log("CURRENT DATE ",currentDate);
 
     book.category==="Thrillers" ?  (
         
-        <Col style={{margin:"10px",height:"auto",width:"auto",borderRadius:"10px"}} >
-        <div style={{borderRadius:"10px",padding:"10px"}}>
+        <Col style={{margin:"10px",height:"auto",width:"auto",}} >
+        <div style={{padding:"10px"}}>
  
         
 <Row>
@@ -115,13 +115,13 @@ console.log("CURRENT DATE ",currentDate);
 
         
         <h1 style={{margin:"15px",textDecoration:"underline"}}>Kids</h1>
-        <Row style={{justifyContent:"center",alignItems:"center",backgroundColor:"#ffff"}}>
+        <Row style={{justifyContent:"center",alignItems:"center",backgroundColor:"#ffff",borderRadius:"10px"}}>
 {filterdBooks && filterdBooks.map((book,index)=>(
 
     book.category==="Kids"? (
         
-        <Col style={{margin:"20px",height:"auto",width:"100%",borderRadius:"10px",alignItems:"center"}} >
-        <div style={{borderRadius:"10px",padding:"10px"}}>
+        <Col style={{margin:"20px",height:"auto",width:"100%",alignItems:"center"}} >
+        <div style={{padding:"10px"}}>
        
         
 <Row>
@@ -143,15 +143,15 @@ console.log("CURRENT DATE ",currentDate);
         </Row>
       
 <h1 style={{margin:"10px",textDecoration:"underline"}}>Trending Books</h1>
-        <Row style={{justifyContent:"center",alignItems:"center",backgroundColor:"#ffff"}}>
+        <Row style={{justifyContent:"center",alignItems:"center",backgroundColor:"#ffff",borderRadius:"10px",}}>
 {filterdBooks && filterdBooks.map((book,index)=>(
 
     book.category==="Trending Books" ?  (
-        <Col style={{margin:"25px",height:"auto",width:"100%",borderRadius:"10px"}} >
+        <Col style={{margin:"25px",height:"auto",width:"100%"}} >
        
  
  
-        <div style={{borderRadius:"10px",padding:"10px"}}>
+        <div style={{padding:"10px"}}>
         <Row>
       <img style={{width:"auto",height:"250px",marginLeft:"10px"}} src={book.image}/>
       </Row>

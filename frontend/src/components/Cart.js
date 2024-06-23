@@ -201,7 +201,7 @@ const forOrder=()=>{
 <Col>
 <Row>
   <Col>
-  <Image style={{width:"100px",height:"120px",marginLeft:"10px"}} src={book.get_image}/> 
+  <Image style={{width:"100px",height:"120px",marginLeft:"10px"}} src={`${BASE_URL}/images/${book.get_image}`}/>
   </Col>
 <Col><p style={{margin:"15px",color:"#183661",fontWeight:"bolder"}}>{book.get_title} </p>
 </Col>
