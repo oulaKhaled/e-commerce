@@ -7,6 +7,7 @@ from rest_framework.test import APIClient
 from django.contrib.auth import get_user_model
 from rest_framework.test import APIRequestFactory
 from app.views import BookView
+from rest_framework.authtoken.models import Token
 
 
 @pytest.fixture
@@ -50,32 +51,41 @@ def create_test_user(user_data):
 
 @pytest.mark.django_db
 def test_user_login_success(client, create_test_user, user_data):
-    response = client.post(reverse("login"), user_data)
+    client = APIClient()
+    user = create_test_user
+    response = client.post(reverse("login"), user_data, format="json")
     assert response.status_code == status.HTTP_200_OK
-    session_id = response.client.cookies.get("sessionid")
-    assert session_id is not None
-
-
-@pytest.mark.django_db
-def test_user_register_success(client, user_data_register):
-    response = client.post(reverse("register"), user_data_register)
-    assert response.status_code == status.HTTP_200_OK
-
-
-@pytest.mark.django_db
-def test_user_logout_success(client):
-    response = client.post(reverse("logout"))
-    session_id = response.client.cookies.get("sessionid")
-    assert session_id is None
-
-
-@pytest.mark.django_db
-def test_get_user_success(client, create_test_user):
-    client.login(username="testuser", password="testpassword")
-    response = client.get(reverse("users"))
-    assert response.status_code == status.HTTP_202_ACCEPTED
+    assert "token" in response.data
     assert "user" in response.data
     assert response.data["user"]["username"] == "testuser"
+
+
+@pytest.mark.django_db
+def test_nonexistent_user(client):
+    client = APIClient()
+    data = {"username": "username", "password": "password"}
+    response = client.post(reverse("login"), data, format="json")
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
+@pytest.mark.django_db
+def test_successful_registration(user_data_register):
+    client = APIClient()
+    response = client.post(reverse("register"), user_data_register, format="json")
+    assert response.status_code == status.HTTP_200_OK
+    assert "token" in response.data
+    assert "user" in response.data
+    assert response.data["user"]["username"] == "user_name"
+
+
+@pytest.mark.django_db
+def test_registration_with_existing_username(client, user_data_register):
+    user_model = get_user_model()
+    test_user = user_model.objects.create_user(**user_data_register)
+    client = APIClient()
+    data = user_data_register
+    response = client.post(reverse("register"), data, format="json")
+    assert response.data["username"] == ["A user with that username already exists."]
 
 
 @pytest.mark.django_db

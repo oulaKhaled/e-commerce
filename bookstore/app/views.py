@@ -66,11 +66,6 @@ class UserView(viewsets.ModelViewSet):
     queryset = models.User.objects.all()
     serializer_class = UserSerializer
 
-    # def list(self, request, pk, *args, **kwargs):
-    #     user = models.User.objects.get(id=pk)
-    #     print("user", user)
-    #     return super().list(request, *args, **kwargs)
-
 
 @api_view(["GET"])
 @authentication_classes([SessionAuthentication, TokenAuthentication])
@@ -248,17 +243,3 @@ class UserProfileView(viewsets.ModelViewSet):
                 {"message": "user NOT found"},
                 status=status.HTTP_404_NOT_FOUND,
             )
-
-    # customize get Method
-    # @action(methods=["GET"], detail=False)
-    # def get_user_profile(self, request):
-    #     user = models.User.objects.get(id=request.user.id)
-    #     profile = models.UserProfile.objects.get(user=user)
-    #     if profile:
-    #         serializer = UserProfileSerializer(profile)
-    #         return Response(serializer.data, status=status.HTTP_200_OK)
-    #     else:
-    #         return Response(
-    #             {"message": "there is no profile for this user "},
-    #             status=status.HTTP_404_NOT_FOUND,
-    #         )

@@ -125,7 +125,7 @@ try{
 }
 const handleClose =  () => {
    UpdateOrder();
-    navigate("/");
+    window.location.reload();
     setShow(false);
 
 
