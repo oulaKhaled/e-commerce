@@ -13,4 +13,5 @@ Our E-Commerce Bookstore Webstore is designed to provide an exceptional online b
 4-[Usecase diagram](https://github.com/oulaKhaled/e-commerce/blob/main/Usecase%20diagram.md)  
 5-[Database diagram](https://github.com/oulaKhaled/e-commerce/blob/main/Database%20diagram.md)  
 6-[Backend](https://github.com/oulaKhaled/e-commerce/blob/main/Backend.md)  
-7-[Frontend](https://github.com/oulaKhaled/e-commerce/blob/main/frontend.md)
+7-[Frontend](https://github.com/oulaKhaled/e-commerce/blob/main/frontend.md)  
+8-[Test](https://github.com/oulaKhaled/e-commerce/blob/main/test.md)
