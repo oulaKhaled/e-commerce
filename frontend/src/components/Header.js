@@ -103,7 +103,7 @@ catch(error){
   const getProfile= async()=>{
   
     const profiles= await axios.get(`${BASE_URL}/app/userProfile/${userID}/`,{
-      headers:{ "Authorization":` Token ${Token}`},
+      headers:{ "Authorization":`Token ${Token}`},
     });
   try{
     console.log("response from Header to get Profile YUPPPP: ",profiles.data);
