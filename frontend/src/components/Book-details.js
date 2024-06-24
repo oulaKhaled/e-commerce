@@ -35,7 +35,7 @@ const GetBookDetails= async()=>{
 
         let response= await axios.get(`${BASE_URL}/app/book/${bookID}/`,{
             
-          headers:{ "Authorization":` Token ${Token}`}
+       
         });
     if(response.status===200){
         // if(ORDERID){

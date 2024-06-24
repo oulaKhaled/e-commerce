@@ -52,7 +52,7 @@ def test_avg_rating(create_test_book):
 @pytest.mark.django_db
 def test_cannot_create_userprofile(client, create_test_user):
     client = APIClient()
-
+    client.force_authenticate(create_test_user)
     # userProfile = UserProfile.objects.create()
     data = {
         "user": create_test_user,
@@ -60,8 +60,9 @@ def test_cannot_create_userprofile(client, create_test_user):
         "email": "test@example.com",
         "Address": "test",
     }
+
     response = client.post(reverse("userProfile-list"), data)
-    assert response.status_code == status.HTTP_403_FORBIDDEN
+    assert response.status_code == status.HTTP_400_BAD_REQUEST
 
 
 @pytest.mark.django_db

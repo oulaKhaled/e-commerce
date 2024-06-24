@@ -21,7 +21,6 @@ from rest_framework import status
 @pytest.mark.parametrize(
     "url_name, view_class",
     [
-        ("users", UserView),
         ("register", UserRegisterView),
         ("login", UserLoginView),
         ("logout", UserLogout),
@@ -36,6 +35,7 @@ def test_non_router_urls(url_name, view_class):
     "prefix, view_class",
     [
         ("userProfile", UserProfileView),
+        ("users", UserView),
         ("book", BookView),
         ("orderBook", OrderBookView),
         ("orders", OrderView),

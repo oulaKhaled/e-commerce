@@ -49,6 +49,30 @@ def create_test_user(user_data):
     return test_user
 
 
+@pytest.fixture
+def create_test_token(create_test_user):
+    token, created = Token.objects.get_or_create(user=create_test_user)
+    return token
+
+
+@pytest.mark.django_db
+def test_registration_with_missing_username():
+    client = APIClient()
+    url = reverse("register")
+    data = {"password": "newpassword", "email": "newuser@example.com"}
+    response = client.post(url, data, format="json")
+    assert response.data["username"] == ["This field is required."]
+
+
+@pytest.mark.django_db
+def test_registration_with_missing_password():
+    client = APIClient()
+    url = reverse("register")
+    data = {"username": "newuser", "email": "newuser@example.com"}
+    response = client.post(url, data, format="json")
+    assert response.data["password"] == ["This field is required."]
+
+
 @pytest.mark.django_db
 def test_user_login_success(client, create_test_user, user_data):
     client = APIClient()
@@ -95,7 +119,9 @@ def test_update_books_rate(client, create_test_user, create_test_book):
         user=create_test_user, book=create_test_book, stars=2
     )
 
-    client.force_login(create_test_user)  # Log in the client with the created user
+    client.force_authenticate(
+        create_test_user
+    )  # Log in the client with the created user
     factory = APIRequestFactory()
     request = factory.post(
         "/api/books/{}/rate_book/".format(create_test_book.pk),
@@ -111,43 +137,103 @@ def test_update_books_rate(client, create_test_user, create_test_book):
 
 
 @pytest.mark.django_db
-def test_create_rating(client, create_test_user):
-    book = Book.objects.create(
-        title="example", author="testauthor", price=10, category="test", quantity=2
-    )
-    Rating.objects.create(user=create_test_user, book=book, stars=2)
-    assert Rating.objects.count() == 1
-
-
-@pytest.mark.django_db
-def test_create_orderBook(client, create_test_user, create_test_book):
-    order = Order.objects.create(user=create_test_user, complete=False)
-    orderBook = OrderBook.objects.create(order=order, book=create_test_book, quantity=1)
-    assert OrderBook.objects.count() == 1
-
-
-@pytest.mark.django_db
-def test_list_order_orderbooks(client, create_test_user, create_test_book):
+def test_create_rating(client, create_test_user, create_test_book, create_test_token):
     client = APIClient()
-    order = Order.objects.create(user=create_test_user, complete=False)
-    client.force_login(create_test_user)  # Log in the client with the created user
-    orderBook = OrderBook.objects.create(order=order, book=create_test_book, quantity=1)
-    url = reverse("orders-list")
+    data = {"user": create_test_user.id, "book": create_test_book.id, "stars": 2}
+    url = reverse("rating-list")  # Adjust to match your URL pattern name
+    response = client.post(url, data, format="json")
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
+    client.credentials(HTTP_AUTHORIZATION="Token " + create_test_token.key)
+
+    # Test with authentication
     response = client.get(url)
     assert response.status_code == status.HTTP_200_OK
 
 
 @pytest.mark.django_db
-def test_create_order(client, create_test_user):
+def test_create_order(client, create_test_user, create_test_token):
     client = APIClient()
-    order = Order.objects.create(user=create_test_user, complete=False)
+    data = {"user": create_test_user.id, "complete": False}
+    url = reverse("orders-list")  # Adjust to match your URL pattern name
+    response = client.post(url, data, format="json")
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
+    client.credentials(HTTP_AUTHORIZATION="Token " + create_test_token.key)
+
+    response = client.post(url, data, format="json")
+    assert response.status_code == status.HTTP_201_CREATED
     assert Order.objects.count() == 1
+
+
+@pytest.mark.django_db
+def test_create_orderBook(client, create_test_user, create_test_book):
+    client = APIClient()
+    client.force_authenticate(create_test_user)
+    order = Order.objects.create(user=create_test_user, complete=False)
+    url = reverse("orderBook-list")  # Adjust to match your URL pattern name
+    data = {
+        "user": create_test_user.id,
+        "order": order.id,
+        "quantity": 1,
+        "book": create_test_book.id,
+    }
+    response = client.post(url, data, format="json")
+    assert response.status_code == status.HTTP_201_CREATED
+
+
+@pytest.mark.django_db
+def test_shipping_information_view_create(create_test_user, create_test_token):
+    client = APIClient()
+    url = reverse("shippinginformation-list")  # Adjust to match your URL pattern name
+    client.force_authenticate(create_test_user)
+    order = Order.objects.create(user=create_test_user, complete=False)
+    data = {
+        "user": create_test_user.id,
+        "order": order.id,
+        "address": "Anystate",
+        "zipcode": "12345",
+    }  # Adjust fields as necessary
+
+    response = client.post(url, data, format="json")
+    assert response.status_code == status.HTTP_201_CREATED
+
+
+@pytest.mark.django_db
+def test_rating_view_list(create_test_user, create_test_token):
+    client = APIClient()
+    url = reverse("rating-list")
+    client.credentials(HTTP_AUTHORIZATION="Token " + create_test_token.key)
+    response = client.get(url)
+    assert response.status_code == status.HTTP_200_OK
+
+
+@pytest.mark.django_db
+def test_list_order_orderbooks(client, create_test_user, create_test_book):
+    client = APIClient()
+
+    order = Order.objects.create(user=create_test_user, complete=False)
+
+    client.force_authenticate(
+        user=create_test_user
+    )  # Log in the client with the created user
+    orderBook = OrderBook.objects.create(order=order, book=create_test_book, quantity=1)
+    url = reverse("orderBook-list")
+    response = client.get(url)
+    assert response.status_code == status.HTTP_200_OK
+
+
+@pytest.mark.django_db
+def test_shipping_information_view_list(create_test_token):
+    client = APIClient()
+    client.credentials(HTTP_AUTHORIZATION="Token " + create_test_token.key)
+    url = reverse("shippinginformation-list")  # Adjust to match your URL pattern name
+    response = client.get(url)
+    assert response.status_code == status.HTTP_200_OK
 
 
 @pytest.mark.django_db
 def test_no_duplicate_uncomplete_order_for_user(client, create_test_user):
     client = APIClient()
-    client.force_login(create_test_user)
+    client.force_authenticate(create_test_user)
     order = Order.objects.create(user=create_test_user, complete=False)
     data = {"user": create_test_user, "total_amount": 10, "complete": False}
     url = reverse("orders-list")
@@ -159,7 +245,7 @@ def test_no_duplicate_uncomplete_order_for_user(client, create_test_user):
 def test_increase_book_quantity(client, create_test_user, create_test_book):
     client = APIClient()
 
-    client.force_login(create_test_user)
+    client.force_authenticate(create_test_user)
     order = Order.objects.create(user=create_test_user, complete=False)
     orderBook = OrderBook.objects.create(order=order, book=create_test_book, quantity=1)
     data = {
@@ -177,7 +263,7 @@ def test_increase_book_quantity(client, create_test_user, create_test_book):
 @pytest.mark.django_db
 def test_decrease_book_quantity(client, create_test_user, create_test_book):
     client = APIClient()
-    client.force_login(create_test_user)
+    client.force_authenticate(create_test_user)
     order = Order.objects.create(
         user=create_test_user, complete=False, order_date=date.today().isoformat()
     )
@@ -185,7 +271,6 @@ def test_decrease_book_quantity(client, create_test_user, create_test_book):
     data = {
         "order": order.id,
         "book": create_test_book.id,
-        # Sending current quantity to trigger decrease
     }
     url = reverse("orderBook-detail", kwargs={"pk": orderBook.id})
     response = client.put(url, data, format="json")

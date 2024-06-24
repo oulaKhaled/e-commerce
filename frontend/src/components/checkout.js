@@ -143,9 +143,6 @@ const handleInputChange = (e) => {
       [name]: value,
     }));
   };
-useEffect(()=>{
-console.log("HOT USER FROM CART PAGE : ",userID);
-},[])
 
 
 const orderID=order;

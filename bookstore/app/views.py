@@ -185,11 +185,11 @@ class OrderView(viewsets.ModelViewSet):
 
 
 class OrderBookView(viewsets.ModelViewSet):
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (TokenAuthentication,)
     queryset = models.OrderBook.objects.all()
     serializer_class = OrderBookSerializer
 
-    @authentication_classes([SessionAuthentication, TokenAuthentication])
-    @permission_classes([permissions.IsAuthenticated])
     def create(self, request, *args, **kwargs):
         order = request.data["order"]
         mybook = request.data["book"]

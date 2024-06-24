@@ -52,12 +52,12 @@ const handelClick=()=>{
 }
 
 
-const getToken= async()=>{
+// const getToken= async()=>{
  
-  console.log("COOKİE : ",document.cookie);
- const mytoken= localStorage.setItem("sessionid","lkdflsfd");
- console.log("Maybe this could Work ",mytoken);
-}
+//   console.log("COOKİE : ",document.cookie);
+//  const mytoken= localStorage.setItem("sessionid","lkdflsfd");
+//  console.log("Maybe this could Work ",mytoken);
+// }
 
 
 const UpdateProfile= async(e)=>{
